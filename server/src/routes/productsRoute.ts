@@ -2,10 +2,13 @@ import express from 'express';
 const router = express.Router();
 
 // import {getAllProjects, addProject, getProject, updateProject, deleteProject} from '../controllers/projectControllers';
-import {getAllProducts} from '../controllers/productsControllers';
+import {getAllProducts, getCategory} from '../controllers/productsControllers';
 
 router.route('/')
         .get(getAllProducts);
+
+router.route('/category/:category')
+        .get(getCategory);
 
 // router.route('/add')
 //         .post(addProject);

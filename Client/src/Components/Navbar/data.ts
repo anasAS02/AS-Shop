@@ -8,7 +8,7 @@ export const links = [
     {
         id: 1,
         title: "Home Decoration",
-        href: "homeDecoration"
+        href: "home-decoration"
     },
     {
         id: 2,

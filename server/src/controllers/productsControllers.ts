@@ -6,17 +6,22 @@ import {asyncWrapper} from '../middlewares/asyncWrapper';
 
 const getAllProducts = asyncWrapper(
   async (req: Request, res: Response) => {
-    const products = await Product.find().sort({ createdAt: -1 });
+    const query = req.query;
+    const limit = parseInt(query.limit as string) || 10;
+    const page = parseInt(query.page as string) || 1;
+    const skip = (page - 1) * limit;
+    const products = await Product.find().sort({ createdAt: -1 }).limit(limit).skip(skip);
     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
   }
 );
 
-// const getAllCategories = asyncWrapper(
-//   async (req: Request, res: Response) => {
-//     const products = await Product.findOne({category});
-//     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
-//   }
-// );
+const getCategory = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const category = req.params.category;
+    const products = await Product.find({category: category});
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+  }
+);
 
 // const addProject = asyncWrapper(
 //   async (req: Request, res: Response, next: NextFunction) => {
@@ -71,6 +76,7 @@ const getAllProducts = asyncWrapper(
 
 export {
   getAllProducts,
+  getCategory
   // addProject,
   // getProject,
   // updateProject,
