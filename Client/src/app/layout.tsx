@@ -6,8 +6,8 @@ import { Navbar } from '@/Components/Navbar/Navbar'
 const roboto = Roboto({ subsets: ['latin'], weight: ['400'] })
 
 export const metadata: Metadata = {
-  title: 'Apple Clone',
-  description: 'Apple Website Clone',
+  title: 'Salla Shop',
+  description: 'Welcome to Salla Shop – Your One-Stop Destination for All Your Shopping Needs',
 }
 
 export default function RootLayout({
