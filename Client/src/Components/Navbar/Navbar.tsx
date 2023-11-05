@@ -10,7 +10,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 
 export const Navbar = () => {
   return (
-    <nav className='w-full flex items-center gap-14 justify-center'>
+    <nav className='w-full flex items-center gap-14 justify-center max-md:flex-wrap'>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
           <Image src={Logo} width={100} height={100} alt='Logo' />
           Salla Shop

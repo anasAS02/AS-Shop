@@ -1,10 +1,11 @@
 import Link from "next/link"
+import { links } from "./data"
 
 export const Links = () => {
   return (
-    <div className='w-full bg-black p-2 flex items-center gap-5 text-white'>
+    <div className='w-full bg-zinc-800 p-2 flex justify-center items-center gap-5 text-sm text-white max-md:flex-wrap'>
         {links.map((link) => (
-            <Link key={link.id} href={link.href}>{link.title}</Link>
+            <Link key={link.id} href={link.href} className='duration-200 hover:text-yellow-500'>{link.title}</Link>
         ))}
     </div>
   )

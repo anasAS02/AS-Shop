@@ -11,6 +11,13 @@ const getAllProducts = asyncWrapper(
   }
 );
 
+// const getAllCategories = asyncWrapper(
+//   async (req: Request, res: Response) => {
+//     const products = await Product.findOne({category});
+//     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+//   }
+// );
+
 // const addProject = asyncWrapper(
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     const { title, liveLink, sourceCode, img, desc, tools, test } = req.body;
