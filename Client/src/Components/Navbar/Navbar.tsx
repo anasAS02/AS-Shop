@@ -22,7 +22,7 @@ export const Navbar = () => {
         <div className='flex items-center gap-3'>
           <FontAwesomeIcon icon={faUser} className='w-[18px] h-[18px] text-slate-600' />
           <span className='flex flex-col items-start gap-1 text-sm'>
-            <p className='text-slate-300'>Welcome</p>
+            <p className='text-gray-500'>Welcome</p>
             <Link href='/login' className='flex items-center gap-2'>Login
               <FontAwesomeIcon icon={faAngleUp} className='w-[14px] h-[14px]' />
             </Link>
@@ -33,7 +33,7 @@ export const Navbar = () => {
             <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] text-slate-600' />
           </Link>
           <span className='flex flex-col items-start gap-1 text-sm'>
-            <p className='text-slate-300'>Cart</p>
+            <p className='text-gray-500'>Cart</p>
             <p>$0</p>
           </span>
         </div>
@@ -42,7 +42,7 @@ export const Navbar = () => {
             <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] text-slate-600' />
           </Link>
           <span className='flex flex-col items-start gap-1 text-sm'>
-            <p className='text-slate-300'>Favourite</p>
+            <p className='text-gray-500'>Favourite</p>
             <p>0</p>
           </span>
         </div>
