@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { Roboto } from 'next/font/google'
+import { Ubuntu } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/Components/Navbar/Navbar'
 import { Links } from '@/Components/Navbar/Links'
 
-const roboto = Roboto({ subsets: ['latin'], weight: ['400'] })
+const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400'] })
 
 export const metadata: Metadata = {
   title: 'Salla Shop',
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={ubuntu.className}>
       <Navbar />
       <Links />
       {children}</body>
