@@ -3,7 +3,7 @@ import { ProductCard, ProductData } from "../Product/ProductCart";
 
 export const LatestProducts = async () => {
     const res = await getProducts();
-    const products = res.data.data;
+    const products = res?.data.data;
 
   return (
     <div className='flex flex-col gap-5'>
