@@ -1,6 +1,8 @@
 import { Features } from "@/Components/Features/Features";
 import { Landing } from "@/Components/Landing/Landing";
 import { LatestProducts } from "@/Components/Products/Latest/LatestProducts";
+import Image from "next/image";
+import Cover1 from '@/assets/cover1.jpg';
 
 export default function Home() {
   return (
@@ -10,6 +12,7 @@ export default function Home() {
         <Features />
         <LatestProducts />
       </section>
+      <Image src={Cover1} style={{ width: '100%', height: '500px' }} alt='Cover' />
     </main>
   )
 }
