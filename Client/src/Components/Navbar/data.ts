@@ -2,6 +2,7 @@ interface linksData {
     id: number;
     title: string;
     href: string;
+    thumbnail: string;
 }
 
 export const links = [

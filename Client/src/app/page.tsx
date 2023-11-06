@@ -3,6 +3,7 @@ import { Landing } from "@/Components/Landing/Landing";
 import { LatestProducts } from "@/Components/Products/Latest/LatestProducts";
 import Image from "next/image";
 import Cover1 from '@/assets/cover1.jpg';
+import { Categories } from "./Categories/Categories";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <LatestProducts />
       </section>
       <Image src={Cover1} style={{ width: '100%', height: '500px' }} alt='Cover' />
+      <Categories />
     </main>
   )
 }
