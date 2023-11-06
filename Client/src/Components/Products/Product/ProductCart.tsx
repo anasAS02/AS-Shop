@@ -1,6 +1,7 @@
 import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Image from "next/image"
+import Link from "next/link";
 
 export interface ProductData{
     _id: string;
@@ -19,7 +20,9 @@ export interface ProductData{
 export const ProductCard = (props: ProductData) => {
   return (
     <span key={props._id} className='p-2 duration-300 border-2 border-transparent rounded-md   hover:border-green-400 flex flex-col gap-3 items-center relative'>
-        <Image src={props.thumbnail} style={{width: '250px', height: '250px'}} width={800} height={800} objectFit="contain" alt={props.title} />
+        <Link href={`/products/product/${props._id}`}>
+            <Image src={props.thumbnail} style={{width: '250px', height: '250px'}} width={800} height={800} objectFit="contain" alt={props.title} />
+        </Link>
         <span className='text-center'>
             <p className='text-sm text-right text-green-600'>{props.category}</p>
             <p className='text-lg'>{props.title}</p>
