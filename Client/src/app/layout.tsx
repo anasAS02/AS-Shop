@@ -3,6 +3,7 @@ import { Ubuntu } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/Components/Navbar/Navbar'
 import { Links } from '@/Components/Navbar/Links'
+import { Footer } from '@/Components/Footer/Footer'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400'] })
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <Navbar />
       <Links />
       {children}</body>
+      <Footer />
     </html>
   )
 }

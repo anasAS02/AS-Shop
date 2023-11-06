@@ -6,7 +6,6 @@ import Cover1 from '@/assets/cover1.jpg';
 import { Categories } from "./Categories/Categories";
 import { Cards } from "@/Components/Products/Cards/Cards";
 import { Sponsors } from "@/Components/Sponsors/Sponsors";
-import { Footer } from "@/Components/Footer/Footer";
 
 export default function Home() {
   return (
@@ -18,7 +17,6 @@ export default function Home() {
       <Categories />
       <Cards />
       <Sponsors />
-      <Footer />
     </main>
   )
 }
