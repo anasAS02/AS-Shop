@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export const Categories = () => {
   return (
-    <div className='flex items-center justify-center flex-col gap-5'>
+    <div className='w-full p-24 flex items-center justify-center flex-col gap-5'>
         <h2 className='text-2xl font-bold max-md:text-sm mr-auto'>Our Categories</h2>
         <div className='flex items-center flex-wrap gap-5'>
             {links.map((category) => (
