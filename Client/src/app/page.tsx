@@ -18,9 +18,6 @@ export default function Home() {
       <section className='p-24 flex justify-center items-center flex-col gap-12'>
         <Categories />
         <Cards />
-        {/* Cards */}
-        {/* Sponsers */}
-        {/* Footer */}
       </section>
     </main>
   )
