@@ -13,7 +13,7 @@ export const CategoriesList = (props: {category: string}) => {
   return (
     <div>
         <span className='flex items-center gap-12 mb-2'>Category 
-          <FontAwesomeIcon onClick={handleCategories} icon={openCategories ? faAngleUp : faAngleDown} className='text-green-400 w-[18px] h-[18px] cursor-pointer ml-auto' />
+        <FontAwesomeIcon onClick={handleCategories} icon={openCategories ? faAngleUp : faAngleDown} className='text-green-400 w-[18px] h-[18px] cursor-pointer ml-auto' />
         </span>
         <span className={openCategories ? '' : 'hidden'}>
           {links.map((link) => (
