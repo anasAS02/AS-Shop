@@ -14,7 +14,12 @@ export async function generateMetedata({params}: any){
 export default async function Category ({params}: any) {
   const category = params.category;
 
-  const res = await getCategory(category);
+  const config = {
+    category,
+    sortByHighestPrice: 0
+  }
+  
+  const res = await getCategory(config);
   const products = res?.data.data;
 
   return (

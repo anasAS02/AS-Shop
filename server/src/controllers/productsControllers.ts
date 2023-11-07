@@ -33,10 +33,27 @@ const getAllProducts = asyncWrapper(
 
 const getCategory = asyncWrapper(
   async (req: Request, res: Response) => {
+    const query = req.query;
     const category = req.params.category;
-    const products = await Product.find({category: category});
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
-  }
+    
+    const highestPrice = query.highestPrice;
+    const lowestPrice = query.lowestPrice;
+    
+    const sortByLowestPrice = query.sortByLowestPrice;
+    const sortByHighestPrice = query.sortByHighestPrice;
+    
+    let products;
+      if(lowestPrice && highestPrice){
+        products = await Product.find({category: category}).where('price').gt(Number(lowestPrice)).lt(Number(highestPrice));
+      }else if(sortByLowestPrice){
+        products = await Product.find({category: category}).sort({price: 1});
+      }else if(sortByHighestPrice){
+        products = await Product.find({category: category}).sort({price: -1});
+      }else{
+        products = await Product.find({category: category}).sort({ createdAt: -1 });
+      }
+      res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+    }
 );
 
 // const addProject = asyncWrapper(
