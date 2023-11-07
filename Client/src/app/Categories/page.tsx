@@ -2,10 +2,9 @@ import { getProducts } from '@/Utils/Products/getProducts';
 import Image from 'next/image';
 
 export default async function Products ({params}:any) {
-  const category = params.category;
 
   const res = await getProducts();
-  const products = res.data.data;
+  const products = res?.data.data;
   return (
     <div>
       {products.map((pro: any) => (
