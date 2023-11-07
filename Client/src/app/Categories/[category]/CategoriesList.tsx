@@ -10,6 +10,7 @@ export const CategoriesList = (props: {category: string}) => {
     const handleCategories = () => {
       setOpenCategories(!openCategories);
     }
+    
   return (
     <div>
         <span className='flex items-center gap-12 mb-2'>Category 
