@@ -10,7 +10,23 @@ const getAllProducts = asyncWrapper(
     const limit = parseInt(query.limit as string) || 10;
     const page = parseInt(query.page as string) || 1;
     const skip = (page - 1) * limit;
-    const products = await Product.find().sort({ createdAt: -1 }).limit(limit).skip(skip);
+
+    const highestPrice = query.highestPrice;
+    const lowestPrice = query.lowestPrice;
+    
+    const sortByLowestPrice = query.sortByLowestPrice;
+    const sortByHighestPrice = query.sortByHighestPrice;
+    
+    let products;
+    if(lowestPrice && highestPrice){
+      products = await Product.find().where('price').gt(Number(lowestPrice)).lt(Number(highestPrice));
+    }else if(sortByLowestPrice){
+      products = await Product.find().sort({price: 1});
+    }else if(sortByHighestPrice){
+      products = await Product.find().sort({price: -1});
+    }else{
+      products = await Product.find().sort({ createdAt: -1 }).limit(limit).skip(skip);
+    }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
   }
 );

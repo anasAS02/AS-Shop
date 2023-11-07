@@ -4,9 +4,9 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
-import { faAngleUp } from "@fortawesome/free-solid-svg-icons/faAngleUp";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
+import { Arrow } from "./Arrow";
 
 export const Navbar = () => {
   return (
@@ -23,9 +23,10 @@ export const Navbar = () => {
           <FontAwesomeIcon icon={faUser} className='w-[18px] h-[18px] text-slate-600' />
           <span className='flex flex-col items-start gap-1 text-sm'>
             <p className='text-gray-500'>Welcome</p>
-            <Link href='/login' className='flex items-center gap-2'>Login
-              <FontAwesomeIcon icon={faAngleUp} className='w-[14px] h-[14px]' />
-            </Link>
+            <span className='flex items-center gap-2'>
+              <Link href='/login'>Login</Link>
+              {/* <Arrow /> */}
+            </span>
           </span>
         </div>
         <div className='flex items-center gap-3'>
