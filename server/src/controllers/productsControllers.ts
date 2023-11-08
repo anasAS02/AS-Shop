@@ -19,7 +19,7 @@ const getAllProducts = asyncWrapper(
     
     let products;
     if(lowestPrice && highestPrice){
-      products = await Product.find().where('price').gt(Number(lowestPrice)).lt(Number(highestPrice));
+      products = await Product.find({price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
     }else if(sortByLowestPrice){
       products = await Product.find().sort({price: 1});
     }else if(sortByHighestPrice){
