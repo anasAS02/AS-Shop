@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Product from '../models/productModel';
 import { httpStatusText } from '../utils/httpStatusText';
 import AppError from '../utils/appError';
@@ -53,7 +53,7 @@ const getCategory = asyncWrapper(
     }
 );
 
-// const addProject = asyncWrapper(
+// const addProduct = asyncWrapper(
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     const { title, liveLink, sourceCode, img, desc, tools, test } = req.body;
 
@@ -62,7 +62,7 @@ const getCategory = asyncWrapper(
 //       return next(error);
 //     }
 
-//     const project = new Project({
+//     const product = new Product({
 //       title,
 //       liveLink,
 //       sourceCode,
@@ -72,9 +72,9 @@ const getCategory = asyncWrapper(
 //       test,
 //     });
 
-//     await project.save();
-//     const projects = await Project.find();
-//     res.status(201).json({ status: httpStatusText.SUCCESS, data: projects });
+//     await product.save();
+//     const products = await Product.find();
+//     res.status(201).json({ status: httpStatusText.SUCCESS, data: products });
 //   }
 // );
 
