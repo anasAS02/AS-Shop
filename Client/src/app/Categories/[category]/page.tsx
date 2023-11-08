@@ -9,13 +9,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faBars, faBarsStaggered, faCircleXmark, faTableCells } from "@fortawesome/free-solid-svg-icons";
 
-// export async function generateMetedata({params}: any){
-//   const category = params.category;
-//   return{
-//     title: category,
-//     description: `SAllProductsa Shop | ${category}`
-//   }
-// }
+
 
 export default function Category ({params}: any) {
   const category = params.category;
@@ -45,7 +39,7 @@ export default function Category ({params}: any) {
 
   useEffect(() => {
     fetchProducts();
-    document.title = category;
+    // document.title = category;
   }, [sortLowest, sortHighest])
 
   const [grid, setGrid] = useState<boolean>(true);

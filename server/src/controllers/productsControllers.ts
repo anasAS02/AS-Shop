@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Product from '../models/productModel';
 import { httpStatusText } from '../utils/httpStatusText';
-// import AppError from '../utils/appError';
+import AppError from '../utils/appError';
 import {asyncWrapper} from '../middlewares/asyncWrapper';
 
 const getAllProducts = asyncWrapper(
