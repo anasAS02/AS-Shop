@@ -22,8 +22,9 @@ export default function RootLayout({
       <body className={ubuntu.className}>
       <Navbar />
       <Links />
-      {children}</body>
+      {children}
       <Footer />
+      </body>
     </html>
   )
 }

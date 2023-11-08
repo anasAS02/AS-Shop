@@ -26,27 +26,27 @@ export default function Category ({params}: any) {
   const [sortLowest, setSortLowest] = useState<string | null>(null);
   const [sortHighest, setSortHighest] = useState<string | null>(null);
 
-  const fetchProducts = async() => {
-    try{
+  const fetchProducts = async () => {
+    try {
       const res = await axios.get(category === 'AllProducts' ? GET_PRODUCTS : GET_CATEGORY + category, {
         params: {
-            limit: 10,
-            lowestPrice: from,
-            highestPrice: to,
-            sortByLowestPrice: sortLowest,
-            sortByHighestPrice: sortHighest,
-        }});
-        const data = res.data.data;
-        setProducts(data);
-    }catch(err){
+          lowestPrice: from,
+          highestPrice: to,
+          sortByLowestPrice: sortLowest,
+          sortByHighestPrice: sortHighest,
+        },
+      });
+      const data = res.data.data;
+      setProducts(data)
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
-    document.title = category;
     fetchProducts();
-  }, [category, sortLowest, sortHighest])
+    document.title = category;
+  }, [sortLowest, sortHighest])
 
   const [grid, setGrid] = useState<boolean>(true);
 

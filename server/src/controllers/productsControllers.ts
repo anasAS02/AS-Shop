@@ -7,9 +7,6 @@ import {asyncWrapper} from '../middlewares/asyncWrapper';
 const getAllProducts = asyncWrapper(
   async (req: Request, res: Response) => {
     const query = req.query;
-    const limit = parseInt(query.limit as string) || 10;
-    const page = parseInt(query.page as string) || 1;
-    const skip = (page - 1) * limit;
 
     const highestPrice = query.highestPrice;
     const lowestPrice = query.lowestPrice;
@@ -25,7 +22,7 @@ const getAllProducts = asyncWrapper(
     }else if(sortByHighestPrice === '0'){
       products = await Product.find().sort({price: -1});
     }else{
-      products = await Product.find().sort({ createdAt: -1 }).limit(limit).skip(skip);
+      products = await Product.find();
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
   }
