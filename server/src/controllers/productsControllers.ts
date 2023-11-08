@@ -41,10 +41,10 @@ const getCategory = asyncWrapper(
     
     const sortByLowestPrice = query.sortByLowestPrice;
     const sortByHighestPrice = query.sortByHighestPrice;
-    
     let products;
       if(lowestPrice && highestPrice){
-        products = await Product.find({category: category}).where('price').gt(Number(lowestPrice)).lt(Number(highestPrice));
+        products = await Product.find({category: category, price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
+        console.log(products)
       }else if(sortByLowestPrice){
         products = await Product.find({category: category}).sort({price: 1});
       }else if(sortByHighestPrice){

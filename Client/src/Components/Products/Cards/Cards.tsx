@@ -1,5 +1,5 @@
 import { getProducts } from "@/Utils/Products/getProducts"
-import { ProductData } from "../Product/ProductCart";
+import { ProductData } from "../Product/ProductCard";
 import Image from "next/image";
 import Link from "next/link";
 

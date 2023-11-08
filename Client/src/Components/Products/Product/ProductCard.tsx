@@ -32,8 +32,8 @@ export const ProductCard = (props: ProductData) => {
             <p className='text-sm text-right text-green-600'>{props.category}</p>
             <p className='text-lg'>{props.title}</p>
             <p className='text-sm text-gray-400'>{props.description}</p>
-            <p className={`text-lg ${props.discountPercentage && props.discountPercentage > 0 ? 'line-through text-gray-400 texr-sm' : ''}`}>${props.price}</p>
-            {props.discountPercentage && <span className='text-lg'>${calc(props.price, props.discountPercentage).toFixed(2)}</span>}
+            <p className={`text-lg ${props.discountPercentage && props.discountPercentage > 0 ? 'line-through text-black texr-sm' : ''}`}>${props.price}</p>
+            {props.discountPercentage && <span className='text-lg text-red-500'>${calc(props.price, props.discountPercentage).toFixed(2)}</span>}
             {!props.style && 
             <span className='flex justify-end items-center gap-3'>
                 <button className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold  flex items-center gap-2 rounded-md'> 

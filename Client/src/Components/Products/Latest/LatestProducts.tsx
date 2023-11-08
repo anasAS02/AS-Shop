@@ -1,5 +1,5 @@
 import { getProducts } from "@/Utils/Products/getProducts"
-import { ProductCard, ProductData } from "../Product/ProductCart";
+import { ProductCard, ProductData } from "../Product/ProductCard";
 
 export const LatestProducts = async () => {
     const res = await getProducts();
