@@ -20,9 +20,9 @@ const getAllProducts = asyncWrapper(
     let products;
     if(lowestPrice && highestPrice){
       products = await Product.find({price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
-    }else if(sortByLowestPrice){
+    }else if(sortByLowestPrice === '0'){
       products = await Product.find().sort({price: 1});
-    }else if(sortByHighestPrice){
+    }else if(sortByHighestPrice === '0'){
       products = await Product.find().sort({price: -1});
     }else{
       products = await Product.find().sort({ createdAt: -1 }).limit(limit).skip(skip);
@@ -45,9 +45,9 @@ const getCategory = asyncWrapper(
       if(lowestPrice && highestPrice){
         products = await Product.find({category: category, price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
         console.log(products)
-      }else if(sortByLowestPrice){
+      }else if(sortByLowestPrice === '0'){
         products = await Product.find({category: category}).sort({price: 1});
-      }else if(sortByHighestPrice){
+      }else if(sortByHighestPrice === '0'){
         products = await Product.find({category: category}).sort({price: -1});
       }else{
         products = await Product.find({category: category}).sort({ createdAt: -1 });

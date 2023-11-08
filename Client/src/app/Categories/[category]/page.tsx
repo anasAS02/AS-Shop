@@ -21,21 +21,10 @@ export default function Category ({params}: any) {
   const category = params.category;
   const [products, setProducts] = useState<ProductData[]>([]);
 
-  const config = {
-    category,
-    sortByHighestPrice: 0
-  }
-
-  // interface productsProps {
-  //   category: string;
-  //   lowestPrice?: number | undefined;
-  //   highestPrice?: number | undefined;
-  //   sortByLowestPrice?: number | undefined;
-  //   sortByHighestPrice?: number | undefined
-  // }
-
   const [from, setFrom] = useState<number | undefined>(undefined);
   const [to, setTo] = useState<number | undefined>(undefined);
+  const [sortLowest, setSortLowest] = useState<string | null>(null);
+  const [sortHighest, setSortHighest] = useState<string | null>(null);
 
   const fetchProducts = async() => {
     try{
@@ -43,8 +32,8 @@ export default function Category ({params}: any) {
         params: {
             lowestPrice: from,
             highestPrice: to,
-            // sortByLowestPrice: props.sortByLowestPrice,
-            // sortByHighestPrice: props.sortByHighestPrice,
+            sortByLowestPrice: sortLowest,
+            sortByHighestPrice: sortHighest,
         }});
         const data = res.data.data;
         console.log(res)
@@ -75,15 +64,25 @@ export default function Category ({params}: any) {
     setOpenCategories(!openCategories);
   }
 
-    const [openSort, setOpenSort] = useState<boolean>(false);
-    const handleSort = () => {
-      setOpenSort(!openSort);
+  const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    if(value === 'lowest'){
+      setSortLowest('0');
+      setSortHighest(null);
+    }else if(value === 'highest'){
+      setSortHighest('0');
+      setSortLowest(null);
     }
+    fetchProducts();
+  }
 
-    const handleFilter = (event: React.MouseEvent) => {
-      event.preventDefault();
-      fetchProducts();
-    }
+  const handleFilter = (event: React.MouseEvent) => {
+    event.preventDefault();
+    fetchProducts();
+  }
+
+  console.log('L', sortLowest)
+  console.log('H', sortHighest)
 
   return (
     <div className='p-16 flex items-start gap-10 h-full'>
@@ -116,8 +115,10 @@ export default function Category ({params}: any) {
           </span>
           <span className='flex gap-2 items-center relative'>
           Sort By: 
-          <span className='flex items-center justify-between text-green-400'>Lowest Price <FontAwesomeIcon onClick={handleSort} icon={openSort ? faAngleUp : faAngleDown} className='w-[18px] h-[18px] cursor-pointer' /></span>
-          <span className={`absolute left-16 -bottom-16 p-2 rounded-md text-center text-white duration-300 bg-green-400 hover:bg-green-300 cursor-pointer ${openSort ? '' : 'hidden'}`}>Highest Price</span>
+          <select className='border-none outline-none' onChange={(event) => handleSort(event)}>
+            <option value='lowest'>Lowest Price</option>
+            <option value='highest'>Highest Price</option>
+          </select>
           </span>
         </div>
         <div className={`gap-5 ${grid ? 'grid items-center grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1' : 'flex flex-col items-start justify-start'}`}>
