@@ -36,8 +36,6 @@ export default function Category ({params}: any) {
             sortByHighestPrice: sortHighest,
         }});
         const data = res.data.data;
-        console.log(res)
-        console.log(to, from)
         setProducts(data);
     }catch(err){
       console.log(err);
@@ -47,7 +45,7 @@ export default function Category ({params}: any) {
   useEffect(() => {
     document.title = category;
     fetchProducts();
-  }, [category])
+  }, [category, sortLowest, sortHighest])
 
   const [grid, setGrid] = useState<boolean>(true);
 
@@ -80,9 +78,6 @@ export default function Category ({params}: any) {
     event.preventDefault();
     fetchProducts();
   }
-
-  console.log('L', sortLowest)
-  console.log('H', sortHighest)
 
   return (
     <div className='p-16 flex items-start gap-10 h-full'>
