@@ -1,9 +1,9 @@
-// import express from 'express';
-// const router = express.Router();
+import express from 'express';
+const router = express.Router();
 
-// import { login } from '../controllers/authControllers';
+import { register } from '../controllers/authControllers';
 
-// router.route('/login')
-//         .post(login);
+router.route('/register')
+        .post(register);
 
-// export { router as authRoute };
+export { router as authRoute };

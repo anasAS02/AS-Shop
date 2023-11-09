@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { httpStatusText } from './utils/httpStatusText';
-// import { authRoute } from './routes/authRoute';
+import { authRoute } from './routes/authRoute';
 import { productsRoute } from './routes/productsRoute';
 
 const app = express();
@@ -14,6 +14,7 @@ dotenv.config();
 const PORT = process.env.PORT;
 const URL: string | undefined = process.env.MONGO_URL;
 
+app.use('/auth', authRoute);
 app.use('/products', productsRoute);
 
 
@@ -34,9 +35,6 @@ mongoose.connect(URL || '')
     statusText: string;
     message: string;
   }
-
-  // app.use('/auth', authRoute);
-
 
   app.use((err: CustomError, req: express.Request, res: express.Response) => {
     res.status(err.statusCode || 500).json({ status: err.statusText || httpStatusText.ERROR, message: err.message, code: err.statusCode || 500, data: null });
