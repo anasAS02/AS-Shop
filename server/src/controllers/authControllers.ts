@@ -16,7 +16,6 @@ const register = asyncWrapper((
             return next(error);
         }
 
-
         const user = await User.findOne({ email });
         if (user) {
         const error = new AppError('Choose another Email or Password', 401, httpStatusText.ERROR);
@@ -49,32 +48,58 @@ const login = asyncWrapper(
       return next(error);
     }
 
-    try {
-      const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-      if (!user) {
-        const error = new AppError('Something is wrong', 401, httpStatusText.ERROR);
-        return next(error);
-      }
+    if (!user){
+    const error = new AppError('Something is wrong', 401, httpStatusText.ERROR);
+    return next(error);
+    }
 
-      const matchPassword = await bcrypt.compare(password, user.password);
+    const matchPassword = await bcrypt.compare(password, user.password);
 
-      if (!matchPassword) {
-        const error = new AppError('Something is wrong', 401, httpStatusText.ERROR);
-        return next(error);
-      }
+    if (!matchPassword) {
+    const error = new AppError('Something is wrong', 401, httpStatusText.ERROR);
+    return next(error);
+    }
 
-      if (user && matchPassword) {
+    if (user && matchPassword) {
         const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '1h' });
         user.token = token;
         res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, email: user.email, role: user.role } });
-      }
-    } catch (error) {
-      return next(error);
     }
   }
 );
 
+const addAdmin = asyncWrapper((
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { name, email, password, country, address, role } = req.body;
+        
+        if (!name || !email || !password || !country || !email || !address || !role) {
+            const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
+            return next(error);
+        }
 
+        const admin = await User.findOne({ email });
+        if (admin) {
+        const error = new AppError('Choose another Email or Password', 401, httpStatusText.ERROR);
+        return next(error);
+        }
 
-export { register, login };
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        const newAdmin = new User({
+            name,
+            email,
+            password: hashPassword,
+            country,
+            address,
+            role
+        })
+
+        newAdmin.token = jwt.sign({role: newAdmin.role, email: newAdmin.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1h'});
+        await newAdmin.save();
+        res.status(201).json({status: httpStatusText.SUCCESS, data: null});
+    }
+))
+
+export { register, login, addAdmin };
