@@ -7,6 +7,7 @@ interface User extends Document {
   password: string;
   role: string;
   token?: string;
+  verified: boolean;
 }
 
 const isGmail = function(email: string) {
@@ -39,6 +40,10 @@ const userSchema = new mongoose.Schema<User>({
   },
   token: {
     type: String,
+  },
+  verified: {
+    type: Boolean,
+    default: false
   }
 });
 
