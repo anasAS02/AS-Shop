@@ -53,30 +53,31 @@ const getCategory = asyncWrapper(
     }
 );
 
-// const addProduct = asyncWrapper(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { title, liveLink, sourceCode, img, desc, tools, test } = req.body;
+const addProduct = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { title, description, price, discountPercentage, stock, brand, category, images} = req.body;
 
-//     if (!title || !liveLink || !sourceCode || !img || !desc || !tools.length) {
-//       const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
-//       return next(error);
-//     }
+    if (!title || !description || !price || !stock || !stock || !brand || !category || !images) {
+      const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
+      return next(error);
+    }
 
-//     const product = new Product({
-//       title,
-//       liveLink,
-//       sourceCode,
-//       img,
-//       desc,
-//       tools,
-//       test,
-//     });
+    const product = new Product({
+      title,
+      description,
+      price,
+      discountPercentage,
+      stock,
+      brand,
+      category,
+      images
+    });
 
-//     await product.save();
-//     const products = await Product.find();
-//     res.status(201).json({ status: httpStatusText.SUCCESS, data: products });
-//   }
-// );
+    await product.save();
+    const products = await Product.find();
+    res.status(201).json({ status: httpStatusText.SUCCESS, data: products });
+  }
+);
 
 // const getProject = asyncWrapper(
 //   async (req: Request, res: Response) => {
@@ -106,8 +107,8 @@ const getCategory = asyncWrapper(
 
 export {
   getAllProducts,
-  getCategory
-  // addProject,
+  getCategory,
+  addProduct,
   // getProject,
   // updateProject,
   // deleteProject,
