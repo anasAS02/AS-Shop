@@ -7,9 +7,9 @@ import { LOGIN } from '@/Utils/Apis';
 import { SkewLoader } from 'react-spinners';
 import { useStatusContext } from '@/Utils/statusContext';
 const Login = () => {
-    const {isLoading} = useStatusContext();
-    const {successMsg} = useStatusContext();
-    const {err} = useStatusContext();
+    const {isLoading, setIsLoading} = useStatusContext();
+    const {successMsg, setSuccessMsg} = useStatusContext();
+    const {err, setErr} = useStatusContext();
 
     const [form, setForm] = useState<formData> ({
         email: '',
@@ -28,7 +28,7 @@ const Login = () => {
             <SkewLoader color="#ffffff" />
             :
             <span className='flex flex-col items-center gap-2'>
-                <button onClick={(e) => handleAuth(e, LOGIN, form)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Login</button>
+                <button onClick={(e) => handleAuth(e, LOGIN, form, setIsLoading, setSuccessMsg, setErr)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Login</button>
                 <p className='text-white max-md:text-sm'>Don't have an account? <Link href='/Auth/Register' className='text-red-500 duration-200 hover:text-black'>Register</Link></p>
             </span>
             }

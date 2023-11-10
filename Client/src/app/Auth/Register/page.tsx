@@ -15,9 +15,9 @@ export interface formData {
 }
 
 const Register = () => {
-    const {isLoading} = useStatusContext();
-    const {successMsg} = useStatusContext();
-    const {err} = useStatusContext();
+    const {isLoading, setIsLoading} = useStatusContext();
+    const {successMsg, setSuccessMsg} = useStatusContext();
+    const {err, setErr} = useStatusContext();
 
     const [form, setForm] = useState<formData> ({
         name: '',
@@ -50,7 +50,7 @@ const Register = () => {
                 <SkewLoader color="#ffffff" />
                 :
                 <span className='flex flex-col items-center gap-2'>
-                    <button onClick={(e) => handleAuth(e, REGISTER, form)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Register</button>
+                    <button onClick={(e) => handleAuth(e, REGISTER, form, setIsLoading, setSuccessMsg, setErr)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Register</button>
                     <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
                 </span>
             }
