@@ -52,7 +52,6 @@ const Register = () => {
                 <span className='flex flex-col items-center gap-2'>
                     <button onClick={(e) => handleAuth(e, REGISTER, form)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Register</button>
                     <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
-                    <SkewLoader color="#ffffff" />
                 </span>
             }
             {successMsg && <p className='p-1 bg-white rounded-md text-green-400 text-sm font-bold'>{successMsg}</p> }
