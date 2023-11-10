@@ -1,11 +1,8 @@
 'use client'
+import Link from 'next/link';
 import { useState } from 'react';
+import { formData } from '../Register/page';
 const Login = () => {
-    interface formData {
-        email: string;
-        password: string;
-    }
-
     const [form, setForm] = useState<formData> ({
         email: '',
         password: ''
@@ -25,7 +22,10 @@ const Login = () => {
         <div className='w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
             <input type='text' name='email' placeholder='your email' value={form.email} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='password' name='password' placeholder='your password' value={form.password} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <button onClick={(e) => handleAuth(e)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Login</button>
+            <span className='flex flex-col items-center gap-2'>
+                <button onClick={(e) => handleAuth(e)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Login</button>
+                <p className='text-white'>Don't have an account? <Link href='/Auth/Register' className='text-red-500 duration-200 hover:text-black'>Register</Link></p>
+            </span>
         </div>
     </div>
   )
