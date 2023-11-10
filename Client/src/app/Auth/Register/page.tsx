@@ -45,7 +45,7 @@ const Register = () => {
             </select>
             <span className='flex flex-col items-center gap-2'>
                 <button onClick={(e) => handleAuth(e)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Register</button>
-                <p className='text-white'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
+                <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
             </span>
         </div>
     </div>
