@@ -1,6 +1,7 @@
 'use client'
 import { REGISTER } from '@/Utils/Apis';
 import { handleAuth } from '@/Utils/Auth/handleAuth';
+import { useStatusContext } from '@/Utils/statusContext';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SkewLoader } from 'react-spinners';
@@ -14,6 +15,10 @@ export interface formData {
 }
 
 const Register = () => {
+    const {isLoading} = useStatusContext();
+    const {successMsg} = useStatusContext();
+    const {err} = useStatusContext();
+
     const [form, setForm] = useState<formData> ({
         name: '',
         email: '',
@@ -41,11 +46,17 @@ const Register = () => {
                 <option value='United States'>United States</option>
                 <option value='Canada'>Canada</option>
             </select>
-            <span className='flex flex-col items-center gap-2'>
-                <button onClick={(e) => handleAuth(e, REGISTER, form)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Register</button>
-                <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
+            {isLoading ?
                 <SkewLoader color="#ffffff" />
-            </span>
+                :
+                <span className='flex flex-col items-center gap-2'>
+                    <button onClick={(e) => handleAuth(e, REGISTER, form)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Register</button>
+                    <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
+                    <SkewLoader color="#ffffff" />
+                </span>
+            }
+            {successMsg && <p className='p-1 bg-white rounded-md text-green-400 text-sm font-bold'>{successMsg}</p> }
+            {err && <p className='text-red-500 text-sm font-bold'>{err}</p> }
         </div>
     </div>
   )
