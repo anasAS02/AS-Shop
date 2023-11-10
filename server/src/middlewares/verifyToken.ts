@@ -29,4 +29,4 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
     }
 }
 
-module.exports = verifyToken;
+export default verifyToken;

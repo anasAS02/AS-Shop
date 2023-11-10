@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { addAdmin, login, register } from '../controllers/authControllers';
+import { sendEmail, login, register } from '../controllers/authControllers';
 
 router.route('/register')
         .post(register);
@@ -9,7 +9,7 @@ router.route('/register')
 router.route('/login')
         .post(login);
 
-router.route('/addAdmin')
-        .post(addAdmin);
+router.route('/sendEmail')
+        .post(sendEmail);
 
 export { router as authRoute };
