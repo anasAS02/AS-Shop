@@ -7,44 +7,46 @@ import { httpStatusText } from '../utils/httpStatusText';
 import { asyncWrapper } from '../middlewares/asyncWrapper';
 import AppError from '../utils/appError';
 
-const sendEmail = asyncWrapper(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const { email, subject, text } = req.body;
-      
-      if(!email || !subject || !text){
-        const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
-        return next(error);
-      }
-  
-      const transporter = nodemailer.createTransport({
-        host: process.env.HOST,
-        service: process.env.SERVICE,
-        port: Number(process.env.PORT),
-        secure: Boolean(process.env.SECURE),
-        auth: {
-          user: process.env.USER, 
-          pass: process.env.PASS,
-        },
-      });
-  
-      const mailOptions = {
-        from: process.env.USER,
-        to: email,
-        subject: subject,
-        text: text,
-      };
-  
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error(error);
-          res.status(500).json({ status: httpStatusText.FAIL, message: 'Email not sent' });
-        } else {
-          console.log(`Email sent: ${info.response}`);
-          res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Email sent successfully' });
-        }
-      });
+const sendEmail = async (email: string, subject: string, text: string) => {
+	try {
+		const transporter = nodemailer.createTransport({
+			host: process.env.HOST,
+			service: process.env.SERVICE,
+			port: Number(process.env.EMAIL_PORT),
+			secure: Boolean(process.env.SECURE),
+			auth: {
+				user: process.env.USER,
+				pass: process.env.PASS,
+			},
+		});
+
+		await transporter.sendMail({
+			from: process.env.USER,
+			to: email,
+			subject: subject,
+			text: text,
+		});
+		console.log("Email sent successfully");
+	} catch (error) {
+		console.log("Email not sent!");
+		console.log(error);
+	}
+};
+
+const verifyEmail = async(req: Request, res: Response, next: NextFunction) => {
+  try{
+    const token = req.params.token;
+    const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY || '');
+    if (currentUser && typeof currentUser === 'object' && 'email' in currentUser) {
+      await User.updateOne({ email: currentUser.email }, { $set: { verified: true } });
+      return res.redirect('http://localhost:4000/auth/login');
+    } else {
+      return res.status(400).json({ error: 'Invalid token or missing email information' });
     }
-  );
+  }catch(err){
+    return next(err);
+  }
+}
 
 const register = asyncWrapper((
     async(req: Request, res: Response, next: NextFunction) => {
@@ -74,9 +76,14 @@ const register = asyncWrapper((
 
         newUser.token = jwt.sign({role: newUser.role, email: newUser.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1h'});
         await newUser.save();
-        res.status(201).json({status: httpStatusText.SUCCESS, User: {token: newUser.token, email: newUser.email}})
-    }
-))
+
+        const url = `http://localhost:4000/auth/confirm/${newUser.token}`;
+        const subject = 'Verify Email Address for AS Shop';
+        const text = `Confirm now: ${url}`;
+        await sendEmail(newUser.email, subject, text);
+
+        res.status(200).json({status: httpStatusText.SUCCESS, message: `A confirmation email has been sent to ${newUser.email}`})
+}))
 
 const login = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -102,11 +109,20 @@ const login = asyncWrapper(
     }
 
     if (user && matchPassword) {
-        const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '1h' });
-        user.token = token;
+      const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '1h' });
+      user.token = token;
+      if(user.verified){
         res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, email: user.email, role: user.role } });
+      }else{
+        const url = `http://localhost:4000/auth/confirm/${user.token}`;
+        const email = user.email;
+        const subject = 'Verify Email Address for AS Shop';
+        const text = `Confirm now: ${url}`;
+        await sendEmail(email, subject, text);
+        res.status(200).json({status: httpStatusText.SUCCESS, message: `A confirmation email has been sent to ${user.email}`})
+      }
     }
   }
 );
 
-export { sendEmail, register, login };
+export { sendEmail, verifyEmail, register, login };
