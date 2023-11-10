@@ -52,7 +52,7 @@ const removeAdmin = asyncWrapper(
         const error = new AppError('You cannot remove this user', 401, httpStatusText.FAIL);
         return next(error);
     }
-
+    await User.findByIdAndDelete(findAdmin._id);
     const admins = await User.find({role: userRoles.ADMIN});
     res.status(200).json({status: httpStatusText.SUCCESS, admins})
   }
@@ -102,7 +102,7 @@ const removeManager = asyncWrapper(
         const error = new AppError('You cannot remove this user', 401, httpStatusText.FAIL);
         return next(error);
     }
-
+    await User.findByIdAndDelete(findManager._id);
     const managers = await User.find({role: userRoles.MANAGER});
     res.status(200).json({status: httpStatusText.SUCCESS, managers})
   }
