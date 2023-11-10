@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/Components/Navbar/Navbar'
 import { Links } from '@/Components/Navbar/Links'
 import { Footer } from '@/Components/Footer/Footer'
+import { StatusContextProvider } from '@/Utils/statusContext'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400'] })
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ubuntu.className}>
-      <Navbar />
-      <Links />
-      {children}
-      <Footer />
+      <StatusContextProvider>
+        <Navbar />
+        <Links />
+        {children}
+        <Footer />
+      </StatusContextProvider>
       </body>
     </html>
   )
