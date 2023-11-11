@@ -24,7 +24,7 @@ export const Navbar = () => {
           <span className='flex flex-col items-start gap-1 text-sm'>
             <p className='text-gray-500'>Welcome</p>
             <span className='flex items-center gap-2'>
-              <Link href='/Login' className='duration-200 hover:text-yellow-500'>Login</Link>
+              <Link href='/Auth/Login' className='duration-200 hover:text-yellow-500'>Login</Link>
               {/* <Arrow /> */}
             </span>
           </span>

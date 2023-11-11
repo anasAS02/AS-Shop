@@ -119,7 +119,7 @@ const login = asyncWrapper(
         const subject = 'Verify Email Address for AS Shop';
         const text = `Confirm now: ${url}`;
         await sendEmail(email, subject, text);
-        res.status(200).json({status: httpStatusText.SUCCESS, message: `A confirmation email has been sent to ${user.email}`})
+        res.status(200).json({status: httpStatusText.SUCCESS, message: `A confirmation email has been sent to ${user.email}`, verified: user.verified})
       }
     }
   }

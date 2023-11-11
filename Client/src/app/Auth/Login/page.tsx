@@ -33,7 +33,7 @@ const Login = () => {
             </span>
             }
             {successMsg && <p className='p-1 bg-white rounded-md text-green-400 text-sm font-bold'>{successMsg}</p> }
-            {err && <p className='text-red-500 text-sm font-bold'>{err}</p> }
+            {err && <p className='p-1 bg-white rounded-md text-red-500 text-sm font-bold'>{err}</p> }
         </div>
     </div>
   )
