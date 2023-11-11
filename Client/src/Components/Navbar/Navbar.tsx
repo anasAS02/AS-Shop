@@ -9,7 +9,6 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
-import { Arrow } from "./Arrow";
 import { useStatusContext } from '@/Utils/statusContext';
 import axios from 'axios';
 import { CHECK_TOKEN } from '@/Utils/Apis';
@@ -27,23 +26,23 @@ export const Navbar = () => {
           setIsLoggedIn(true);
         }
       }
-    }catch(err: any){
-      console.log(err)
-      if(!err.response?.data.data){
-        Cookies.remove('token');
-        Cookies.remove('role');
-        setIsLoggedIn(false);
-        Swal.fire({
-          title: "Session",
-          text: "Your session has ended, login again",
-          icon: "error"
-        });
+      }catch(err: any){
+        console.log(err)
+        if(!err.response?.data.data){
+          Cookies.remove('token');
+          Cookies.remove('role');
+          setIsLoggedIn(false);
+          Swal.fire({
+            title: "Session",
+            text: "Your session has ended, login again",
+            icon: "error"
+          });
+        }
       }
-    }
   }
     checkToken();
   }, [])
-  console.log(isLoggedIn)
+  
   return (
     <nav className='w-full flex items-center gap-14 justify-center max-md:flex-wrap'>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
@@ -59,8 +58,7 @@ export const Navbar = () => {
           <span className='flex flex-col items-start gap-1 text-sm'>
             <p className='text-gray-500'>Welcome</p>
             <span className='flex items-center gap-2'>
-              <Link href='/Auth/Login' className='duration-200 hover:text-yellow-500'>Login</Link>
-              {/* <Arrow /> */}
+              <Link href={`/${isLoggedIn ? 'Profile' : 'Auth/Login'}`} className='duration-200 hover:text-yellow-500'>{isLoggedIn ? 'Profile' : 'Login'}</Link>
             </span>
           </span>
         </div>
