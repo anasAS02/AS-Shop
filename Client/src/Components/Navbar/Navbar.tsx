@@ -1,3 +1,6 @@
+'use client'
+import {useEffect} from 'react';
+import Cookies from 'js-cookie';
 import Image from "next/image"
 import Logo from '@/assets/logo.jpg';
 import Link from "next/link";
@@ -7,8 +10,30 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { Arrow } from "./Arrow";
+import { useStatusContext } from '@/Utils/statusContext';
+import axios from 'axios';
+import { CHECK_TOKEN } from '@/Utils/Apis';
 
 export const Navbar = () => {
+  const token = Cookies.get('token');
+  const {isLoggedIn, setIsLoggedIn} = useStatusContext();
+  useEffect(() => {
+    const checkToken = async () => {
+      if(token){
+        const res = await axios.post(CHECK_TOKEN, {token});
+        if(res.data.data){
+          setIsLoggedIn(true);
+        }else{
+          Cookies.remove('token');
+        }
+      }else{
+        setIsLoggedIn(false);
+        alert('Your setion has been end, login again')
+      }
+    }
+    checkToken();
+  }, [])
+  console.log(isLoggedIn)
   return (
     <nav className='w-full flex items-center gap-14 justify-center max-md:flex-wrap'>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>

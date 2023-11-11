@@ -1,6 +1,6 @@
 import { formData } from "@/app/Auth/Register/page";
 import axios from "axios";
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 export const handleAuth = async (e: React.MouseEvent,
     url: string,
@@ -15,8 +15,8 @@ export const handleAuth = async (e: React.MouseEvent,
         const token = res.data.User.token;
         const role = res.data.User.role;
         if(res.data.verified){
-            Cookie.set('token', token);
-            Cookie.set('role', role);
+            Cookies.set('token', token);
+            Cookies.set('role', role);
             window.location.pathname = '/';
         }else{
             setSuccessMsg(res.data.message)
