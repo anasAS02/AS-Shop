@@ -12,10 +12,10 @@ export const handleAuth = async (e: React.MouseEvent,
     try{
         const res = await axios.post(url, form);
         console.log(res);
-        if(!res.data.verified){
-            setSuccessMsg(res.data.message)
+        if(res.data.verified){
+            window.location.pathname = '/'
         }else{
-            window.location.pathname = '/';
+            setSuccessMsg(res.data.message)
         }
         setErr(null);
     }catch(err: any){

@@ -112,7 +112,7 @@ const login = asyncWrapper(
       const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '1h' });
       user.token = token;
       if(user.verified){
-        res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, email: user.email, role: user.role } });
+        res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, email: user.email, role: user.role }, verified: user.verified });
       }else{
         const url = `http://localhost:4000/auth/confirm/${user.token}`;
         const email = user.email;
