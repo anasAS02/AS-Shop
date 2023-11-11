@@ -13,24 +13,34 @@ import { Arrow } from "./Arrow";
 import { useStatusContext } from '@/Utils/statusContext';
 import axios from 'axios';
 import { CHECK_TOKEN } from '@/Utils/Apis';
+import Swal from 'sweetalert2';
 
 export const Navbar = () => {
   const token = Cookies.get('token');
   const {isLoggedIn, setIsLoggedIn} = useStatusContext();
   useEffect(() => {
     const checkToken = async () => {
-      if(token){
-        const res = await axios.post(CHECK_TOKEN, {token});
-        if(res.data.data){
+      try{
+        if(token){
+          const res = await axios.post(CHECK_TOKEN, {token});
+          if(res.data.data){
           setIsLoggedIn(true);
-        }else{
-          Cookies.remove('token');
         }
-      }else{
+      }
+    }catch(err: any){
+      console.log(err)
+      if(!err.response?.data.data){
+        Cookies.remove('token');
+        Cookies.remove('role');
         setIsLoggedIn(false);
-        alert('Your setion has been end, login again')
+        Swal.fire({
+          title: "Session",
+          text: "Your session has ended, login again",
+          icon: "error"
+        });
       }
     }
+  }
     checkToken();
   }, [])
   console.log(isLoggedIn)

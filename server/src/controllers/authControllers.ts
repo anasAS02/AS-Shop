@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -74,7 +75,7 @@ const register = asyncWrapper((
             role
         })
 
-        newUser.token = jwt.sign({role: newUser.role, email: newUser.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '30s'});
+        newUser.token = jwt.sign({role: newUser.role, email: newUser.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
         await newUser.save();
 
         const url = `http://localhost:4000/auth/confirm/${newUser.token}`;
@@ -109,7 +110,7 @@ const login = asyncWrapper(
     }
 
     if (user && matchPassword) {
-      const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '30s' });
+      const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '1d' });
       user.token = token;
       if(user.verified){
         res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, role: user.role }, verified: user.verified });
@@ -126,16 +127,22 @@ const login = asyncWrapper(
 );
 
 const checkToken = asyncWrapper(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.body.token;
-    const checked = jwt.verify(token, process.env.JWT_SECRET_KEY || '');
-    if(!token){
-      const error = new AppError('Token is required', 404, httpStatusText.ERROR);
-      return next(error);
-    }
-    if(checked){
-      res.status(200).json({status: httpStatusText.SUCCESS, data: true});
-    }
+  async(req: Request, res: Response, next: NextFunction) => {
+      const token = req.body.token;
+
+      if(token){
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jwt.verify(token, process.env.JWT_SECRET_KEY || '', (err: any) => {
+          if(err){
+            res.status(401).json({status: httpStatusText.FAIL, data: false})
+          }else{
+            res.status(200).json({status: httpStatusText.SUCCESS, data: true})
+          }
+        });
+      }else{
+        const error = new AppError('Token is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }
   }
 )
 
