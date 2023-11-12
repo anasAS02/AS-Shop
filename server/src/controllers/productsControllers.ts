@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import Product from '../models/productModel';
 import { httpStatusText } from '../utils/httpStatusText';
 import AppError from '../utils/appError';
@@ -26,31 +26,6 @@ const getAllProducts = asyncWrapper(
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
   }
-);
-
-const getCategory = asyncWrapper(
-  async (req: Request, res: Response) => {
-    const query = req.query;
-    const category = req.params.category;
-    
-    const highestPrice = query.highestPrice;
-    const lowestPrice = query.lowestPrice;
-    
-    const sortByLowestPrice = query.sortByLowestPrice;
-    const sortByHighestPrice = query.sortByHighestPrice;
-    let products;
-      if(lowestPrice && highestPrice){
-        products = await Product.find({category: category, price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
-        console.log(products)
-      }else if(sortByLowestPrice === '0'){
-        products = await Product.find({category: category}).sort({price: 1});
-      }else if(sortByHighestPrice === '0'){
-        products = await Product.find({category: category}).sort({price: -1});
-      }else{
-        products = await Product.find({category: category}).sort({ createdAt: -1 });
-      }
-      res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
-    }
 );
 
 const addProduct = asyncWrapper(
@@ -107,7 +82,6 @@ const deleteProduct = asyncWrapper(
 
 export {
   getAllProducts,
-  getCategory,
   addProduct,
   getProduct,
   updateProduct,

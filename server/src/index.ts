@@ -9,6 +9,7 @@ import { authRoute } from './routes/authRoute';
 import { productsRoute } from './routes/productsRoute';
 import { managementRoute } from './routes/managementRoute';
 import { userRoute } from './routes/userRoute';
+import { categoriesRoute } from './routes/categoriesRoute';
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ const URL: string | undefined = process.env.MONGO_URL;
 
 app.use('/auth', authRoute);
 app.use('/products', productsRoute);
+app.use('/categories', categoriesRoute);
 app.use('/user', userRoute);
 app.use('/management', managementRoute);
 
