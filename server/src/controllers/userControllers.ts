@@ -74,4 +74,67 @@ const getInfo = asyncWrapper(
     }
   )
 
-export { getInfo, changeName, changePassword}
+  const changeAddress = asyncWrapper(
+    async(req: Request, res: Response, next: NextFunction) => {
+      const {email, newAddress} = req.body;
+
+      if(!email) {
+        const error = new AppError('Email is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }else if(!newAddress){
+        const error = new AppError('New address is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }
+
+      const user = await User.findOne({email: email});
+
+      if(user){
+        await User.updateOne({email: user.email}, { $set: { address: newAddress }});
+        res.status(200).json({status: httpStatusText.SUCCESS, message: 'Address has been changed successfully'});
+      }
+    }
+  )
+
+const changeCountry = asyncWrapper(
+    async(req: Request, res: Response, next: NextFunction) => {
+      const {email, newCountry} = req.body;
+
+      if(!email) {
+        const error = new AppError('Email is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }else if(!newCountry){
+        const error = new AppError('New name is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }
+
+      const user = await User.findOne({email: email});
+
+      if(user){
+        await User.updateOne({email: user.email}, { $set: { country: newCountry }});
+        res.status(200).json({status: httpStatusText.SUCCESS, message: 'Country has been changed successfully'});
+      }
+    }
+)
+
+const changePhoneNumber = asyncWrapper(
+    async(req: Request, res: Response, next: NextFunction) => {
+      const {email, newNumber} = req.body;
+
+      if(!email) {
+        const error = new AppError('Email is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }else if(!newNumber){
+        const error = new AppError('New phone number is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }
+
+      const user = await User.findOne({email: email});
+
+      if(user){
+        await User.updateOne({email: user.email}, { $set: { phoneNumber: newNumber }});
+        res.status(200).json({status: httpStatusText.SUCCESS, message: 'Phone number has been changed successfully'});
+      }
+    }
+  )
+
+export { getInfo, changeName, changePassword, changeCountry, changeAddress, changePhoneNumber}
