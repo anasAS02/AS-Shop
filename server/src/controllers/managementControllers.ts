@@ -7,6 +7,15 @@ import { asyncWrapper } from '../middlewares/asyncWrapper';
 import AppError from '../utils/appError';
 import { userRoles } from '../utils/userRoles';
 
+const getUsers = asyncWrapper((
+    async (req: Request, res: Response) => {
+        const managers = await User.find({role: userRoles.MANAGER});
+        const admins = await User.find({role: userRoles.ADMIN});
+        const users = await User.find({role: userRoles.USER});
+        res.status(200).json({status: httpStatusText.SUCCESS, data:{managers, admins, users}});
+    }
+))
+
 const addAdmin = asyncWrapper((
     async (req: Request, res: Response, next: NextFunction) => {
         const { name, email, password, country, address, role } = req.body;
@@ -108,4 +117,4 @@ const removeManager = asyncWrapper(
   }
 )
 
-export { addAdmin, removeAdmin, addManager, removeManager };
+export { getUsers, addAdmin, removeAdmin, addManager, removeManager };

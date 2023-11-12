@@ -1,11 +1,14 @@
 import express from 'express';
 const router = express.Router();
 
-import {  addAdmin, removeAdmin, addManager, removeManager } from "../controllers/managementControllers";
+import { getUsers, addAdmin, removeAdmin, addManager, removeManager } from "../controllers/managementControllers";
 import allowedTo from "../middlewares/allowedTo";
 import verifyToken from "../middlewares/verifyToken";
 import { userRoles } from '../utils/userRoles';
 
+
+router.route('/getUsers')
+        .get(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), getUsers);
 
 router.route('/addAdmin')
         .post(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), addAdmin);
