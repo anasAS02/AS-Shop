@@ -111,5 +111,5 @@ export {
   addProduct,
   getProduct,
   updateProduct,
-  deleteProduct,
+  deleteProduct
 };
