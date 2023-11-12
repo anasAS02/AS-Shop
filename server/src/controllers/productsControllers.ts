@@ -30,9 +30,9 @@ const getAllProducts = asyncWrapper(
 
 const addProduct = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, description, price, discountPercentage, stock, brand, category, images} = req.body;
-
-    if (!title || !description || !price || !stock || !stock || !brand || !category || !images) {
+    const { title, description, price, discountPercentage, stock, brand, category, thumbnail} = req.body;
+    const images: string[] = (req?.files as Express.Multer.File[])?.map((file: Express.Multer.File) => file.filename);
+    if (!title || !description || !price || !stock || !stock || !brand || !category || !thumbnail || images.length === 0) {
       const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
       return next(error);
     }
@@ -45,6 +45,7 @@ const addProduct = asyncWrapper(
       stock,
       brand,
       category,
+      thumbnail: req?.file?.filename,
       images
     });
 

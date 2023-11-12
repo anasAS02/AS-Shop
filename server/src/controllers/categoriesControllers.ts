@@ -57,7 +57,7 @@ const addCategory = asyncWrapper(
       const newCategory = new Category({
         title,
         href,
-        thumbnail
+        thumbnail: req?.file?.filename
       })
       await newCategory.save();
       const categories = await Category.find();
