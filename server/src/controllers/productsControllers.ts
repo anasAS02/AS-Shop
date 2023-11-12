@@ -79,37 +79,37 @@ const addProduct = asyncWrapper(
   }
 );
 
-// const getProject = asyncWrapper(
-//   async (req: Request, res: Response) => {
-//     const id = req.params.projectId;
-//     const project = await Project.find({ _id: id });
-//     res.status(200).json({ status: httpStatusText.SUCCESS, data: project });
-//   }
-// );
+const getProduct = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const id = req.params.produtId;
+    const product = await Product.find({ _id: id });
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: product });
+  }
+);
 
-// const updateProject = asyncWrapper(
-//   async (req: Request, res: Response) => {
-//     const projectId = req.params.projectId;
-//     await Project.updateOne({ _id: projectId }, { $set: { ...req.body } });
-//     const projects = await Project.find();
-//     res.status(200).json({ status: httpStatusText.SUCCESS, data: projects });
-//   }
-// );
+const updateProduct = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const produtId = req.params.produtId;
+    await Product.updateOne({ _id: produtId }, { $set: { ...req.body } });
+    const products = await Product.find();
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+  }
+);
 
-// const deleteProject = asyncWrapper(
-//   async (req: Request, res: Response) => {
-//     const projectId = req.params.projectId;
-//     await Project.deleteOne({ _id: projectId });
-//     const projects = await Project.find();
-//     res.status(200).json({ status: httpStatusText.SUCCESS, data: projects });
-//   }
-// );
+const deleteProduct = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const produtId = req.params.produtId;
+    await Product.deleteOne({ _id: produtId });
+    const products = await Product.find();
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+  }
+);
 
 export {
   getAllProducts,
   getCategory,
   addProduct,
-  // getProject,
-  // updateProject,
-  // deleteProject,
+  getProduct,
+  updateProduct,
+  deleteProduct,
 };
