@@ -15,7 +15,7 @@ const getInfo = asyncWrapper(
         }
         const user = await jwt.decode(token, {complete: true}) as JwtPayload;
         if(user){
-        res.status(200).json({status: httpStatusText.SUCCESS, data: {name: user?.payload.name, email: user?.payload.name,
+        res.status(200).json({status: httpStatusText.SUCCESS, data: {name: user?.payload.name, email: user?.payload.email,
         country: user?.payload.country, address: user?.payload.address, phoneNumber: user?.payload.phoneNumber }});
       }
     }
