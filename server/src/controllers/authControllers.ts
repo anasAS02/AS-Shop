@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -40,7 +39,7 @@ const verifyEmail = async(req: Request, res: Response, next: NextFunction) => {
     const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY || '');
     if (currentUser && typeof currentUser === 'object' && 'email' in currentUser) {
       await User.updateOne({ email: currentUser.email }, { $set: { verified: true } });
-      return res.redirect('http://localhost:4000/auth/login');
+      return res.redirect('http://localhost:3000/Auth/Login');
     } else {
       return res.status(400).json({ error: 'Invalid token or missing email information' });
     }
@@ -51,9 +50,9 @@ const verifyEmail = async(req: Request, res: Response, next: NextFunction) => {
 
 const register = asyncWrapper((
     async(req: Request, res: Response, next: NextFunction) => {
-        const { name, email, password, country, address, role } = req.body;
+        const { name, email, password, country, address, phoneNumber, role } = req.body;
 
-        if (!name || !email || !password || !address || !country) {
+        if (!name || !email || !password || !address || !country || !phoneNumber) {
             const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
             return next(error);
         }
@@ -72,10 +71,13 @@ const register = asyncWrapper((
             password: hashPassword,
             country,
             address,
+            phoneNumber,
             role
         })
 
-        newUser.token = jwt.sign({role: newUser.role, email: newUser.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
+        newUser.token = jwt.sign({name: name, email: email, country: country, address: address,
+        phoneNumber: phoneNumber, role: role},
+        process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
         await newUser.save();
 
         const url = `http://localhost:4000/auth/confirm/${newUser.token}`;
@@ -110,7 +112,8 @@ const login = asyncWrapper(
     }
 
     if (user && matchPassword) {
-      const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET_KEY || '', { expiresIn: '1d' });
+      const token = jwt.sign({name: user.name, email: user.email, country: user.country, address: user.address,
+      phoneNumber: user.phoneNumber, role: user.role}, process.env.JWT_SECRET_KEY || '', { expiresIn: '1d' });
       user.token = token;
       if(user.verified){
         res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, role: user.role }, verified: user.verified });
@@ -125,47 +128,6 @@ const login = asyncWrapper(
     }
   }
 );
-
-const getInfo = asyncWrapper(
-  async(req: Request, res: Response) => {
-    const token = req.body.token;
-    const decoded = await jwt.decode(token, {complete: true});
-    console.log(decoded)
-  }
-)
-
-const changePassword = asyncWrapper(
-  async(req: Request, res: Response, next: NextFunction) => {
-    const {email, currentPassword, newPassword} = req.body;
-    if(!email) {
-      const error = new AppError('Email is required', 404, httpStatusText.ERROR);
-      return next(error);
-    }else if(!currentPassword){
-      const error = new AppError('Current password is required', 404, httpStatusText.ERROR);
-      return next(error);
-    }else if(!newPassword){
-      const error = new AppError('New password is required', 404, httpStatusText.ERROR);
-      return next(error);
-    }
-    const user = await User.findOne({email: email});
-    console.log(req.body);
-    if(newPassword.length < 8){
-      const error = new AppError('minimum is 8 charters', 401, httpStatusText.ERROR);
-      return next(error);
-    }
-    if(user){
-      const matchPassword = await bcrypt.compare(currentPassword, user.password);
-      if(matchPassword){
-        const hashPassword = await bcrypt.hash(newPassword, 10);
-        await User.updateOne({email: user.email}, { $set: { password: hashPassword }});
-        res.status(200).json({status: httpStatusText.SUCCESS, message: 'Password has been changed successfully'});
-      }else{
-        const error = new AppError('This password is wrong', 401, httpStatusText.ERROR);
-        return next(error);
-      }
-    }
-  }
-)
 
 const checkToken = asyncWrapper(
   async(req: Request, res: Response, next: NextFunction) => {
@@ -187,4 +149,4 @@ const checkToken = asyncWrapper(
   }
 )
 
-export { sendEmail, verifyEmail, register, login, getInfo, changePassword, checkToken };
+export { sendEmail, verifyEmail, register, login, checkToken };
