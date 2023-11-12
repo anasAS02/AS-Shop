@@ -21,6 +21,27 @@ const getInfo = asyncWrapper(
     }
   )
   
+  const changeName = asyncWrapper(
+    async(req: Request, res: Response, next: NextFunction) => {
+      const {email, newName} = req.body;
+
+      if(!email) {
+        const error = new AppError('Email is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }else if(!newName){
+        const error = new AppError('New name is required', 404, httpStatusText.ERROR);
+        return next(error);
+      }
+
+      const user = await User.findOne({email: email});
+
+      if(user){
+        await User.updateOne({email: user.email}, { $set: { name: newName }});
+        res.status(200).json({status: httpStatusText.SUCCESS, message: 'Name has been changed successfully'});
+      }
+    }
+  )
+
   const changePassword = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
       const {email, currentPassword, newPassword} = req.body;
@@ -35,7 +56,6 @@ const getInfo = asyncWrapper(
         return next(error);
       }
       const user = await User.findOne({email: email});
-      console.log(req.body);
       if(newPassword.length < 8){
         const error = new AppError('minimum is 8 charters', 401, httpStatusText.ERROR);
         return next(error);
@@ -54,4 +74,4 @@ const getInfo = asyncWrapper(
     }
   )
 
-export { getInfo, changePassword}
+export { getInfo, changeName, changePassword}
