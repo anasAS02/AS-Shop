@@ -75,9 +75,15 @@ const updateCategory = asyncWrapper(
 );
 
 const deleteCategory = asyncWrapper(
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       const categoryId = req.params.categoryId;
-      await Category.deleteOne({_id: categoryId});
+      const findCategory = await Category.findOne({_id: categoryId});
+      if(!findCategory){
+        const error = new AppError('This category is not found', 404, httpStatusText.ERROR);
+        return next(error);
+      }
+      await Product.deleteMany({category: findCategory.title});
+      await Category.deleteOne({_id: findCategory._id});
       const categories = await Category.find();
       res.status(200).json({ status: httpStatusText.SUCCESS, data: categories });
     }

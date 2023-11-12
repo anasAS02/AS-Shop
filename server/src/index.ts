@@ -25,6 +25,9 @@ app.use('/categories', categoriesRoute);
 app.use('/user', userRoute);
 app.use('/management', managementRoute);
 
+import path from 'path';
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 mongoose.connect(URL || '')
   .then(() => {
     console.log('Connected to MongoDB');
