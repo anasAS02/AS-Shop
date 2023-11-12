@@ -12,6 +12,7 @@ export interface formData {
     password: string;
     country?: string;
     address?: string;
+    phoneNumber?: string;
 }
 
 const Register = () => {

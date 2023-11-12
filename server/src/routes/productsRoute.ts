@@ -36,7 +36,7 @@ router.route('/')
         .get(getAllProducts);
 
 router.route('/add')
-        .post(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), upload.array('images'), addProduct);
+        .post(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), upload.array('images', 12), addProduct);
 
 router.route('/project/:productId')
         .get(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), getProduct);

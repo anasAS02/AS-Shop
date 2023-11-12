@@ -13,9 +13,11 @@ export const handleAuth = async (e: React.MouseEvent,
     try{
         const res = await axios.post(url, form);
         const token = res.data.User.token;
+        const email = res.data.User.email;
         const role = res.data.User.role;
         if(res.data.verified){
             Cookies.set('token', token);
+            Cookies.set('email', email);
             Cookies.set('role', role);
             window.location.pathname = '/';
         }else{
