@@ -30,6 +30,20 @@ const Info = () => {
         newPassword: ''
     });
 
+    const getInfo = async () => {
+        try{
+            await axios.post(GET_INFO, {email}, config)
+            .then((data) => setInfo(data.data.data))
+        }catch(err){
+            console.log(err)
+        }
+    }
+    
+    useEffect(() => {
+        getInfo();
+    }, [successMsg, err]);
+
+
     const handleUpdateMode = (e: any) => {
         const id = e.target.id;
         setUpdateMode(id);
@@ -43,18 +57,6 @@ const Info = () => {
             email: email,
         },
     };
-
-    const getInfo = async () => {
-        try{
-            await axios.post(GET_INFO, {email}, config)
-            .then((data) => setInfo(data.data.data))
-        }catch(err){
-            console.log(err)
-        }
-    }
-    useEffect(() => {
-        getInfo();
-    }, []);
 
     const updateUserInfo = async (e: React.MouseEvent, url: string) => {
         e.preventDefault();
