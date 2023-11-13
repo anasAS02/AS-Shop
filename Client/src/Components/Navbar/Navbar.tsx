@@ -31,6 +31,7 @@ export const Navbar = () => {
         if(!err.response?.data.data){
           Cookies.remove('token');
           Cookies.remove('role');
+          Cookies.remove('email');
           setIsLoggedIn(false);
           Swal.fire({
             title: "Session",

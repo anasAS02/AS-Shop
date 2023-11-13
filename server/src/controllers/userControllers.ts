@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { User } from '../models/userModel';
 import { httpStatusText } from '../utils/httpStatusText';
 import { asyncWrapper } from '../middlewares/asyncWrapper';
@@ -8,35 +7,33 @@ import AppError from '../utils/appError';
 
 const getInfo = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
-      const token = req.body.token;
-        if(!token){
-          const error = new AppError('Token is required', 404, httpStatusText.ERROR);
+      const email = req.body.email;
+        if(!email){
+          const error = new AppError('Email is required', 404, httpStatusText.ERROR);
           return next(error);
         }
-        const user = await jwt.decode(token, {complete: true}) as JwtPayload;
+        const user = await User.findOne({email: email});
         if(user){
-          const data = {
-            name: user?.payload.name,
-            email: user?.payload.email,
-            country: user?.payload.country,
-            address: user?.payload.address,
-            phoneNumber: user?.payload.phoneNumber,
-            currentPassword: '',
-            newPassword: ''
+          const userData = {
+            name: user.name,
+            country: user.country,
+            address: user.address,
+            phoneNumber: user.phoneNumber
           }
-        res.status(200).json({status: httpStatusText.SUCCESS, data});
+        res.status(200).json({status: httpStatusText.SUCCESS, data: userData});
       }
     }
   )
   
   const changeName = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
-      const {email, newName} = req.body;
+      const name = req.body.name;
+      const email = req.query.email;
 
       if(!email) {
         const error = new AppError('Email is required', 404, httpStatusText.ERROR);
         return next(error);
-      }else if(!newName){
+      }else if(!name){
         const error = new AppError('New name is required', 404, httpStatusText.ERROR);
         return next(error);
       }
@@ -44,7 +41,7 @@ const getInfo = asyncWrapper(
       const user = await User.findOne({email: email});
 
       if(user){
-        await User.updateOne({email: user.email}, { $set: { name: newName }});
+        await User.updateOne({email: user.email}, { $set: { name: name }});
         res.status(200).json({status: httpStatusText.SUCCESS, message: 'Name has been changed successfully'});
       }
     }
@@ -52,7 +49,8 @@ const getInfo = asyncWrapper(
 
   const changePassword = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
-      const {email, currentPassword, newPassword} = req.body;
+      const {currentPassword, newPassword} = req.body;
+      const email = req.query.email;
       if(!email) {
         const error = new AppError('Email is required', 404, httpStatusText.ERROR);
         return next(error);
@@ -84,12 +82,12 @@ const getInfo = asyncWrapper(
 
   const changeAddress = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
-      const {email, newAddress} = req.body;
-
+      const address = req.body.address;
+      const email = req.query.email;
       if(!email) {
         const error = new AppError('Email is required', 404, httpStatusText.ERROR);
         return next(error);
-      }else if(!newAddress){
+      }else if(!address){
         const error = new AppError('New address is required', 404, httpStatusText.ERROR);
         return next(error);
       }
@@ -97,7 +95,7 @@ const getInfo = asyncWrapper(
       const user = await User.findOne({email: email});
 
       if(user){
-        await User.updateOne({email: user.email}, { $set: { address: newAddress }});
+        await User.updateOne({email: user.email}, { $set: { address: address }});
         res.status(200).json({status: httpStatusText.SUCCESS, message: 'Address has been changed successfully'});
       }
     }
@@ -105,12 +103,13 @@ const getInfo = asyncWrapper(
 
 const changeCountry = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
-      const {email, newCountry} = req.body;
+      const country = req.body.country;
+      const email = req.query.email;
 
       if(!email) {
         const error = new AppError('Email is required', 404, httpStatusText.ERROR);
         return next(error);
-      }else if(!newCountry){
+      }else if(!country){
         const error = new AppError('New name is required', 404, httpStatusText.ERROR);
         return next(error);
       }
@@ -118,7 +117,7 @@ const changeCountry = asyncWrapper(
       const user = await User.findOne({email: email});
 
       if(user){
-        await User.updateOne({email: user.email}, { $set: { country: newCountry }});
+        await User.updateOne({email: user.email}, { $set: { country: country }});
         res.status(200).json({status: httpStatusText.SUCCESS, message: 'Country has been changed successfully'});
       }
     }
@@ -126,12 +125,13 @@ const changeCountry = asyncWrapper(
 
 const changePhoneNumber = asyncWrapper(
     async(req: Request, res: Response, next: NextFunction) => {
-      const {email, newNumber} = req.body;
+      const phoneNumber = req.body.phoneNumber;
+      const email = req.query.email;
 
       if(!email) {
         const error = new AppError('Email is required', 404, httpStatusText.ERROR);
         return next(error);
-      }else if(!newNumber){
+      }else if(!phoneNumber){
         const error = new AppError('New phone number is required', 404, httpStatusText.ERROR);
         return next(error);
       }
@@ -139,7 +139,7 @@ const changePhoneNumber = asyncWrapper(
       const user = await User.findOne({email: email});
 
       if(user){
-        await User.updateOne({email: user.email}, { $set: { phoneNumber: newNumber }});
+        await User.updateOne({email: user.email}, { $set: { phoneNumber: phoneNumber }});
         res.status(200).json({status: httpStatusText.SUCCESS, message: 'Phone number has been changed successfully'});
       }
     }

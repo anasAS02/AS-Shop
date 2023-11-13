@@ -12,10 +12,14 @@ import { CHANGE_ADDRESS, CHANGE_COUNTRY, CHANGE_NAME, CHANGE_PASSWORD, CHANGE_PH
 import Swal from 'sweetalert2';
 
 const Profile = () => {
+    const token = Cookie.get('token');
+    const email = Cookie.get('email');
+
     const [mode, setMode] = useState<string>('Info');
     const [updateMode, setUpdateMode] = useState<string | null>(null);
     const [info, setInfo] = useState<any>({
         name: '',
+        email,
         country: '',
         address: '',
         phoneNumber: '',
@@ -24,7 +28,7 @@ const Profile = () => {
     });
 
     const {err, setErr} = useStatusContext();
-    const token = Cookie.get('token');
+
 
     const handleMode = (e: React.MouseEvent, mode: string) => {
         e.preventDefault();
@@ -43,6 +47,7 @@ const Profile = () => {
 
     const handleLogout = () => {
         Cookie.remove('token');
+        Cookie.remove('email');
         Cookie.remove('role');
         window.location.pathname = '/';
     }
@@ -50,18 +55,20 @@ const Profile = () => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
-        }
+        },
+        params: {
+            email: email,
+        },
     };
 
     const getInfo = async () => {
         try{
-            await axios.post(GET_INFO, {token}, config)
+            await axios.post(GET_INFO, {email}, config)
             .then((data) => setInfo(data.data.data))
         }catch(err){
             console.log(err)
         }
     }
-
     useEffect(() => {
         getInfo();
     }, []);
@@ -79,7 +86,11 @@ const Profile = () => {
             });
             getInfo();
         }catch(err: any){
-            setErr(err.response?.data.message);
+            Swal.fire({
+                title: "Oops...",
+                text: err.response?.data.message,
+                icon: "error"
+            });
             console.log(err)
         }
     }

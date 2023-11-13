@@ -116,7 +116,7 @@ const login = asyncWrapper(
       phoneNumber: user.phoneNumber, role: user.role}, process.env.JWT_SECRET_KEY || '', { expiresIn: '1d' });
       user.token = token;
       if(user.verified){
-        res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, role: user.role }, verified: user.verified });
+        res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, role: user.role, email: user.email }, verified: user.verified });
       }else{
         const url = `http://localhost:4000/auth/confirm/${user.token}`;
         const email = user.email;
