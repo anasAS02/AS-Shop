@@ -2,6 +2,18 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 import { formData } from "./handleChange";
 
+const token = Cookies.get('token');
+const email = Cookies.get('email');
+
+export const config = {
+    headers: {
+        Authorization: `Bearer ${token}`,
+    },
+    params: {
+        email: email,
+    },
+};
+
 export const handleAuth = async (e: React.MouseEvent,
     url: string,
     form: formData,

@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import Cookie from 'js-cookie';
 import { faCircleInfo, faEdit, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { config } from "@/Utils/Auth/handleAuth";
 
 
 
@@ -48,15 +49,6 @@ const Info = () => {
         const id = e.target.id;
         setUpdateMode(id);
     }
-
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            email: email,
-        },
-    };
 
     const updateUserInfo = async (e: React.MouseEvent, url: string) => {
         e.preventDefault();
