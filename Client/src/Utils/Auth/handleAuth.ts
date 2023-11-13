@@ -1,6 +1,7 @@
-import { formData } from "@/app/Auth/Register/page";
+// import { formData } from "@/app/Auth/Register/page";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { formData } from "./handleChange";
 
 export const handleAuth = async (e: React.MouseEvent,
     url: string,

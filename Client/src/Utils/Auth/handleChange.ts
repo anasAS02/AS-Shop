@@ -1,0 +1,12 @@
+export interface formData {
+    name?: string;
+    email: string;
+    password: string;
+    country?: string;
+    address?: string;
+    phoneNumber?: string;
+}
+
+export const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, form: formData, setForm: React.Dispatch<React.SetStateAction<formData>>) => {
+    setForm({...form, [e.target.name]: e.target.value})
+}

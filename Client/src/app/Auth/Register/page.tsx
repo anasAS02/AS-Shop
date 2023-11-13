@@ -8,16 +8,7 @@ import { SkewLoader } from 'react-spinners';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import Swal from 'sweetalert2';
-
-
-export interface formData {
-    name?: string;
-    email: string;
-    password: string;
-    country?: string;
-    address?: string;
-    phoneNumber?: string;
-}
+import { formData, handleChange } from '@/Utils/Auth/handleChange';
 
 const Register = () => {
     const {isLoading, setIsLoading} = useStatusContext();
@@ -32,14 +23,6 @@ const Register = () => {
         address: '',
         phoneNumber: ''
     })
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({...form, [e.target.name]: e.target.value})
-    }
-
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setForm({ ...form, country: e.target.value });
-    };
 
     const handleMsg = (): void => {
         if(successMsg){
@@ -73,11 +56,11 @@ const Register = () => {
   return (
     <div className='h-screen flex justify-center relative'>
         <div className='w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
-            <input type='text' name='name' placeholder='name' value={form.name} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='email' name='email' placeholder='your email' value={form.email} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='password' name='password' placeholder='your password' value={form.password} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='address' placeholder='your address' value={form.address} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <select name="country" value={form.country} onChange={handleSelectChange} className='w-fit p-3 rounded-md border-none outline-none'>
+            <input type='text' name='name' placeholder='name' value={form.name} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='email' name='email' placeholder='your email' value={form.email} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='password' name='password' placeholder='your password' value={form.password} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='address' placeholder='your address' value={form.address} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 rounded-md border-none outline-none' />
+            <select name="country" value={form.country} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 rounded-md border-none outline-none'>
                 <option value='us'>United States</option>
                 <option value='ca'>Canada</option>
             </select>
