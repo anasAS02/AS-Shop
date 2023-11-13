@@ -1,19 +1,17 @@
 'use client'
 import { REGISTER } from '@/Utils/Apis';
 import { handleAuth } from '@/Utils/Auth/handleAuth';
-import { useStatusContext } from '@/Utils/statusContext';
+import { useStatusContext } from '@/Utils/Status/statusContext';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SkewLoader } from 'react-spinners';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import Swal from 'sweetalert2';
 import { formData, handleChange } from '@/Utils/Auth/handleChange';
+import { handleMsg } from '@/Utils/Status/handleStatusMsg';
 
 const Register = () => {
-    const {isLoading, setIsLoading} = useStatusContext();
-    const {successMsg, setSuccessMsg} = useStatusContext();
-    const {err, setErr} = useStatusContext();
+    const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
 
     const [form, setForm] = useState<formData> ({
         name: '',
@@ -24,33 +22,8 @@ const Register = () => {
         phoneNumber: ''
     })
 
-    const handleMsg = (): void => {
-        if(successMsg){
-            Swal.fire({
-                title: "Done",
-                text: successMsg,
-                icon: "success"
-            })
-            setForm({
-                name: '',
-                email: '',
-                password: '',
-                country: 'us',
-                address: '',
-                phoneNumber: ''
-            })
-        }
-        if(err){
-            Swal.fire({
-                title: "Oops...",
-                text: err,
-                icon: "error"
-            })
-        }
-    }
-
     useEffect(() => {
-        handleMsg();
+        handleMsg(setForm, successMsg, err);
     }, [successMsg, err])
 
   return (
@@ -66,8 +39,7 @@ const Register = () => {
             </select>
             <PhoneInput
             value={form.phoneNumber}
-            country={form.country}
-            onChange={(value) => value.length > 10 && setForm({ ...form, phoneNumber: value })}
+            onChange={(value) => setForm({ ...form, phoneNumber: value })}
             onlyCountries={['us', 'ca']}
             preserveOrder={['onlyCountries', 'preferredCountries']}
             />
@@ -79,7 +51,6 @@ const Register = () => {
                     <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
                 </span>
             }
-            {/* {err && <p className='p-1 bg-white rounded-md text-red-500 text-sm font-bold'>{err}</p> } */}
         </div>
     </div>
   )

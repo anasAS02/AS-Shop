@@ -4,7 +4,7 @@ import './globals.css'
 import { Navbar } from '@/Components/Navbar/Navbar'
 import { Links } from '@/Components/Navbar/Links'
 import { Footer } from '@/Components/Footer/Footer'
-import { StatusContextProvider } from '@/Utils/statusContext'
+import { StatusContextProvider } from '@/Utils/Status/statusContext'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400'] })
 

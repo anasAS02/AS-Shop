@@ -5,7 +5,7 @@ import { faCircleInfo, faEdit, faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookie from 'js-cookie';
 import { useState } from 'react';
-import { useStatusContext } from '@/Utils/statusContext';
+import { useStatusContext } from '@/Utils/Status/statusContext';
 // import { formData } from '../Auth/Register/page';
 import axios from 'axios';
 import { CHANGE_ADDRESS, CHANGE_COUNTRY, CHANGE_NAME, CHANGE_PASSWORD, CHANGE_PHONE_NUMBER, GET_INFO } from '@/Utils/Apis';

@@ -1,4 +1,3 @@
-// import { formData } from "@/app/Auth/Register/page";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import { formData } from "./handleChange";
@@ -11,6 +10,13 @@ export const handleAuth = async (e: React.MouseEvent,
     setErr: React.Dispatch<React.SetStateAction<string | null>>) => {
     e.preventDefault();
     setLoading(true);
+    if(form.phoneNumber){
+        if(form?.phoneNumber?.length < 11){
+            setErr('Invalid phone number');
+            setLoading(false);
+            return;
+        }
+    }
     try{
         const res = await axios.post(url, form);
         if(res.data.verified){

@@ -9,7 +9,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
-import { useStatusContext } from '@/Utils/statusContext';
+import { useStatusContext } from '@/Utils/Status/statusContext';
 import axios from 'axios';
 import { CHECK_TOKEN } from '@/Utils/Apis';
 import Swal from 'sweetalert2';
