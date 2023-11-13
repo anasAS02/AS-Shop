@@ -9,6 +9,7 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 import { GET_USERS } from '@/Utils/Apis';
 import { config } from '@/Utils/Auth/handleAuth';
 import Users from './Dashboard/Users';
+import Management from './Dashboard/Management';
 
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
@@ -58,6 +59,9 @@ const Profile = () => {
                 </nav>
             {controlMode === 'users' &&
                 <Users />
+            }
+            {controlMode === 'management' &&
+                <Management />
             }
             </div>
         }

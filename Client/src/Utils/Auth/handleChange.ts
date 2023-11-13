@@ -7,6 +7,8 @@ export interface formData {
     phoneNumber?: string;
     currentPassword?:  string;
     newPassword?: string;
+    role?: string;
+    verified?: boolean;
 }
 
 export const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, form: formData, setForm: React.Dispatch<React.SetStateAction<formData>>) => {
