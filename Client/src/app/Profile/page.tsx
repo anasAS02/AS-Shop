@@ -6,21 +6,13 @@ import { useEffect, useState } from 'react';
 import Info from './Info';
 import axios from 'axios';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import Link from 'next/link';
 import { GET_USERS } from '@/Utils/Apis';
 import { config } from '@/Utils/Auth/handleAuth';
+import Users from './Dashboard/Users';
 
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
     const [controlMode, setControlMode] = useState<string>('users');
-    interface users{
-        name: string;
-        email: string;
-        role: string;
-    }
-    const [managers, setManagers] = useState<users[]>();
-    const [admins, setAdmins] = useState<users[]>();
-    const [users, setUsers] = useState<users[]>();
 
     const handleMode = (e: React.MouseEvent, mode: string) => {
         e.preventDefault();
@@ -39,28 +31,6 @@ const Profile = () => {
         setControlMode(id);
         console.log(id)
     }
-
-    const getUsers = async () => {
-        try{
-            await axios.get(GET_USERS, config).then((data) => {setManagers(data.data.data.managers),
-            setAdmins(data.data.data.admins),
-            setUsers(data.data.data.users)});
-        }catch(err){
-            console.log(err);
-        }
-    }
-
-    useEffect(() => {
-        getUsers();
-    }, []);
-
-    const data = [
-        { name: 'Users', value: users?.length },
-        { name: 'Admins', value: admins?.length },
-        { name: 'Managers', value: managers?.length },
-        ];
-
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
   
   return (
     <div className='h-screen flex items-start gap-10 p-10'>
@@ -86,29 +56,9 @@ const Profile = () => {
                     <button id='produts' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'produts' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Produts</button>
                     <button id='orders' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'orders' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Orders</button>
                 </nav>
-            <span className='flex items-center'>
-                <PieChart width={400} height={400}>
-                    <Pie
-                    data={data}
-                    cx={120}
-                    cy={200}
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                    </Pie>
-                </PieChart>
-                <span className='text-xl'>
-                    <p style={{color: COLORS[0]}}>Users: {users?.length}</p>
-                    <p style={{color: COLORS[1]}}>Admins: {admins?.length}</p>
-                    <p style={{color: COLORS[2]}}>Managers: {managers?.length}</p>
-                </span>
-            </span>
+            {controlMode === 'users' &&
+                <Users />
+            }
             </div>
         }
         </section>
