@@ -17,10 +17,6 @@ const isGmail = function(email: string) {
   return /\b[A-Z0-9._%+-]+@gmail\.com\b/i.test(email);
 };
 
-const isPhoneNumber = function(phoneNumber: string) {
-  return /^\+1[0-9]+$/.test(phoneNumber);
-}
-
 const userSchema = new mongoose.Schema<User>({
   name: {
     type: String,
@@ -42,11 +38,7 @@ const userSchema = new mongoose.Schema<User>({
   },
   phoneNumber: {
     type: String,
-    required: true,
-    validate: {
-      validator: isPhoneNumber,
-      message: 'i\'s not a valid number'
-    }
+    required: true
   },
   country: {
     type: String,

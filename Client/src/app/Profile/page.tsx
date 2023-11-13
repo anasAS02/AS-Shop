@@ -44,6 +44,9 @@ const Profile = () => {
         const {value, name} = e.target;
         setInfo({...info, [name]: value});
     }
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setInfo({ ...info, country: e.target.value });
+    }
 
     const handleLogout = () => {
         Cookie.remove('token');
@@ -122,7 +125,10 @@ const Profile = () => {
                 <span className='flex flex-col items-start gap-2'>
                     <label>Country</label>
                     <span className='flex items-center'>
-                    <input readOnly={updateMode === 'country' ? false : true} type='text' name='country' onChange={handleChange} value={info?.country} className='text-slate-500 border-none outline-none bg-slate-300 p-2 rounded-md mr-2' />
+                    <select disabled ={updateMode === 'country' ? false : true} name="country" value={info.country} onChange={handleSelectChange} className='w- fit bg-slate-300 p-3 rounded-md border-none outline-none mr-2'>
+                        <option value='United States'>United States</option>
+                        <option value='Canada'>Canada</option>
+                    </select>
                     {updateMode === 'country' ?
                     <p onClick={(e) => updateUserInfo(e, CHANGE_COUNTRY)} className='text-black text-sm hover:text-yellow-500 duration-200 cursor-pointer'>Save</p>
                     :

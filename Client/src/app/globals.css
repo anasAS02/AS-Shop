@@ -6,3 +6,7 @@ body{
   background-color: white;
   color: black;
 }
+
+.form-control{
+  width: 100% !important;
+}

@@ -12,16 +12,16 @@ export const handleAuth = async (e: React.MouseEvent,
     setLoading(true);
     try{
         const res = await axios.post(url, form);
-        const token = res.data.User.token;
-        const email = res.data.User.email;
-        const role = res.data.User.role;
         if(res.data.verified){
+            const token = res.data.User.token;
+            const email = res.data.User.email;
+            const role = res.data.User.role;
             Cookies.set('token', token);
             Cookies.set('email', email);
             Cookies.set('role', role);
             window.location.pathname = '/';
         }else{
-            setSuccessMsg(res.data.message)
+            setSuccessMsg(res.data.message);
         }
         setErr(null);
     }catch(err: any){

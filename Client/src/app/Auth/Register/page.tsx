@@ -3,8 +3,12 @@ import { REGISTER } from '@/Utils/Apis';
 import { handleAuth } from '@/Utils/Auth/handleAuth';
 import { useStatusContext } from '@/Utils/statusContext';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SkewLoader } from 'react-spinners';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import Swal from 'sweetalert2';
+
 
 export interface formData {
     name?: string;
@@ -24,8 +28,9 @@ const Register = () => {
         name: '',
         email: '',
         password: '',
-        country: 'United States',
-        address: ''
+        country: 'us',
+        address: '',
+        phoneNumber: ''
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +41,35 @@ const Register = () => {
         setForm({ ...form, country: e.target.value });
     };
 
+    const handleMsg = (): void => {
+        if(successMsg){
+            Swal.fire({
+                title: "Done",
+                text: successMsg,
+                icon: "success"
+            })
+            setForm({
+                name: '',
+                email: '',
+                password: '',
+                country: 'us',
+                address: '',
+                phoneNumber: ''
+            })
+        }
+        if(err){
+            Swal.fire({
+                title: "Oops...",
+                text: err,
+                icon: "error"
+            })
+        }
+    }
+
+    useEffect(() => {
+        handleMsg();
+    }, [successMsg, err])
+
   return (
     <div className='h-screen flex justify-center relative'>
         <div className='w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
@@ -44,9 +78,16 @@ const Register = () => {
             <input type='password' name='password' placeholder='your password' value={form.password} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='address' placeholder='your address' value={form.address} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <select name="country" value={form.country} onChange={handleSelectChange} className='w-fit p-3 rounded-md border-none outline-none'>
-                <option value='United States'>United States</option>
-                <option value='Canada'>Canada</option>
+                <option value='us'>United States</option>
+                <option value='ca'>Canada</option>
             </select>
+            <PhoneInput
+            value={form.phoneNumber}
+            country={form.country}
+            onChange={(value) => value.length > 10 && setForm({ ...form, phoneNumber: value })}
+            onlyCountries={['us', 'ca']}
+            preserveOrder={['onlyCountries', 'preferredCountries']}
+            />
             {isLoading ?
                 <SkewLoader color="#ffffff" />
                 :
@@ -55,8 +96,7 @@ const Register = () => {
                     <p className='text-white max-md:text-sm'>already have an account? <Link href='/Auth/Login' className='text-red-500 duration-200 hover:text-black'>Login</Link></p>
                 </span>
             }
-            {successMsg && <p className='p-1 bg-white rounded-md text-green-400 text-sm font-bold'>{successMsg}</p> }
-            {err && <p className='p-1 bg-white rounded-md text-red-500 text-sm font-bold'>{err}</p> }
+            {/* {err && <p className='p-1 bg-white rounded-md text-red-500 text-sm font-bold'>{err}</p> } */}
         </div>
     </div>
   )
