@@ -38,11 +38,11 @@ const Info = () => {
             console.log(err)
         }
     }
-    
+
     useEffect(() => {
+        handleMsg(setInfo, successMsg, err);
         getInfo();
     }, [successMsg, err]);
-
 
     const handleUpdateMode = (e: any) => {
         const id = e.target.id;
@@ -65,11 +65,8 @@ const Info = () => {
             setErr(null);
             setUpdateMode(null);
             setSuccessMsg(res.data.message);
-            handleMsg(setInfo, successMsg, err);
-            getInfo();
         }catch(err: any){
             setErr(err.response?.data.message);
-            handleMsg(setInfo, successMsg, err);
             console.log(err)
         }
     }
