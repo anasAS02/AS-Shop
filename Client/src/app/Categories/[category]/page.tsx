@@ -2,19 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { GET_CATEGORIES, GET_CATEGORIES_PRODUCTS, GET_PRODUCTS } from '@/Utils/Apis';
+import { GET_CATEGORIES_PRODUCTS, GET_PRODUCTS } from '@/Utils/Apis';
 import { ProductCard, ProductData } from '@/Components/Products/Product/ProductCard';
 import { categoryData } from '@/Components/Navbar/data';
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faBars, faBarsStaggered, faCircleXmark, faTableCells } from "@fortawesome/free-solid-svg-icons";
+import { getCategories } from '@/Utils/Products/getCategories';
 
-export default async function Category ({params}: any) {
-  const category = params.category;
+export default function Category ({params}: any) {
+  const categoryParam = params.category;
   const [products, setProducts] = useState<ProductData[]>([]);
-
-  const res = await axios.get(GET_CATEGORIES);
-  const categories = res.data;
+  const [categories, setCategories] = useState<categoryData[]>();
 
   const [from, setFrom] = useState<number | undefined>(undefined);
   const [to, setTo] = useState<number | undefined>(undefined);
@@ -23,7 +22,7 @@ export default async function Category ({params}: any) {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(category === 'AllProducts' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + category, {
+      const res = await axios.get(categoryParam === 'AllProducts' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + categoryParam, {
         params: {
           lowestPrice: from,
           highestPrice: to,
@@ -40,7 +39,8 @@ export default async function Category ({params}: any) {
 
   useEffect(() => {
     fetchProducts();
-    document.title = category;
+    getCategories().then((data) => setCategories(data));
+    document.title = categoryParam;
     categories
   }, [sortLowest, sortHighest])
 
@@ -99,14 +99,14 @@ export default async function Category ({params}: any) {
         </span>
           </span>
           <span className={openCategories ? '' : 'hidden'}>
-            <Link href='/Categories/AllProducts' className={`flex items-center gap-5 mb-2 ${category === 'AllProducts' ? 'text-green-400' : 'text-gray-400'}`}>
+            <Link href='/Categories/AllProducts' className={`flex items-center gap-5 mb-2 ${categoryParam === 'AllProducts' ? 'text-green-400' : 'text-gray-400'}`}>
               <p>All Products</p>
-              <span className={`p-2 border-2 rounded-full ml-auto ${category === 'AllProducts' ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
+              <span className={`p-2 border-2 rounded-full ml-auto ${categoryParam === 'AllProducts' ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>
-            {categories?.map((category: any) => (
-              <Link href={`/Categories/${category.href}`} key={category.id} className={`flex items-center gap-5 mb-2 ${category === category.href ? 'text-green-400' : 'text-gray-400'}`}>
+            {categories?.map((category: categoryData) => (
+              <Link href={`/Categories/${category.href}`} key={category.id} className={`flex items-center gap-5 mb-2 ${categoryParam === category.href ? 'text-green-400' : 'text-gray-400'}`}>
                 <p>{category.title}</p>
-                <span className={`p-2 border-2 rounded-full ml-auto ${category.href === category ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
+                <span className={`p-2 border-2 rounded-full ml-auto ${category.href === categoryParam ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>
           ))}
         </span>
