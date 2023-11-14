@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request} from 'express';
 import multer from 'multer';
 const router = express.Router();
 
@@ -8,20 +8,17 @@ import allowedTo from '../middlewares/allowedTo';
 import { userRoles } from '../utils/userRoles';
 
 const diskStorage = multer.diskStorage({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    destination: function (req: any, file: any, cb: (arg0: null, arg1: string) => void) {
+    destination: function (req, file, cb) {
         cb(null, 'uploads')
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    filename: function (req: any, file: { mimetype: string; }, cb: (arg0: null, arg1: string) => void) {
-        const ext = file.mimetype.split('/')[1];
-        const fileName = `category-${Date.now()}.${ext}`;
+    filename: function (req, file, cb) {
+        const fileName = `product-${Date.now()}-${file.originalname}`;
         cb(null, fileName)
     }
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const fileFilter = (req: express.Request, file: { mimetype: string; }, cb: (arg0: null, arg1: boolean) => any) => {
+const fileFilter = (req: Request, file: { mimetype: string; }, cb: (arg0: null, arg1: boolean) => any) => {
     const imageType = file.mimetype.split('/')[0];
     if(imageType === 'image'){
         return cb(null, true);

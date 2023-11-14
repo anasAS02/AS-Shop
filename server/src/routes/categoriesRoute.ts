@@ -4,36 +4,13 @@ import { getAllCategories, getCategory, getCategoryProducts, addCategory, update
 
 const router = express.Router();
 
-// const diskStorage = multer.diskStorage({
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     destination: function (req: any, file: any, cb: (arg0: null, arg1: string) => void) {
-//         cb(null, 'uploads')
-//     },
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     filename: function (req: any, file: { mimetype: string; }, cb: (arg0: null, arg1: string) => void) {
-//         const ext = file.mimetype.split('/')[1];
-//         const fileName = `category-${Date.now()}.${ext}`;
-//         cb(null, fileName)
-//     }
-// })
-
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// const fileFilter = (req: express.Request, file: { mimetype: string; }, cb: (arg0: null, arg1: boolean) => any) => {
-//     const imageType = file.mimetype.split('/')[0];
-//     if(imageType === 'image'){
-//         return cb(null, true);
-//     }else{
-//         return cb(null, false)
-//     }
-// }
-
 const diskStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-            cb(null, 'uploads')
+        cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-            const fileName = `category-${Date.now()}-${file.originalname}`;
-            cb(null, fileName)
+        const fileName = `category-${Date.now()}-${file.originalname}`;
+        cb(null, fileName)
     }
 })
 
@@ -41,9 +18,9 @@ const diskStorage = multer.diskStorage({
 const fileFilter = (req: Request, file: { mimetype: string; }, cb: (arg0: null, arg1: boolean) => any) => {
     const imageType = file.mimetype.split('/')[0];
     if(imageType === 'image'){
-            return cb(null, true);
+        return cb(null, true);
     }else{
-            return cb(null, false)
+        return cb(null, false)
     }
 }
 
