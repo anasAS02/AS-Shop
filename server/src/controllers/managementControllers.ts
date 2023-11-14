@@ -53,8 +53,6 @@ const addUser = asyncWrapper((
 const removeUser = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.body.id;
-    console.log(userId);
-    console.log(req.body);
     const findUser = await User.findOne({_id: userId});
     if(!findUser){
         const error = new AppError('User is not found', 401, httpStatusText.ERROR);

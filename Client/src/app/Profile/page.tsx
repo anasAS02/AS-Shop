@@ -58,6 +58,9 @@ const Profile = () => {
             {controlMode === 'management' &&
                 <Management />
             }
+            {controlMode === 'products' &&
+                <Products />
+            }
             </div>
         }
         </section>

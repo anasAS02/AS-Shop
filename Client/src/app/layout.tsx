@@ -9,8 +9,8 @@ import { StatusContextProvider } from '@/Utils/Status/statusContext'
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400'] })
 
 export const metadata: Metadata = {
-  title: 'Salla Shop',
-  description: 'Welcome to Salla Shop – Your One-Stop Destination for All Your Shopping Needs',
+  title: 'AS Shop',
+  description: 'Welcome to AS Shop – Your One-Stop Destination for All Your Shopping Needs',
 }
 
 export default function RootLayout({
