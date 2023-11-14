@@ -2,26 +2,18 @@
 import { useStatusContext } from "@/Utils/Status/statusContext";
 import { useEffect, useState } from "react";
 import { SkewLoader } from 'react-spinners';
-import { ADD_CATEGORY, DELETE_CATEGORY, GET_CATEGORIES, SHOW_IMG, UPDATE_CATEGORY } from "@/Utils/Apis";
+import { ADD_CATEGORY, DELETE_CATEGORY, SHOW_IMG, UPDATE_CATEGORY } from "@/Utils/Apis";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import Cookies from "js-cookie";
 import { config } from "@/Utils/Auth/handleAuth";
+import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
 
 const Products = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
-    const token = Cookies.get('token');
-
-    interface CategoryData {
-        _id?: any;
-        title: string;
-        href: string;
-        thumbnail?: string;
-    }
 
     const [categoryData, setCategoryData] = useState<CategoryData> ({
         title: '',
@@ -33,24 +25,9 @@ const Products = () => {
     const [categories, setCategories] = useState<CategoryData[]> ();
     const [file, setFile] = useState<File | undefined>(undefined);
 
-    // const config = {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`,
-    //     },
-    //     params: {
-    //         categoryId: categoryId
-    //     },
-    // };
-
-    const getCategories = async() => {
-        const res = await axios.get(GET_CATEGORIES, config);
-        const data = res.data.data;
-        setCategories(data);
-    };
-
-
     useEffect(() => {
         getCategories();
+        getCategories().then((data) => setCategories(data));
         if(successMsg){
             Swal.fire({
                 title: "Done",
@@ -112,6 +89,7 @@ const Products = () => {
 
     const handleUpdate = async (id: any) => {
         setUpdateMode(true)
+        scrollTo(0, 0);
         const findCategory = categories?.find((category) => category._id === id);
         if(findCategory){
             setCategoryData({

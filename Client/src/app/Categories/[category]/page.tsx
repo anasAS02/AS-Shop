@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { GET_CATEGORIES_PRODUCTS, GET_CATEGORY, GET_PRODUCTS } from '@/Utils/Apis';
+import { GET_CATEGORIES, GET_CATEGORIES_PRODUCTS, GET_PRODUCTS } from '@/Utils/Apis';
 import { ProductCard, ProductData } from '@/Components/Products/Product/ProductCard';
-import { links } from '@/Components/Navbar/data';
+import { categoryData } from '@/Components/Navbar/data';
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faBars, faBarsStaggered, faCircleXmark, faTableCells } from "@fortawesome/free-solid-svg-icons";
 
-export default function Category ({params}: any) {
+export default async function Category ({params}: any) {
   const category = params.category;
   const [products, setProducts] = useState<ProductData[]>([]);
+
+  const res = await axios.get(GET_CATEGORIES);
+  const categories = res.data;
 
   const [from, setFrom] = useState<number | undefined>(undefined);
   const [to, setTo] = useState<number | undefined>(undefined);
@@ -38,6 +41,7 @@ export default function Category ({params}: any) {
   useEffect(() => {
     fetchProducts();
     document.title = category;
+    categories
   }, [sortLowest, sortHighest])
 
   const [grid, setGrid] = useState<boolean>(true);
@@ -99,10 +103,10 @@ export default function Category ({params}: any) {
               <p>All Products</p>
               <span className={`p-2 border-2 rounded-full ml-auto ${category === 'AllProducts' ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>
-            {links.map((link) => (
-              <Link href={`/Categories/${link.href}`} key={link.id} className={`flex items-center gap-5 mb-2 ${category === link.href ? 'text-green-400' : 'text-gray-400'}`}>
-                <p>{link.title}</p>
-                <span className={`p-2 border-2 rounded-full ml-auto ${link.href === category ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
+            {categories?.map((category: any) => (
+              <Link href={`/Categories/${category.href}`} key={category.id} className={`flex items-center gap-5 mb-2 ${category === category.href ? 'text-green-400' : 'text-gray-400'}`}>
+                <p>{category.title}</p>
+                <span className={`p-2 border-2 rounded-full ml-auto ${category.href === category ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>
           ))}
         </span>

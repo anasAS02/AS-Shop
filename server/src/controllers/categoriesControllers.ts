@@ -7,7 +7,7 @@ import {asyncWrapper} from '../middlewares/asyncWrapper';
 
 const getAllCategories = asyncWrapper(
     async (req: Request, res: Response) => {
-      const categories = await Category.find();
+      const categories = await Category.find({});
       res.status(200).json({ status: httpStatusText.SUCCESS, data: categories });
     }
   );
