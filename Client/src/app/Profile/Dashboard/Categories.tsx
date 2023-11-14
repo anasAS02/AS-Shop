@@ -17,7 +17,7 @@ const Products = () => {
     const token = Cookies.get('token');
 
     interface CategoryData {
-        _id?: number;
+        _id?: any;
         title: string;
         href: string;
         thumbnail?: string;
@@ -29,7 +29,7 @@ const Products = () => {
     });
 
     const [updateMode, setUpdateMode] = useState<boolean> (false);
-    const [categoryId, setCategoryId] = useState<number | null> (null);
+    const [categoryId, setCategoryId] = useState<any> (null);
     const [categories, setCategories] = useState<CategoryData[]> ();
     const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -89,13 +89,12 @@ const Products = () => {
                 formData.append('thumbnail', file);
             }
             if(updateMode){
-                const res = await axios.put(url, formData, config);
-                setSuccessMsg(res.data.message);
+                await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
                 setUpdateMode(false);
                 setCategoryId(null);
+            }else{
+                await axios.post(url, formData, config).then((data) => setSuccessMsg(data.data.message));
             }
-            const res = await axios.post(url, formData, config);
-            setSuccessMsg(res.data.message);
             setCategoryData({
                 title: '',
                 href: ''
@@ -111,7 +110,7 @@ const Products = () => {
         }
     }
 
-    const handleUpdate = async (id: number | null) => {
+    const handleUpdate = async (id: any) => {
         setUpdateMode(true)
         const findCategory = categories?.find((category) => category._id === id);
         if(findCategory){
@@ -123,7 +122,7 @@ const Products = () => {
         }
     }
 
-    const handleDelete = async (id: number | null) => {
+    const handleDelete = async (id: any) => {
         await axios.delete(DELETE_CATEGORY + id, config);
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -169,7 +168,7 @@ const Products = () => {
             <input type='text' name='title' placeholder='category title' value={categoryData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
-            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose img..</button>
+            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose img</button>
             
             {isLoading ?
                 <SkewLoader color="#ffffff" />
@@ -183,8 +182,8 @@ const Products = () => {
                     <Image width={200} height={200} className='w-[100px] h-[100px]' src={SHOW_IMG + category.thumbnail} alt={category.title} />
                     <Link className='duration-200 hover:text-yellow-500' href={`/categories/${category.href}`}>{category.title}</Link>
                     <span>
-                        <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(category._id || null)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
-                        <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(category._id || null)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />
+                        <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(category._id)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
+                        <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(category._id)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />
                     </span>
                 </span>
             ))}
