@@ -1,22 +1,19 @@
 'use client'
 
-import { GET_USERS } from "@/Utils/Apis";
+import { GET_USERS, REMOVE_USER } from "@/Utils/Apis";
 import { config } from "@/Utils/Auth/handleAuth";
+import { formData } from "@/Utils/Auth/handleChange";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import Swal from "sweetalert2";
+import UserCard from "./UserCard";
 
 const Users = () => {
 
-    interface users{
-        _id: any;
-        name: string;
-        email: string;
-        role: string;
-    }
-    const [managers, setManagers] = useState<users[]>();
-    const [admins, setAdmins] = useState<users[]>();
-    const [users, setUsers] = useState<users[]>();
+    const [managers, setManagers] = useState<formData[]>();
+    const [admins, setAdmins] = useState<formData[]>();
+    const [users, setUsers] = useState<formData[]>();
 
     const getUsers = async () => {
         try{
@@ -39,6 +36,49 @@ const Users = () => {
         ];
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
+
+    const handleDelete = async(id: any) => {
+        try{
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                  confirmButton: "btn btn-success",
+                  cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+              });
+              swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true,
+                preConfirm: async () => {
+                    await axios.post(REMOVE_USER, {id}, config),
+                    getUsers();
+                },
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                  });
+                } else if (
+                  result.dismiss === Swal.DismissReason.cancel
+                ) {
+                  swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Your imaginary file is safe :)",
+                    icon: "error"
+                  });
+                }
+              });
+        }catch(err: any){
+            console.log(err)
+        }
+    }
     
   return (
     <>
@@ -65,27 +105,15 @@ const Users = () => {
                 <p style={{color: COLORS[2]}}>Users: {users?.length}</p>
             </span>
         </span>
-        <span className='w-full flex flex-col items-center gap-4 p-2 rounded-md bg-slate-300'>
+        <span className='w-full flex flex-col items-center gap-4 p-5'>
             {managers?.map((manager) => (
-                <span key={manager._id} className='flex items-center gap-2 text-zinc-600'>
-                    <p>{manager.name}</p>
-                    <p>{manager.email}</p>
-                    <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{manager.role}</p>
-                </span>
+               <UserCard key={manager._id} user={manager} handleDelete={handleDelete} />
             ))}
             {admins?.map((admin) => (
-                <span key={admin._id} className='flex items-center gap-2 text-zinc-600'>
-                    <p>{admin.name}</p>
-                    <p>{admin.email}</p>
-                    <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{admin.role}</p>
-                </span>
+                <UserCard key={admin._id} user={admin} handleDelete={handleDelete} />
             ))}
             {users?.map((user) => (
-                <span key={user._id} className='flex items-center gap-2 text-zinc-600'>
-                    <p>{user.name}</p>
-                    <p>{user.email}</p>
-                    <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{user.role}</p>
-                </span>
+               <UserCard key={user._id} user={user} handleDelete={handleDelete} />
             ))}
         </span>
     </>

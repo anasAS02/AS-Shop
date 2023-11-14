@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { SkewLoader } from 'react-spinners';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import { config, handleAuth } from "@/Utils/Auth/handleAuth";
-import { ADD_USER, REGISTER, REMOVE_USER } from "@/Utils/Apis";
+import { config } from "@/Utils/Auth/handleAuth";
+import { ADD_USER } from "@/Utils/Apis";
 import axios from "axios";
 
 const Management = () => {

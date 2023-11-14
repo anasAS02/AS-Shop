@@ -2,12 +2,8 @@
 import { faCircleInfo, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookie from 'js-cookie';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Info from './Info';
-import axios from 'axios';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import { GET_USERS } from '@/Utils/Apis';
-import { config } from '@/Utils/Auth/handleAuth';
 import Users from './Dashboard/Users';
 import Management from './Dashboard/Management';
 
@@ -30,7 +26,6 @@ const Profile = () => {
     const handleControlMode = (e: any) => {
         const id = e.target.id;
         setControlMode(id);
-        console.log(id)
     }
   
   return (

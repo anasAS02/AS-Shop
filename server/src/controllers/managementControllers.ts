@@ -52,14 +52,16 @@ const addUser = asyncWrapper((
 
 const removeUser = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const email = req.body.email;
-    const findUser = await User.findOne({email: email});
+    const userId = req.body.id;
+    console.log(userId);
+    console.log(req.body);
+    const findUser = await User.findOne({_id: userId});
     if(!findUser){
         const error = new AppError('User is not found', 401, httpStatusText.ERROR);
         return next(error);
     }
-    await User.findByIdAndDelete(findUser._id);
-    res.status(200).json({status: httpStatusText.SUCCESS, message: '‘ser has been deleted successfully'})
+    await User.findByIdAndDelete(userId);
+    res.status(200).json({status: httpStatusText.SUCCESS, message: 'User has been deleted successfully'})
   }
 )
 
