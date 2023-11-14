@@ -60,16 +60,18 @@ const addCategory = asyncWrapper(
         thumbnail: req?.file?.filename
       })
       await newCategory.save();
-      res.status(200).json({ status: httpStatusText.SUCCESS, data: newCategory });
+      res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Category has been added successfully' });
     }
 );
 
 const updateCategory = asyncWrapper(
     async (req: Request, res: Response) => {
       const categoryId = req.params.categoryId;
-      await Category.updateOne({_id: categoryId}, {$set: {... req.body}});
-      const categories = await Category.find();
-      res.status(200).json({ status: httpStatusText.SUCCESS, data: categories });
+      if(req.file){
+        await Category.updateOne({_id: categoryId}, {$set: {... req.body, thumbnail: req.file.filename}})
+      }
+      await Category.updateOne({_id: categoryId}, {$set: {... req.body}})
+      res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Category has been updated successfully' });
     }
 );
 

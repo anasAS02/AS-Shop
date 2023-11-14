@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Info from './Info';
 import Users from './Dashboard/Users';
 import Management from './Dashboard/Management';
+import Categories  from './Dashboard/Categories';
 
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
@@ -58,8 +59,8 @@ const Profile = () => {
             {controlMode === 'management' &&
                 <Management />
             }
-            {controlMode === 'products' &&
-                <Products />
+            {controlMode === 'categories' &&
+                <Categories />
             }
             </div>
         }

@@ -17,7 +17,7 @@ const CategorySchema = new Schema<Category>({
   },
   thumbnail: {
     type: String,
-    required: true
+    required: false
   }
 });
 

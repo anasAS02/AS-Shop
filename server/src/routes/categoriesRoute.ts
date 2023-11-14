@@ -32,9 +32,11 @@ router.route('/')
 router.route('/add')
   .post(upload.single('thumbnail'), addCategory);
 
-router.route('/:category')
-  .get(getCategory)
+router.route('/update/:categoryId')
   .put(upload.single('thumbnail'), updateCategory)
+
+router.route('/:categoryId')
+  .get(getCategory)
   .delete(deleteCategory);
 
 router.route('/products')

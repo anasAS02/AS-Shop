@@ -21,9 +21,10 @@ export const ADD_PRODUCT = `${BASE_URL}products/add`
 export const UPDATE_PRODUCT = `${BASE_URL}products/`
 export const DELETE_PRODUCT = `${BASE_URL}products/`
 
+export const SHOW_IMG = `${BASE_URL}uploads/`;
 export const GET_CATEGORIES = `${BASE_URL}categories`
 export const GET_CATEGORIES_PRODUCTS = `${BASE_URL}categories/products`
 export const GET_CATEGORY = `${BASE_URL}categories/`
 export const ADD_CATEGORY = `${BASE_URL}categories/add`
-export const UPDATE_CATEGORY = `${BASE_URL}categories/`
+export const UPDATE_CATEGORY = `${BASE_URL}categories/update/`
 export const DELETE_CATEGORY = `${BASE_URL}categories/`
