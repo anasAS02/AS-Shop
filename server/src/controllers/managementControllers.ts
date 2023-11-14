@@ -16,105 +16,51 @@ const getUsers = asyncWrapper((
     }
 ))
 
-const addAdmin = asyncWrapper((
+const addUser = asyncWrapper((
     async (req: Request, res: Response, next: NextFunction) => {
-        const { name, email, password, country, address, role } = req.body;
+        const { name, email, password, country, address, phoneNumber, role, verified } = req.body;
         
-        if (!name || !email || !password || !country || !email || !address || !role) {
+        if (!name || !email || !password || !country || !email || !address || !phoneNumber || !role) {
             const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
             return next(error);
         }
 
-        const admin = await User.findOne({ email });
-            if (admin) {
+        const user = await User.findOne({ email });
+            if (user) {
             const error = new AppError('Choose another Email or Password', 401, httpStatusText.ERROR);
             return next(error);
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        const newAdmin = new User({
+        const newUser = new User({
             name,
             email,
             password: hashPassword,
             country,
             address,
-            role
+            phoneNumber,
+            role,
+            verified
         })
 
-        newAdmin.token = jwt.sign({role: newAdmin.role, email: newAdmin.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1h'});
-        await newAdmin.save();
-        const admins = await User.find({role: userRoles.ADMIN});
-        res.status(201).json({status: httpStatusText.SUCCESS, admins});
+        newUser.token = jwt.sign({role: newUser.role, email: newUser.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
+        await newUser.save();
+        res.status(201).json({status: httpStatusText.SUCCESS, message: 'User has been created successfully'});
     }
 ))
 
-const removeAdmin = asyncWrapper(
+const removeUser = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const email = req.body.email;
-    const findAdmin = await User.findOne({email: email});
-    const role = findAdmin?.role;
-    if(!findAdmin){
-        const error = new AppError('Admin is not found', 401, httpStatusText.ERROR);
-        return next(error);
-    }else if(role !== userRoles.ADMIN){
-        const error = new AppError('You cannot remove this user', 401, httpStatusText.FAIL);
+    const findUser = await User.findOne({email: email});
+    if(!findUser){
+        const error = new AppError('User is not found', 401, httpStatusText.ERROR);
         return next(error);
     }
-    await User.findByIdAndDelete(findAdmin._id);
-    const admins = await User.find({role: userRoles.ADMIN});
-    res.status(200).json({status: httpStatusText.SUCCESS, admins})
+    await User.findByIdAndDelete(findUser._id);
+    res.status(200).json({status: httpStatusText.SUCCESS, message: '‘ser has been deleted successfully'})
   }
 )
 
-const addManager = asyncWrapper(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { name, email, password, country, address, role } = req.body;
-        if (!name || !email || !password || !country || !email || !address || !role) {
-            const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
-            return next(error);
-        }
-
-        const manager = await User.findOne({ email });
-        if (manager) {
-            const error = new AppError('Choose another Email or Password', 401, httpStatusText.ERROR);
-            return next(error);
-        }
-
-        const hashPassword = await bcrypt.hash(password, 10);
-
-        const newManager = new User({
-            name,
-            email,
-            password: hashPassword,
-            country,
-            address,
-            role
-        })
-
-        newManager.token = jwt.sign({role: newManager.role, email: newManager.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1h'});
-        await newManager.save();
-        const managers = await User.find({role: userRoles.MANAGER});
-        res.status(201).json({status: httpStatusText.SUCCESS, managers});
-  }
-)
-
-const removeManager = asyncWrapper(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const email = req.body.email;
-    const findManager = await User.findOne({email: email});
-    const role = findManager?.role;
-    if(!findManager){
-        const error = new AppError('Manager is not found', 401, httpStatusText.ERROR);
-        return next(error);
-    }else if(role !== userRoles.MANAGER){
-        const error = new AppError('You cannot remove this user', 401, httpStatusText.FAIL);
-        return next(error);
-    }
-    await User.findByIdAndDelete(findManager._id);
-    const managers = await User.find({role: userRoles.MANAGER});
-    res.status(200).json({status: httpStatusText.SUCCESS, managers})
-  }
-)
-
-export { getUsers, addAdmin, removeAdmin, addManager, removeManager };
+export { getUsers, addUser, removeUser };

@@ -5,10 +5,8 @@ export const LOGIN = `${BASE_URL}auth/login`
 export const CHECK_TOKEN = `${BASE_URL}auth/checkToken`
 
 export const GET_USERS = `${BASE_URL}management/getUsers`
-export const ADD_ADMIN = `${BASE_URL}management/addAdmin`
-export const REMOVE_ADMIN = `${BASE_URL}management/removeAdmin`
-export const ADD_MANAGER = `${BASE_URL}management/addManager`
-export const REMOVE_MANAGER = `${BASE_URL}management/removeManager`
+export const ADD_USER = `${BASE_URL}management/addUser`
+export const REMOVE_USER = `${BASE_URL}management/removeUser`
 
 export const GET_INFO = `${BASE_URL}user/getInfo`
 export const CHANGE_NAME = `${BASE_URL}user/changeName`
