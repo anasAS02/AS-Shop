@@ -4,8 +4,8 @@ import Image from "next/image"
 import Link from "next/link";
 
 export interface ProductData{
-    style: boolean;
-    _id: string;
+    style?: boolean;
+    _id?: string;
     title: string;
     description?: string;
     price: number;

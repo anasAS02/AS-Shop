@@ -7,6 +7,7 @@ import Info from './Info';
 import Users from './Dashboard/Users';
 import Management from './Dashboard/Management';
 import Categories  from './Dashboard/Categories';
+import Products from './Dashboard/Products';
 
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
@@ -30,7 +31,7 @@ const Profile = () => {
     }
   
   return (
-    <div className='h-full flex items-start gap-10 p-10'>
+    <div className={`${mode === 'Dashboard'? 'h-full' : 'h-screen'} flex items-start gap-10 p-10`}>
         <aside className='flex flex-col gap-5 bg-slate-300 h-fit p-5 rounded-md'>
             <button className={`${mode === 'Info' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faCircleInfo} />    
@@ -50,7 +51,7 @@ const Profile = () => {
                     <button id='users' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'users' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Users</button>
                     <button id='management' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'management' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Management</button>
                     <button id='categories' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'categories' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Categories</button>
-                    <button id='produts' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'produts' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Produts</button>
+                    <button id='products' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'products' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Products</button>
                     <button id='orders' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'orders' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Orders</button>
                 </nav>
             {controlMode === 'users' &&
@@ -61,6 +62,9 @@ const Profile = () => {
             }
             {controlMode === 'categories' &&
                 <Categories />
+            }
+            {controlMode === 'products' &&
+                <Products />
             }
             </div>
         }
