@@ -27,13 +27,11 @@ async (req: Request, res: Response) => {
     
     const highestPrice = query.highestPrice;
     const lowestPrice = query.lowestPrice;
-    
     const sortByLowestPrice = query.sortByLowestPrice;
     const sortByHighestPrice = query.sortByHighestPrice;
     let products;
     if(lowestPrice && highestPrice){
         products = await Product.find({category: category, price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
-        console.log(products)
     }else if(sortByLowestPrice === '0'){
         products = await Product.find({category: category}).sort({price: 1});
     }else if(sortByHighestPrice === '0'){

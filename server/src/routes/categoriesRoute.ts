@@ -39,7 +39,7 @@ router.route('/:categoryId')
   .get(getCategory)
   .delete(deleteCategory);
 
-router.route('/products')
+router.route('/products/:category')
   .get(getCategoryProducts);
 
 export { router as categoriesRoute };

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { GET_CATEGORY, GET_PRODUCTS } from '@/Utils/Apis';
+import { GET_CATEGORIES_PRODUCTS, GET_CATEGORY, GET_PRODUCTS } from '@/Utils/Apis';
 import { ProductCard, ProductData } from '@/Components/Products/Product/ProductCard';
 import { links } from '@/Components/Navbar/data';
 import Link from 'next/link';
@@ -20,7 +20,7 @@ export default function Category ({params}: any) {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(category === 'AllProducts' ? GET_PRODUCTS : GET_CATEGORY + category, {
+      const res = await axios.get(category === 'AllProducts' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + category, {
         params: {
           lowestPrice: from,
           highestPrice: to,
