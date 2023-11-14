@@ -30,9 +30,9 @@ const getAllProducts = asyncWrapper(
 
 const addProduct = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, description, price, discountPercentage, stock, brand, category, thumbnail} = req.body;
+    const { title, description, price, discountPercentage, stock, brand, category} = req.body;
     const images: string[] = (req?.files as Express.Multer.File[])?.map((file: Express.Multer.File) => file.filename);
-    if (!title || !description || !price || !stock || !stock || !brand || !category || !thumbnail || images.length === 0) {
+    if (!title || !description || !price || !stock || !stock || !brand || !category || images.length === 0) {
       const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
       return next(error);
     }
@@ -50,8 +50,7 @@ const addProduct = asyncWrapper(
     });
 
     await product.save();
-    const products = await Product.find();
-    res.status(201).json({ status: httpStatusText.SUCCESS, data: products });
+    res.status(201).json({ status: httpStatusText.SUCCESS, data: product });
   }
 );
 
@@ -67,8 +66,7 @@ const updateProduct = asyncWrapper(
   async (req: Request, res: Response) => {
     const produtId = req.params.produtId;
     await Product.updateOne({ _id: produtId }, { $set: { ...req.body } });
-    const products = await Product.find();
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: null });
   }
 );
 
@@ -76,8 +74,7 @@ const deleteProduct = asyncWrapper(
   async (req: Request, res: Response) => {
     const produtId = req.params.produtId;
     await Product.deleteOne({ _id: produtId });
-    const products = await Product.find();
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: null });
   }
 );
 

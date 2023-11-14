@@ -47,9 +47,9 @@ async (req: Request, res: Response) => {
 
 const addCategory = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-      const {title, href, thumbnail} = req.body;
+      const {title, href} = req.body;
       
-      if(!title || !href || !thumbnail){
+      if(!title || !href){
         const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
         return next(error);
       }
@@ -60,8 +60,7 @@ const addCategory = asyncWrapper(
         thumbnail: req?.file?.filename
       })
       await newCategory.save();
-      const categories = await Category.find();
-      res.status(200).json({ status: httpStatusText.SUCCESS, data: categories });
+      res.status(200).json({ status: httpStatusText.SUCCESS, data: newCategory });
     }
 );
 
