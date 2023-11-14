@@ -85,8 +85,7 @@ const deleteCategory = asyncWrapper(
       }
       await Product.deleteMany({category: findCategory.title});
       await Category.deleteOne({_id: findCategory._id});
-      const categories = await Category.find();
-      res.status(200).json({ status: httpStatusText.SUCCESS, data: categories });
+      res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Category has been deleted successfully' });
     }
 );
 
