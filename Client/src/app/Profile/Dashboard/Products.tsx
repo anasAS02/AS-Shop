@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
+import deleteConfirmation from "@/Utils/Status/deleteConfirmation";
 
 const Products = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
@@ -42,7 +43,7 @@ const Products = () => {
     const [updateMode, setUpdateMode] = useState<boolean> (false);
     const [productId, setProductId] = useState<any> (null);
     const [products, setProducts] = useState<ProductData[]> ();
-    const [images, setImages] = useState<any>([]);
+    const [images, setImages] = useState<any>(undefined);
     const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,12 +101,12 @@ const Products = () => {
             if(thumbnail){
                 formData.append('thumbnail', thumbnail);
             }
-            if (images.length) {
+            if (images) {
                 for(let i = 0; i < images.length; i++){
                     formData.append('images[]', images[i]);
                 }
             }
-            const res = await axios.post(url, formData);
+            const res = await axios.post(url, {formData});
             console.log(res.data);
             // console.log('formData', formData)
 
@@ -157,43 +158,7 @@ const Products = () => {
     }
 
     const handleDelete = async (id: any) => {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton: "btn btn-success",
-              cancelButton: "btn btn-danger"
-            },
-            buttonsStyling: false
-          });
-          swalWithBootstrapButtons.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true,
-            preConfirm: async () => {
-                const res = await axios.delete(DELETE_PRODUCT + id, config);
-                setSuccessMsg(res.data.message);
-                getProducts();
-            },
-          }).then((result) => {
-            if (result.isConfirmed) {
-              swalWithBootstrapButtons.fire({
-                title: "Deleted!",
-                text: `${successMsg || 'Product has been deleted successfully'}`,
-                icon: "success"
-              });
-            } else if (
-              result.dismiss === Swal.DismissReason.cancel
-            ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelled",
-                text: "Your imaginary file is safe :)",
-                icon: "error"
-              });
-            }
-          });
+        deleteConfirmation({ url: DELETE_PRODUCT + id, config, successMsg: null, setSuccessMsg: () => setSuccessMsg(null), func: getProducts });
     }
 
   return (

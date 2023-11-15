@@ -6,8 +6,8 @@ import { formData } from "@/Utils/Auth/handleChange";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import Swal from "sweetalert2";
 import UserCard from "./UserCard";
+import deleteConfirmation from "@/Utils/Status/deleteConfirmation";
 
 const Users = () => {
 
@@ -38,46 +38,7 @@ const Users = () => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
     const handleDelete = async(id: any) => {
-        try{
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                  confirmButton: "btn btn-success",
-                  cancelButton: "btn btn-danger"
-                },
-                buttonsStyling: false
-              });
-              swalWithBootstrapButtons.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!",
-                reverseButtons: true,
-                preConfirm: async () => {
-                    await axios.post(REMOVE_USER, {id}, config),
-                    getUsers();
-                },
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  swalWithBootstrapButtons.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                  });
-                } else if (
-                  result.dismiss === Swal.DismissReason.cancel
-                ) {
-                  swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Your imaginary file is safe :)",
-                    icon: "error"
-                  });
-                }
-              });
-        }catch(err: any){
-            console.log(err)
-        }
+        deleteConfirmation({ url: REMOVE_USER + id, config, successMsg: null, func: getUsers });
     }
     
   return (
