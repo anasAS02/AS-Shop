@@ -10,7 +10,11 @@ export interface CategoryData {
 }
 
 export const getCategories = async() => {
-    const res = await axios.get(GET_CATEGORIES, config);
-    const data = res.data.data;
-    return data;
+    try{
+        const res = await axios.get(GET_CATEGORIES, config);
+        const data = res.data.data;
+        return data;
+    }catch(err){
+        console.log(err)
+    }
 };

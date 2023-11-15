@@ -24,8 +24,8 @@ const Products = () => {
         stock: string;
         brand: string;
         category: string;
-        thumbnail: string;
-        images: [string];
+        thumbnail?: string;
+        images?: [string];
     }
 
     const [categories, setCategories] = useState<CategoryData[]> ();
@@ -36,9 +36,7 @@ const Products = () => {
         discountPercentage: '',
         stock: '',
         brand: '',
-        category: 'laptops',
-        thumbnail: '',
-        images: ['']
+        category: 'laptops'
     });
 
     const [updateMode, setUpdateMode] = useState<boolean> (false);
@@ -64,8 +62,8 @@ const Products = () => {
     }
     
     useEffect(() => {
+        getCategories().then((data) => setCategories(data));
         getProducts();
-        getCategories().then((data: CategoryData[]) => setCategories(data));
         if(successMsg){
             Swal.fire({
                 title: "Done",
@@ -107,27 +105,29 @@ const Products = () => {
                     formData.append('images[]', images[i]);
                 }
             }
-            if(updateMode){
-                await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
-                setUpdateMode(false);
-                setProductId(null);
-            }else{
-                await axios.post(url, formData, config).then((data) => setSuccessMsg(data.data.message));
-            }
-            setProductData({
-                title: '',
-                description: '',
-                price: '',
-                discountPercentage: '',
-                stock: '',
-                brand: '',
-                category: 'laptops',
-                thumbnail: '',
-                images: ['']
-            });
-            setImages([null]);
-            setErr(null);
-            getProducts();
+            const res = await axios.post(url, formData);
+            console.log(res.data);
+            // console.log('formData', formData)
+
+            // if(updateMode){
+            //     await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
+            //     setUpdateMode(false);
+            //     setProductId(null);
+            // }else{
+            //     await axios.post(url, {formData}, config).then((data) => setSuccessMsg(data.data.message));
+            // }
+            // setProductData({
+            //     title: '',
+            //     description: '',
+            //     price: '',
+            //     discountPercentage: '',
+            //     stock: '',
+            //     brand: '',
+            //     category: 'laptops'
+            // });
+            // setImages([null]);
+            // setErr(null);
+            // getProducts();
         }catch(err: any){
             setErr(err.response?.data.message);
             console.log(err);
@@ -157,7 +157,6 @@ const Products = () => {
     }
 
     const handleDelete = async (id: any) => {
-        await axios.delete(DELETE_PRODUCT + id, config);
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: "btn btn-success",
@@ -174,14 +173,15 @@ const Products = () => {
             cancelButtonText: "No, cancel!",
             reverseButtons: true,
             preConfirm: async () => {
-                await axios.post(DELETE_PRODUCT + id, config),
+                const res = await axios.delete(DELETE_PRODUCT + id, config);
+                setSuccessMsg(res.data.message);
                 getProducts();
             },
           }).then((result) => {
             if (result.isConfirmed) {
               swalWithBootstrapButtons.fire({
                 title: "Deleted!",
-                text: "Your file has been deleted.",
+                text: `${successMsg || 'Product has been deleted successfully'}`,
                 icon: "success"
               });
             } else if (
@@ -196,8 +196,6 @@ const Products = () => {
           });
     }
 
-    console.log(images)
-    console.log(thumbnail)
   return (
     <div>
         <div className='w-full mt-5 max-md:w-3/4 h-fit bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
@@ -207,7 +205,7 @@ const Products = () => {
             <input type='text' name='discountPercentage' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='stock' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <select name='category' onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none'>
+            <select name='category' value={productData.category} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none'>
                 {categories?.map((category) => (
                     <option value={category.title}>{category.title}</option>
                 ))}
@@ -227,7 +225,7 @@ const Products = () => {
             {products?.map((product: ProductData) => (
                 <span key={product._id} className='w-full flex justify-between items-center p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
                     <Link href={`/categories/${product._id}`}>
-                        <Image width={200} height={200} className='w-[100px] h-[100px] duration-200 scale-105 rounded-md' src={product.thumbnail.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
+                        <Image width={200} height={200} className='w-[100px] h-[100px] duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
                     </Link>
                     <p>{product.title}</p>
                     <p>left: {product.stock}</p>

@@ -43,11 +43,11 @@ const productSchema = new Schema<Product>({
   },
   thumbnail: {
     type: String,
-    required: true,
+    required: false,
   },
   images: {
     type: [String],
-    required: true,
+    required: false,
   },
 }, { timestamps: true });
 

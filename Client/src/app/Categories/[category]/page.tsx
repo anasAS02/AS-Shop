@@ -4,16 +4,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { GET_CATEGORIES_PRODUCTS, GET_PRODUCTS } from '@/Utils/Apis';
 import { ProductCard, ProductData } from '@/Components/Products/Product/ProductCard';
-import { categoryData } from '@/Components/Navbar/data';
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faBars, faBarsStaggered, faCircleXmark, faTableCells } from "@fortawesome/free-solid-svg-icons";
-import { getCategories } from '@/Utils/Products/getCategories';
+import { CategoryData, getCategories } from '@/Utils/Products/getCategories';
 
 export default function Category ({params}: any) {
   const categoryParam = params.category;
   const [products, setProducts] = useState<ProductData[]>([]);
-  const [categories, setCategories] = useState<categoryData[]>();
+  const [categories, setCategories] = useState<CategoryData[]>();
 
   const [from, setFrom] = useState<number | undefined>(undefined);
   const [to, setTo] = useState<number | undefined>(undefined);
@@ -103,8 +102,8 @@ export default function Category ({params}: any) {
               <p>All Products</p>
               <span className={`p-2 border-2 rounded-full ml-auto ${categoryParam === 'AllProducts' ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>
-            {categories?.map((category: categoryData) => (
-              <Link href={`/Categories/${category.href}`} key={category.id} className={`flex items-center gap-5 mb-2 ${categoryParam === category.href ? 'text-green-400' : 'text-gray-400'}`}>
+            {categories?.map((category: CategoryData) => (
+              <Link href={`/Categories/${category.href}`} key={category._id} className={`flex items-center gap-5 mb-2 ${categoryParam === category.href ? 'text-green-400' : 'text-gray-400'}`}>
                 <p>{category.title}</p>
                 <span className={`p-2 border-2 rounded-full ml-auto ${category.href === categoryParam ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>

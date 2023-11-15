@@ -12,7 +12,7 @@ const diskStorage = multer.diskStorage({
         cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-        const fileName = `product-${Date.now()}-${file.originalname}`;
+        const fileName = `products-${Date.now()}-${file.originalname}`;
         cb(null, fileName)
     }
 })
@@ -29,19 +29,16 @@ const fileFilter = (req: Request, file: { mimetype: string; }, cb: (arg0: null, 
 
 const upload = multer({storage: diskStorage, fileFilter});
 
+
 router.route('/')
         .get(getAllProducts);
 
 router.route('/add')
-        .post(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), upload.array('images', 12), addProduct);
+        .post(upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'images', maxCount: 12 }]), addProduct);
 
-router.route('/project/:productId')
-        .get(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), getProduct);
-
-router.route('/update/:productId')
-        .put(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), updateProduct);
-
-router.route('/delete/:productId')
-        .delete(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), deleteProduct);
+router.route('/:productId')
+        .get(verifyToken, allowedTo(userRoles.USER || userRoles.MANAGER), getProduct)
+        .put(verifyToken, allowedTo(userRoles.USER || userRoles.MANAGER), updateProduct)
+        .delete(deleteProduct);
 
 export { router as productsRoute };

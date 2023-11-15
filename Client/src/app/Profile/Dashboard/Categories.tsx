@@ -25,8 +25,8 @@ const Categories = () => {
     const [categories, setCategories] = useState<CategoryData[]> ();
     const [file, setFile] = useState<File | undefined>(undefined);
 
+    getCategories().then((data) => setCategories(data));
     useEffect(() => {
-        getCategories().then((data) => setCategories(data));
         if(successMsg){
             Swal.fire({
                 title: "Done",

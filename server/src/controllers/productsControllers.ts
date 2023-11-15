@@ -22,7 +22,7 @@ const getAllProducts = asyncWrapper(
     }else if(sortByHighestPrice === '0'){
       products = await Product.find().sort({price: -1});
     }else{
-      products = await Product.find();
+      products = await Product.find().sort({createdAt: -1});
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: products });
   }
@@ -30,14 +30,17 @@ const getAllProducts = asyncWrapper(
 
 const addProduct = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, description, price, discountPercentage, stock, brand, category} = req.body;
-    const images: string[] = (req?.files as Express.Multer.File[])?.map((file: Express.Multer.File) => file.filename);
-    if (!title || !description || !price || !stock || !stock || !brand || !category || images.length === 0) {
+    const { title, description, price, discountPercentage, stock, brand, category } = req.body;
+    if (!title || !description || !price || !stock || !stock || !brand || !category) {
       const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
       return next(error);
     }
 
-    const product = new Product({
+    const thumbnailFile = (req.files as { [fieldname: string]: Express.Multer.File[] })['thumbnail']?.[0];
+    const thumbnail: string = thumbnailFile?.filename || '';
+
+    const images: string[] = (req.files! as { [fieldname: string]: Express.Multer.File[] })['images']?.map((file: Express.Multer.File) => file.filename) || [];
+    const newProduct = new Product ({
       title,
       description,
       price,
@@ -45,12 +48,12 @@ const addProduct = asyncWrapper(
       stock,
       brand,
       category,
-      thumbnail: req?.file?.filename,
+      thumbnail,
       images
     });
 
-    await product.save();
-    res.status(201).json({ status: httpStatusText.SUCCESS, data: product });
+    await newProduct.save();
+    res.status(201).json({ status: httpStatusText.SUCCESS, message: 'Product has been created successfully' });
   }
 );
 
@@ -63,18 +66,44 @@ const getProduct = asyncWrapper(
 );
 
 const updateProduct = asyncWrapper(
-  async (req: Request, res: Response) => {
-    const produtId = req.params.produtId;
-    await Product.updateOne({ _id: produtId }, { $set: { ...req.body } });
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: null });
+  async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.params.productId;
+    const findProduct = await Product.findOne({_id: productId});
+
+    const thumbnailFile = (req.files as { [fieldname: string]: Express.Multer.File[] })['thumbnail']?.[0];
+    const thumbnail: string = thumbnailFile?.filename || '';
+
+    const images: string[] = (req.files! as { [fieldname: string]: Express.Multer.File[] })['images']?.map((file: Express.Multer.File) => file.filename) || [];
+
+    if(!findProduct){
+      const error = new AppError('This product is not found', 404, httpStatusText.ERROR);
+      return next(error);
+    }
+
+    if(thumbnail && !images){
+      await Product.updateOne({ _id: productId }, {$set: {... req.body, thumbnail}})
+    }else if(images && !thumbnail){
+      await Product.updateOne({ _id: productId }, {$set: {... req.body, images}})
+    }else if(thumbnail && images){
+      await Product.updateOne({ _id: productId }, {$set: {... req.body, thumbnail, images}})
+    }else{
+      await Product.updateOne({ _id: productId }, { $set: { ...req.body } });
+    }
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Product has been updated successfully' });
   }
 );
 
 const deleteProduct = asyncWrapper(
-  async (req: Request, res: Response) => {
-    const produtId = req.params.produtId;
-    await Product.deleteOne({ _id: produtId });
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: null });
+  async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.params.productId;
+    const findProduct = await Product.findOne({_id: productId});
+    if(!findProduct){
+      const error = new AppError('This product is not found', 404, httpStatusText.ERROR);
+      return next(error);
+    }
+    await Product.deleteOne({_id: findProduct._id});
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Product has been deleted successfully' });
   }
 );
 
