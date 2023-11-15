@@ -196,16 +196,18 @@ const Products = () => {
           });
     }
 
+    console.log(images)
+    console.log(thumbnail)
   return (
     <div>
         <div className='w-full mt-5 max-md:w-3/4 h-fit bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
             <input type='text' name='title' placeholder='product title' value={productData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='title' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='title' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='title' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='title' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='title' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <select onChange={handleChange}>
+            <input type='text' name='description' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='price' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='discountPercentage' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='stock' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <select name='category' onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none'>
                 {categories?.map((category) => (
                     <option value={category.title}>{category.title}</option>
                 ))}
