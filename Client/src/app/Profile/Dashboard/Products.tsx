@@ -11,19 +11,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
-import { ProductData } from "@/Components/Products/Product/ProductCard";
 
 const Products = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
 
+    interface ProductData{
+        _id?: string;
+        title: string;
+        description: string;
+        price: string;
+        discountPercentage: string;
+        stock: string;
+        brand: string;
+        category: string;
+        thumbnail: string;
+        images: [string];
+    }
+
+    const [categories, setCategories] = useState<CategoryData[]> ();
     const [productData, setProductData] = useState<ProductData> ({
         title: '',
         description: '',
-        price: 0,
-        discountPercentage: 0,
-        stock: 0,
+        price: '',
+        discountPercentage: '',
+        stock: '',
         brand: '',
-        category: '',
+        category: 'laptops',
         thumbnail: '',
         images: ['']
     });
@@ -31,7 +44,14 @@ const Products = () => {
     const [updateMode, setUpdateMode] = useState<boolean> (false);
     const [productId, setProductId] = useState<any> (null);
     const [products, setProducts] = useState<ProductData[]> ();
-    const [files, setFiles] = useState<File | undefined>(undefined);
+    const [images, setImages] = useState<any>([]);
+    const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const thumbnail = event.target.files?.[0];
+        setThumbnail(thumbnail);
+    };
+
 
     const getProducts = async() => {
         try{
@@ -42,8 +62,10 @@ const Products = () => {
             console.log(err)
         }
     }
+    
     useEffect(() => {
         getProducts();
+        getCategories().then((data: CategoryData[]) => setCategories(data));
         if(successMsg){
             Swal.fire({
                 title: "Done",
@@ -60,13 +82,7 @@ const Products = () => {
         }
     }, [successMsg, err]);
 
-    
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        setFiles(file);
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
         setProductData({...productData, [name]: value});
     }
@@ -77,8 +93,19 @@ const Products = () => {
         try{            
             const formData = new FormData();
             formData.append('title', productData.title);
-            if (files) {
-                formData.append('thumbnail', files);
+            formData.append('description', productData.description);
+            formData.append('price', productData.price);
+            formData.append('discountPercentage', productData.discountPercentage);
+            formData.append('stock', productData.stock);
+            formData.append('brand', productData.brand);
+            formData.append('category', productData.category);
+            if(thumbnail){
+                formData.append('thumbnail', thumbnail);
+            }
+            if (images.length) {
+                for(let i = 0; i < images.length; i++){
+                    formData.append('images[]', images[i]);
+                }
             }
             if(updateMode){
                 await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
@@ -90,17 +117,17 @@ const Products = () => {
             setProductData({
                 title: '',
                 description: '',
-                price: 0,
-                discountPercentage: 0,
-                stock: 0,
+                price: '',
+                discountPercentage: '',
+                stock: '',
                 brand: '',
-                category: '',
+                category: 'laptops',
                 thumbnail: '',
                 images: ['']
             });
-            setFiles(undefined);
+            setImages([null]);
             setErr(null);
-            getCategories();
+            getProducts();
         }catch(err: any){
             setErr(err.response?.data.message);
             console.log(err);
@@ -148,7 +175,7 @@ const Products = () => {
             reverseButtons: true,
             preConfirm: async () => {
                 await axios.post(DELETE_PRODUCT + id, config),
-                getCategories();
+                getProducts();
             },
           }).then((result) => {
             if (result.isConfirmed) {
@@ -172,10 +199,21 @@ const Products = () => {
   return (
     <div>
         <div className='w-full mt-5 max-md:w-3/4 h-fit bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
-            <input type='text' name='title' placeholder='category title' value={productData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='href' placeholder='category href' value={productData.description} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='product title' value={productData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
+            <select onChange={handleChange}>
+                {categories?.map((category) => (
+                    <option value={category.title}>{category.title}</option>
+                ))}
+            </select>
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
-            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose img</button>
+            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose thumbnail</button>
+            <input multiple id='selectImager' accept="image/*" className='hidden' type='file' onChange={(e) => e.target.files && setImages([...e.target.files])} />
+            <button onClick={() => document.getElementById('selectImager')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose images</button>
             
             {isLoading ?
                 <SkewLoader color="#ffffff" />
@@ -186,8 +224,11 @@ const Products = () => {
         <div className='flex flex-col items-center gap-3 mt-10'>
             {products?.map((product: ProductData) => (
                 <span key={product._id} className='w-full flex justify-between items-center p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
-                    <Image width={200} height={200} className='w-[100px] h-[100px]' src={SHOW_IMG + product.thumbnail} alt={product.title} />
-                    <Link className='duration-200 hover:text-yellow-500' href={`/categories/${product._id}`}>{product.title}</Link>
+                    <Link href={`/categories/${product._id}`}>
+                        <Image width={200} height={200} className='w-[100px] h-[100px] duration-200 scale-105 rounded-md' src={product.thumbnail.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
+                    </Link>
+                    <p>{product.title}</p>
+                    <p>left: {product.stock}</p>
                     <span>
                         <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(product._id)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
                         <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(product._id)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />

@@ -77,7 +77,7 @@ const Categories = () => {
             });
             setFile(undefined);
             setErr(null);
-            getCategories();
+            getCategories().then((data) => setCategories(data));
         }catch(err: any){
             setErr(err.response?.data.message);
             console.log(err);
@@ -118,7 +118,7 @@ const Categories = () => {
             reverseButtons: true,
             preConfirm: async () => {
                 await axios.post(DELETE_CATEGORY + id, config),
-                getCategories();
+                getCategories().then((data) => setCategories(data));
             },
           }).then((result) => {
             if (result.isConfirmed) {
