@@ -43,7 +43,7 @@ const Users = () => {
     
   return (
     <>
-        <span className='flex items-center'>
+        <span className='flex items-center max-md:flex-col'>
             <PieChart width={400} height={400}>
                 <Pie
                 data={data}
@@ -66,7 +66,7 @@ const Users = () => {
                 <p style={{color: COLORS[2]}}>Users: {users?.length}</p>
             </span>
         </span>
-        <span className='w-full flex flex-col items-center gap-4 p-5'>
+        <span className='w-full flex flex-col max-md:justify-center items-center gap-4 p-5'>
             {managers?.map((manager) => (
                <UserCard key={manager._id} user={manager} handleDelete={handleDelete} />
             ))}

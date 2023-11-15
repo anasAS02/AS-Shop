@@ -31,11 +31,10 @@ const getAllProducts = asyncWrapper(
 const addProduct = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const { title, description, price, discountPercentage, stock, brand, category } = req.body;
-    if (!title || !description || !price || !stock || !stock || !brand || !category) {
+    if (!title || !description || !price || !discountPercentage || !stock || !brand || !category) {
       const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
       return next(error);
     }
-
     const thumbnailFile = (req.files as { [fieldname: string]: Express.Multer.File[] })['thumbnail']?.[0];
     const thumbnail: string = thumbnailFile?.filename || '';
 
@@ -81,12 +80,16 @@ const updateProduct = asyncWrapper(
     }
 
     if(thumbnail && !images){
+      console.log('thumbnail && !images')
       await Product.updateOne({ _id: productId }, {$set: {... req.body, thumbnail}})
     }else if(images && !thumbnail){
+      console.log('images && !thumbnail')
       await Product.updateOne({ _id: productId }, {$set: {... req.body, images}})
     }else if(thumbnail && images){
+      console.log('thumbnail && images')
       await Product.updateOne({ _id: productId }, {$set: {... req.body, thumbnail, images}})
-    }else{
+    }else if(!thumbnail && !images){
+      console.log('!thumbnail && !images')
       await Product.updateOne({ _id: productId }, { $set: { ...req.body } });
     }
 

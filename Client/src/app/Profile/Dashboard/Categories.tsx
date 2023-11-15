@@ -106,7 +106,7 @@ const Categories = () => {
 
   return (
     <div>
-        <div className='w-full mt-5 max-md:w-3/4 h-fit bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
+        <div className='w-full mt-5 max-md:w-3/4 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
             <input type='text' name='title' placeholder='category title' value={categoryData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />

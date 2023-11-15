@@ -31,8 +31,8 @@ const Profile = () => {
     }
   
   return (
-    <div className={`${mode === 'Dashboard'? 'h-full' : 'h-screen'} flex items-start gap-10 p-10`}>
-        <aside className='flex flex-col gap-5 bg-slate-300 h-fit p-5 rounded-md'>
+    <div className={`${mode === 'Dashboard'? 'h-full' : 'h-screen'} flex items-start max-md:flex-col max-md:justify-center gap-10 p-10`}>
+        <aside className='flex flex-col max-md:flex-row max-md:justify-center gap-5 bg-slate-300 h-fit p-5 rounded-md max-md:text-xs'>
             <button className={`${mode === 'Info' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faCircleInfo} />    
             Info</button>
@@ -47,7 +47,7 @@ const Profile = () => {
         }
         {mode === 'Dashboard' &&
             <div className='w-full flex flex-col items-center justify-center'>
-                <nav className='flex items-center gap-2'>
+                <nav className='flex items-center gap-2 max-md:text-xs'>
                     <button id='users' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'users' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Users</button>
                     <button id='management' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'management' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Management</button>
                     <button id='categories' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'categories' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Categories</button>

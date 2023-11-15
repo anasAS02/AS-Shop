@@ -37,13 +37,13 @@ const Products = () => {
         discountPercentage: '',
         stock: '',
         brand: '',
-        category: 'laptops'
+        category: 'Laptops'
     });
 
     const [updateMode, setUpdateMode] = useState<boolean> (false);
     const [productId, setProductId] = useState<any> (null);
     const [products, setProducts] = useState<ProductData[]> ();
-    const [images, setImages] = useState<any>(undefined);
+    const [images, setImages] = useState<File[] | undefined>(undefined);
     const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +85,7 @@ const Products = () => {
         const {name, value} = e.target;
         setProductData({...productData, [name]: value});
     }
-
+    
     const handleSubmit = async (e: React.MouseEvent, url: string) => {
         e.preventDefault();
         setIsLoading(true);
@@ -103,32 +103,30 @@ const Products = () => {
             }
             if (images) {
                 for(let i = 0; i < images.length; i++){
-                    formData.append('images[]', images[i]);
+                    formData.append('images', images[i]);
                 }
             }
-            const res = await axios.post(url, {formData});
-            console.log(res.data);
-            // console.log('formData', formData)
 
-            // if(updateMode){
-            //     await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
-            //     setUpdateMode(false);
-            //     setProductId(null);
-            // }else{
-            //     await axios.post(url, {formData}, config).then((data) => setSuccessMsg(data.data.message));
-            // }
-            // setProductData({
-            //     title: '',
-            //     description: '',
-            //     price: '',
-            //     discountPercentage: '',
-            //     stock: '',
-            //     brand: '',
-            //     category: 'laptops'
-            // });
-            // setImages([null]);
-            // setErr(null);
-            // getProducts();
+            if(updateMode){
+                await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
+                setUpdateMode(false);
+                setProductId(null);
+            }else{
+                await axios.post(url, formData, config).then((data) => setSuccessMsg(data.data.message));
+            }
+            setProductData({
+                title: '',
+                description: '',
+                price: '',
+                discountPercentage: '',
+                stock: '',
+                brand: '',
+                category: 'Laptops'
+            });
+            setThumbnail(undefined);
+            setImages(undefined);
+            setErr(null);
+            getProducts();
         }catch(err: any){
             setErr(err.response?.data.message);
             console.log(err);
@@ -149,9 +147,7 @@ const Products = () => {
                 discountPercentage: findProduct.discountPercentage,
                 stock: findProduct.stock,
                 brand: findProduct.brand,
-                category: findProduct.category,
-                thumbnail: findProduct.thumbnail,
-                images: findProduct.images
+                category: findProduct.category
             })
             setProductId(id)
         }
@@ -161,9 +157,27 @@ const Products = () => {
         deleteConfirmation({ url: DELETE_PRODUCT + id, config, successMsg: null, setSuccessMsg: () => setSuccessMsg(null), func: getProducts });
     }
 
+    const showThumbnail = ( thumbnail &&
+        <div className='flex items-start flex-col gap-2'>
+            <span className='flex items-center gap-2'>
+                <Image src={URL.createObjectURL(thumbnail)} width={100} height={100} alt={thumbnail.name} className='rounded-md' />
+                <span className='text-base max-md:text-sm text-yellow-500 flex items-start flex-col'>{thumbnail.name} <p className='text-sm text-black'>{thumbnail.size / 1024 < 900 ? (thumbnail.size / 1024).toFixed(2) + ' kb' : (thumbnail.size / (1024 * 1024)).toFixed(2) + ' mb'}</p></span>
+            </span>
+        </div>
+    )
+
+    const showImgs = images?.map((img: File, i) => (
+        <div key={i} className='flex items-start flex-col gap-2'>
+            <span className='flex items-center gap-2'>
+                <Image src={URL.createObjectURL(img)} width={100} height={100} alt={img.name} className='rounded-md' />
+                <span className='text-base max-md:text-sm text-yellow-500 flex items-start flex-col'>{img.name} <p className='text-sm text-black'>{img.size / 1024 < 900 ? (img.size / 1024).toFixed(2) + ' kb' : (img.size / (1024 * 1024)).toFixed(2) + ' mb'}</p></span>
+            </span>
+        </div>
+    ))
+
   return (
     <div>
-        <div className='w-full mt-5 max-md:w-3/4 h-fit bg-green-400 rounded-md flex flex-col items-center gap-5 p-14'>
+        <div className='w-full mt-5 max-md:w-3/4 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
             <input type='text' name='title' placeholder='product title' value={productData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='description' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <input type='text' name='price' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
@@ -172,13 +186,15 @@ const Products = () => {
             <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
             <select name='category' value={productData.category} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none'>
                 {categories?.map((category) => (
-                    <option value={category.title}>{category.title}</option>
+                    <option key={category._id} value={category.title}>{category.title}</option>
                 ))}
             </select>
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
             <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose thumbnail</button>
+            {showThumbnail}
             <input multiple id='selectImager' accept="image/*" className='hidden' type='file' onChange={(e) => e.target.files && setImages([...e.target.files])} />
             <button onClick={() => document.getElementById('selectImager')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose images</button>
+            {showImgs}
             
             {isLoading ?
                 <SkewLoader color="#ffffff" />

@@ -38,7 +38,7 @@ router.route('/add')
 
 router.route('/:productId')
         .get(verifyToken, allowedTo(userRoles.USER || userRoles.MANAGER), getProduct)
-        .put(verifyToken, allowedTo(userRoles.USER || userRoles.MANAGER), updateProduct)
+        .put(upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'images', maxCount: 12 }]), updateProduct)
         .delete(deleteProduct);
 
 export { router as productsRoute };
