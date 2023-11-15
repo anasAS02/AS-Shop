@@ -63,7 +63,8 @@ const Products = () => {
     }
     
     useEffect(() => {
-        getCategories().then((data) => setCategories(data));
+        setIsLoading(true);
+        getCategories().then((data) => {setCategories(data); setIsLoading(false)});
         getProducts();
         if(successMsg){
             Swal.fire({
@@ -85,7 +86,7 @@ const Products = () => {
         const {name, value} = e.target;
         setProductData({...productData, [name]: value});
     }
-    
+
     const handleSubmit = async (e: React.MouseEvent, url: string) => {
         e.preventDefault();
         setIsLoading(true);
@@ -176,24 +177,28 @@ const Products = () => {
     ))
 
   return (
-    <div>
-        <div className='w-full mt-5 max-md:w-3/4 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
-            <input type='text' name='title' placeholder='product title' value={productData.title} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='description' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='price' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='discountPercentage' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='stock' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none' />
-            <select name='category' value={productData.category} onChange={handleChange} className='w-fit p-3 rounded-md border-none outline-none'>
+    <div className='w-full'>
+        <div className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
+            <input type='text' name='title' placeholder='product title' value={productData.title} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='description' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='price' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='discountPercentage' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='stock' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
+            {isLoading ?
+            <SkewLoader color="#ffffff" />
+            :
+            <select name='category' value={productData.category} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none'>
                 {categories?.map((category) => (
                     <option key={category._id} value={category.title}>{category.title}</option>
                 ))}
             </select>
+            }
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
-            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose thumbnail</button>
+            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 max-md:p-1 bg-white max-md:text-xs text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose thumbnail</button>
             {showThumbnail}
             <input multiple id='selectImager' accept="image/*" className='hidden' type='file' onChange={(e) => e.target.files && setImages([...e.target.files])} />
-            <button onClick={() => document.getElementById('selectImager')?.click()} className='p-2 bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose images</button>
+            <button onClick={() => document.getElementById('selectImager')?.click()} className='p-2 max-md:p-1 bg-white max-md:text-xs text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose images</button>
             {showImgs}
             
             {isLoading ?
@@ -202,16 +207,16 @@ const Products = () => {
                 <button onClick={(e) => {updateMode ? handleSubmit(e, UPDATE_PRODUCT + productId) : handleSubmit(e, ADD_PRODUCT)}} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>{updateMode ? 'Update' : 'Add'}</button>
             }
         </div>
-        <div className='flex flex-col items-center gap-3 mt-10'>
+        <div className='w-full flex flex-col items-center gap-3 mt-10'>
             {products?.map((product: ProductData) => (
-                <span key={product._id} className='w-full flex justify-between items-center p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
+                <span key={product._id} className='w-full flex justify-between items-center max-md:justify-center max-md:p-1 p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
                     <Link href={`/categories/${product._id}`}>
-                        <Image width={200} height={200} className='w-[100px] h-[100px] duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
+                        <Image width={200} height={200} className='w-[100px] h-[100px] max-md:w-[50px] max-md:h-[50px] mr-1 duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
                     </Link>
-                    <p>{product.title}</p>
-                    <p>left: {product.stock}</p>
-                    <span>
-                        <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(product._id)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
+                    <p className='text-xs'>{product.title}</p>
+                    <p className='text-xs'>left: {product.stock}</p>
+                    <span className='max-md:ml-auto max-md:flex max-md:items-center max-md:flex-col max-md:gap-1'>
+                        <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(product._id)}} className='md:mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
                         <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(product._id)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />
                     </span>
                 </span>
