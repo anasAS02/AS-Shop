@@ -45,42 +45,44 @@ export const Navbar = () => {
   }, [])
   
   return (
-    <nav className='w-full flex items-center gap-14 justify-center max-md:flex-wrap'>
+    <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col'>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
           <Image src={Logo} width={100} height={100} alt='Logo' />
           AS Shop
         </Link>
-        <div className='relative'>
+        <div className='w-full relative max-md:order-1'>
           <input type='search' placeholder='Search...' className='p-3 w-full border-slata-200 border-2 outline-none' />
           <FontAwesomeIcon icon={faMagnifyingGlass} className='absolute top-2/4 -translate-x-2/4 -translate-y-2/4 right-0 w-[14px] h-[14px] text-slate-300' />
         </div>
-        <div className='flex items-center gap-3'>
-          <FontAwesomeIcon icon={faUser} className='w-[18px] h-[18px] text-slate-600' />
-          <span className='flex flex-col items-start gap-1 text-sm'>
-            <p className='text-gray-500'>Welcome</p>
-            <span className='flex items-center gap-2'>
-              <Link href={`/${isLoggedIn ? 'Profile' : 'Auth/Login'}`} className='duration-200 hover:text-yellow-500'>{isLoggedIn ? 'Profile' : 'Login'}</Link>
+        <span className='flex items-start gap-10'>
+          <div className='flex items-center gap-3'>
+            <FontAwesomeIcon icon={faUser} className='w-[18px] h-[18px] text-slate-600' />
+            <span className='flex flex-col items-start gap-1 text-sm'>
+              <p className='text-gray-500'>Welcome</p>
+              <span className='flex items-center gap-2'>
+                <Link href={`/${isLoggedIn ? 'Profile' : 'Auth/Login'}`} className='duration-200 hover:text-yellow-500'>{isLoggedIn ? 'Profile' : 'Login'}</Link>
+              </span>
             </span>
-          </span>
-        </div>
-        <div className='flex items-center gap-3'>
-          <Link href='/cart'>
-            <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] text-slate-600' />
-          </Link>
-          <span className='flex flex-col items-start gap-1 text-sm'>
-            <p className='text-gray-500'>Cart</p>
-            <p>$0</p>
-          </span>
-        </div>
-        <div className='flex items-center gap-3'>
-          <Link href='/favourite'>
-            <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] text-slate-600' />
-          </Link>
-          <span className='flex flex-col items-start gap-1 text-sm'>
-            <p className='text-gray-500'>Favourite</p>
-            <p>0</p>
-          </span>
-        </div>
+          </div>
+          <div className='flex items-center gap-3'>
+            <Link href='/cart'>
+              <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] text-slate-600' />
+            </Link>
+            <span className='flex flex-col items-start gap-1 text-sm'>
+              <p className='text-gray-500'>Cart</p>
+              <p>$0</p>
+            </span>
+          </div>
+          <div className='flex items-center gap-3'>
+            <Link href='/favourite'>
+              <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] text-slate-600' />
+            </Link>
+            <span className='flex flex-col items-start gap-1 text-sm'>
+              <p className='text-gray-500'>Favourite</p>
+              <p>0</p>
+            </span>
+          </div>
+        </span>
     </nav>
   )
 }

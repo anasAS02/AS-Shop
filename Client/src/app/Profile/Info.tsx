@@ -4,7 +4,6 @@ import { handleMsg } from "@/Utils/Status/handleStatusMsg";
 import { useStatusContext } from '@/Utils/Status/statusContext';
 import axios from 'axios';
 import { CHANGE_ADDRESS, CHANGE_COUNTRY, CHANGE_NAME, CHANGE_PASSWORD, CHANGE_PHONE_NUMBER, GET_INFO } from '@/Utils/Apis';
-import Swal from 'sweetalert2';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css'
 import { formData, handleChange } from '@/Utils/Auth/handleChange';
@@ -17,7 +16,6 @@ import { config } from "@/Utils/Auth/handleAuth";
 
 
 const Info = () => {
-    const token = Cookie.get('token');
     const email = Cookie.get('email');
 
     const {successMsg, setSuccessMsg, err, setErr} = useStatusContext();

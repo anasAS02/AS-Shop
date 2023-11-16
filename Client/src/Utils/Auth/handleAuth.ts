@@ -8,10 +8,7 @@ const email = Cookies.get('email');
 export const config = {
     headers: {
         Authorization: `Bearer ${token}`,
-    },
-    params: {
-        email: email,
-    },
+    }
 };
 
 export const handleAuth = async (e: React.MouseEvent,
