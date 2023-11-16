@@ -40,7 +40,7 @@ const Info = () => {
     }
 
     useEffect(() => {
-        handleMsg(undefined, successMsg, err);
+        handleMsg(undefined, successMsg, setSuccessMsg, err, setErr);
         getInfo();
     }, [successMsg, err]);
 

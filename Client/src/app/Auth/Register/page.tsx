@@ -23,7 +23,7 @@ const Register = () => {
     })
 
     useEffect(() => {
-        handleMsg(setForm, successMsg, err);
+        handleMsg(setForm, successMsg, setSuccessMsg, err, setErr);
     }, [successMsg, err])
 
   return (

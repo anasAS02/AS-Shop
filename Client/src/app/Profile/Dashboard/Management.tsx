@@ -58,8 +58,9 @@ const Management = () => {
 
     useEffect(() => {
         getUsers();
-        handleMsg(setForm, successMsg, err);
+        handleMsg(setForm, successMsg, setSuccessMsg, err, setErr);
     }, [successMsg, err]);
+    console.log(successMsg)
 
     const handleChangeRole = async(id: any, role: string) => {
         try{
@@ -72,7 +73,7 @@ const Management = () => {
     }
     
     const handleRemoveRole = async(id: any) => {
-        confirmation({ url: REMOVE_ROLE + {id, role}, config, successMsg: null, func: getUsers });
+        confirmation({ url: REMOVE_ROLE, data: {id, role}, config, successMsg: null, func: getUsers });
     }
 
   return (

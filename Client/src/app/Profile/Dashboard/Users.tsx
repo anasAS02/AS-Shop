@@ -1,13 +1,12 @@
 'use client'
 
-import { CHANGE_ROLE, GET_USERS, REMOVE_ROLE } from "@/Utils/Apis";
+import { GET_USERS } from "@/Utils/Apis";
 import { config } from "@/Utils/Auth/handleAuth";
 import { formData } from "@/Utils/Auth/handleChange";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell } from 'recharts';
 import UserCard from "./UserCard";
-import confirmation from "@/Utils/Status/confirmation";
 import { handleMsg } from "@/Utils/Status/handleStatusMsg";
 import { useStatusContext } from "@/Utils/Status/statusContext";
 
@@ -29,7 +28,7 @@ const Users = () => {
     }
 
     useEffect(() => {
-        handleMsg(undefined, successMsg, err);
+        handleMsg(undefined, successMsg, undefined, err, undefined);
         getUsers();
     }, [successMsg, err]);
 
@@ -68,7 +67,7 @@ const Users = () => {
         </span>
         <span className='w-full flex flex-col max-md:justify-center items-center gap-4 p-5'>
             {users?.map((user) => (
-               <UserCard key={user._id} user={user} handleChangeRole={undefined} handleRemoveRole={undefined} />
+               <UserCard key={user._id} user={user} />
             ))}
         </span>
     </>

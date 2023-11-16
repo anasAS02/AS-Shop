@@ -52,8 +52,8 @@ const addUser = asyncWrapper((
 
 const changeRole = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { userId, role } = req.body.id;
-    const findUser = await User.findOne({_id: userId});
+    const { id, role } = req.body;
+    const findUser = await User.findOne({_id: id});
     if(!findUser){
         const error = new AppError('User is not found', 401, httpStatusText.ERROR);
         return next(error);
@@ -70,8 +70,8 @@ const changeRole = asyncWrapper(
 
 const removeRole = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { userId, role } = req.body;
-    const findUser = await User.findOne({_id: userId});
+    const { id, role } = req.body;
+    const findUser = await User.findOne({_id: id});
     if(!findUser){
         const error = new AppError('User is not found', 401, httpStatusText.ERROR);
         return next(error);

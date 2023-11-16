@@ -3,13 +3,14 @@ import axios from "axios";
 
 interface Data {
   url: string;
+  data?: any;
   config: any;
   successMsg?: string | null;
   setSuccessMsg?: React.Dispatch<React.SetStateAction<string | null>>;
   func?: () => void;
 }
 
-const confirmation = async ({ url, config, successMsg, setSuccessMsg, func }: Data) => {
+const confirmation = async ({ url, data, config, successMsg, setSuccessMsg, func }: Data) => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
@@ -28,8 +29,11 @@ const confirmation = async ({ url, config, successMsg, setSuccessMsg, func }: Da
       reverseButtons: true,
       preConfirm: async () => {
         try {
-          const res = await axios.delete(url, config);
-          setSuccessMsg && setSuccessMsg(res.data.message);
+          if(data){
+            await axios.put(url, data, config).then((data) => setSuccessMsg && setSuccessMsg(data.data.message));
+          }else{
+            await axios.delete(url, config).then((data) => setSuccessMsg && setSuccessMsg(data.data.message));
+          }
           func && func();
         } catch (error: any) {
           console.error(error);
