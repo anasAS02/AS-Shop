@@ -60,7 +60,6 @@ const Management = () => {
         getUsers();
         handleMsg(setForm, successMsg, setSuccessMsg, err, setErr);
     }, [successMsg, err]);
-    console.log(successMsg)
 
     const handleChangeRole = async(id: any, role: string) => {
         try{

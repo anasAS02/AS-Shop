@@ -37,7 +37,7 @@ const Profile = () => {
             <button className={`${mode === 'Info' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faCircleInfo} />    
             Info</button>
-            { (role === userRoles.MANAGER || userRoles.ADMIN) &&
+            { (role === userRoles.MANAGER || role === userRoles.ADMIN) &&
             <button className={`${mode === 'Dashboard' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Dashboard')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faGear} />    
             Dashboard</button>

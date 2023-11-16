@@ -12,6 +12,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
 import confirmation from "@/Utils/Status/confirmation";
+import { handleMsg } from "@/Utils/Status/handleStatusMsg";
 
 const Products = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
@@ -63,23 +64,10 @@ const Products = () => {
     }
     
     useEffect(() => {
+        handleMsg(undefined, successMsg, setSuccessMsg, err, setErr);
         setIsLoading(true);
         getCategories().then((data) => {setCategories(data); setIsLoading(false)});
         getProducts();
-        if(successMsg){
-            Swal.fire({
-                title: "Done",
-                text: successMsg,
-                icon: "success"
-            })
-        }
-        if(err){
-            Swal.fire({
-                title: "Oops...",
-                text: err,
-                icon: "error"
-            })
-        }
     }, [successMsg, err]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -99,20 +87,32 @@ const Products = () => {
             formData.append('stock', productData.stock);
             formData.append('brand', productData.brand);
             formData.append('category', productData.category);
-            if(thumbnail){
-                formData.append('thumbnail', thumbnail);
-            }
-            if (images) {
-                for(let i = 0; i < images.length; i++){
-                    formData.append('images', images[i]);
-                }
-            }
 
             if(updateMode){
+                if(thumbnail){
+                    formData.append('thumbnail', thumbnail);
+                }
+                if (images) {
+                    for(let i = 0; i < images.length; i++){
+                        formData.append('images', images[i]);
+                    }
+                }
                 await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
                 setUpdateMode(false);
                 setProductId(null);
             }else{
+                if(!images || !thumbnail){
+                    setErr('Images and thumbnail are required');
+                    return;
+                }
+                if(thumbnail){
+                    formData.append('thumbnail', thumbnail);
+                }
+                if (images) {
+                    for(let i = 0; i < images.length; i++){
+                        formData.append('images', images[i]);
+                    }
+                }
                 await axios.post(url, formData, config).then((data) => setSuccessMsg(data.data.message));
             }
             setProductData({

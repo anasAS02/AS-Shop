@@ -26,9 +26,9 @@ const UserCard: React.FC<UserCardProps> = ({handleRemoveRole, handleChangeRole, 
         {user.phoneNumber}</p>
       </span>
       <span className='flex items-center max-md:flex-col max-md:justify-center gap-2'>
-        {(user.role === userRoles.ADMIN || userRoles.MANAGER) && <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{user.role}</p>}
-        {(user.role === userRoles.ADMIN || userRoles.MANAGER) && user.email !== email && <button onClick={() => handleChangeRole && handleChangeRole(user._id, user.role || userRoles.USER)} className='text-sm p-1 rounded-md duration-200 bg-green-500 hover:bg-green-400 text-white'>{user.role === 'ADMIN' ? 'Make Manager' : 'Make Admin'}</button>}
-        {(user.role === userRoles.ADMIN || userRoles.MANAGER) && user.email !== email && <button onClick={() => handleRemoveRole && handleRemoveRole(user._id)} className='text-sm p-1 rounded-md duration-200 bg-red-500 hover:bg-red-400 text-white'>Remove {user.role}</button>}
+        <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{user.role}</p>
+        {(user.role === userRoles.ADMIN || user.role === userRoles.MANAGER) && user.email !== email && <button onClick={() => handleChangeRole && handleChangeRole(user._id, user.role || userRoles.USER)} className='text-sm p-1 rounded-md duration-200 bg-green-500 hover:bg-green-400 text-white'>{user.role === 'ADMIN' ? 'Make Manager' : 'Make Admin'}</button>}
+        {(user.role === userRoles.ADMIN || user.role === userRoles.MANAGER) && user.email !== email && <button onClick={() => handleRemoveRole && handleRemoveRole(user._id)} className='text-sm p-1 rounded-md duration-200 bg-red-500 hover:bg-red-400 text-white'>Remove {user.role}</button>}
       </span>
     </span>
   )

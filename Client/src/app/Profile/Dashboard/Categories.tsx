@@ -12,6 +12,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
 import confirmation from "@/Utils/Status/confirmation";
+import { handleMsg } from "@/Utils/Status/handleStatusMsg";
 
 const Categories = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
@@ -26,22 +27,13 @@ const Categories = () => {
     const [categories, setCategories] = useState<CategoryData[]> ();
     const [file, setFile] = useState<File | undefined>(undefined);
 
-    getCategories().then((data) => setCategories(data));
     useEffect(() => {
-        if(successMsg){
-            Swal.fire({
-                title: "Done",
-                text: successMsg,
-                icon: "success"
-            })
-        }
-        if(err){
-            Swal.fire({
-                title: "Oops...",
-                text: err,
-                icon: "error"
-            })
-        }
+        handleMsg(undefined, successMsg, setSuccessMsg, err, setErr);
+        getCategories().then((data) => setCategories(data));
+        setCategoryData({
+            title: '',
+            href: ''
+        })
     }, [successMsg, err]);
 
     
@@ -102,7 +94,16 @@ const Categories = () => {
 
     const handleDelete = async (id: any) => {
         confirmation({ url: DELETE_CATEGORY + id, config, successMsg: null, setSuccessMsg, func: getCategories });
-    }
+    };
+
+    const showThumbnail = ( file &&
+        <div className='flex items-start flex-col gap-2'>
+            <span className='flex items-center gap-2'>
+                <Image src={URL.createObjectURL(file)} width={100} height={100} alt={file.name} className='rounded-md' />
+                <span className='text-base max-md:text-sm text-yellow-500 flex items-start flex-col'>{file.name} <p className='text-sm text-black'>{file.size / 1024 < 900 ? (file.size / 1024).toFixed(2) + ' kb' : (file.size / (1024 * 1024)).toFixed(2) + ' mb'}</p></span>
+            </span>
+        </div>
+    )
 
   return (
     <div className='w-full'>
@@ -111,7 +112,7 @@ const Categories = () => {
             <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
             <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 max-md:p-1 max-md:text-xs bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose img</button>
-            
+            {showThumbnail}
             {isLoading ?
                 <SkewLoader color="#ffffff" />
                 :
