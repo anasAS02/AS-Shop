@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
-import deleteConfirmation from "@/Utils/Status/deleteConfirmation";
+import confirmation from "@/Utils/Status/confirmation";
 
 const Categories = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
@@ -101,7 +101,7 @@ const Categories = () => {
     }
 
     const handleDelete = async (id: any) => {
-        deleteConfirmation({ url: DELETE_CATEGORY + id, config, successMsg: null, setSuccessMsg, func: getCategories });
+        confirmation({ url: DELETE_CATEGORY + id, config, successMsg: null, setSuccessMsg, func: getCategories });
     }
 
   return (

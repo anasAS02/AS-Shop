@@ -1,6 +1,9 @@
 import express, { Request } from 'express';
 import multer from 'multer';
 import { getAllCategories, getCategory, getCategoryProducts, addCategory, updateCategory, deleteCategory } from '../controllers/categoriesControllers';
+import verifyToken from '../middlewares/verifyToken';
+import allowedTo from '../middlewares/allowedTo';
+import { userRoles } from '../utils/userRoles';
 
 const router = express.Router();
 
@@ -30,14 +33,14 @@ router.route('/')
   .get(getAllCategories);
 
 router.route('/add')
-  .post(upload.single('thumbnail'), addCategory);
+  .post(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), addCategory);
 
 router.route('/update/:categoryId')
-  .put(upload.single('thumbnail'), updateCategory)
+  .put(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), updateCategory)
 
 router.route('/:categoryId')
   .get(getCategory)
-  .delete(deleteCategory);
+  .delete(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), deleteCategory);
 
 router.route('/products/:category')
   .get(getCategoryProducts);

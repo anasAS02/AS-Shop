@@ -1,13 +1,13 @@
 'use client'
 
-import { GET_USERS, REMOVE_USER } from "@/Utils/Apis";
+import { GET_USERS, REMOVE_ROLE } from "@/Utils/Apis";
 import { config } from "@/Utils/Auth/handleAuth";
 import { formData } from "@/Utils/Auth/handleChange";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 import UserCard from "./UserCard";
-import deleteConfirmation from "@/Utils/Status/deleteConfirmation";
+import confirmation from "@/Utils/Status/confirmation";
 
 const Users = () => {
 
@@ -37,8 +37,12 @@ const Users = () => {
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
-    const handleDelete = async(id: any) => {
-        deleteConfirmation({ url: REMOVE_USER + id, config, successMsg: null, func: getUsers });
+    const handleChangeRole = async(id: any) => {
+        confirmation({ url: REMOVE_ROLE + id, config, successMsg: null, func: getUsers });
+    }
+    
+    const handleRemoveRole = async(id: any) => {
+        confirmation({ url: REMOVE_ROLE + id, config, successMsg: null, func: getUsers });
     }
     
   return (
@@ -68,7 +72,7 @@ const Users = () => {
         </span>
         <span className='w-full flex flex-col max-md:justify-center items-center gap-4 p-5'>
             {users?.map((user) => (
-               <UserCard key={user._id} user={user} handleDelete={handleDelete} />
+               <UserCard key={user._id} user={user} handleChangeRole={handleChangeRole} handleRemoveRole={handleRemoveRole} />
             ))}
         </span>
     </>

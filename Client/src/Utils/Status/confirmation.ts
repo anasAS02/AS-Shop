@@ -9,7 +9,7 @@ interface Data {
   func?: () => void;
 }
 
-const deleteConfirmation = async ({ url, config, successMsg, setSuccessMsg, func }: Data) => {
+const confirmation = async ({ url, config, successMsg, setSuccessMsg, func }: Data) => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
@@ -56,4 +56,4 @@ const deleteConfirmation = async ({ url, config, successMsg, setSuccessMsg, func
   }
 };
 
-export default deleteConfirmation;
+export default confirmation;

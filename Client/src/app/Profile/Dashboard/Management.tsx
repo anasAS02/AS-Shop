@@ -89,10 +89,10 @@ const Management = () => {
             }
         </div>
         {managers?.map((manager) => (
-               <UserCard key={manager._id} user={manager} handleDelete={() => console.log('OK')} />
+               <UserCard key={manager._id} user={manager} handleChangeRole={manager._id} handleRemoveRole={manager._id} />
             ))}
         {admins?.map((admin) => (
-            <UserCard key={admin._id} user={admin} handleDelete={() => console.log('OK')} />
+            <UserCard key={admin._id} user={admin} handleChangeRole={admin._id} handleRemoveRole={admin._id} />
         ))}
     </div>
   )

@@ -50,7 +50,7 @@ const addUser = asyncWrapper((
     }
 ))
 
-const removeUser = asyncWrapper(
+const removeRole = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.body.id;
     const findUser = await User.findOne({_id: userId});
@@ -58,9 +58,9 @@ const removeUser = asyncWrapper(
         const error = new AppError('User is not found', 401, httpStatusText.ERROR);
         return next(error);
     }
-    await User.findByIdAndDelete(userId);
+    await User.updateOne({_id: findUser._id}, {$set: {... req.body, role: 'USER'}});
     res.status(200).json({status: httpStatusText.SUCCESS, message: 'User has been deleted successfully'})
   }
 )
 
-export { getUsers, addUser, removeUser };
+export { getUsers, addUser, removeRole };
