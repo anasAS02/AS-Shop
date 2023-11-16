@@ -53,6 +53,7 @@ export const Navbar = () => {
         <div className='w-full relative max-md:order-1'>
           <input type='search' placeholder='Search...' className='p-3 w-full border-slata-200 border-2 outline-none' />
           <FontAwesomeIcon icon={faMagnifyingGlass} className='absolute top-2/4 -translate-x-2/4 -translate-y-2/4 right-0 w-[14px] h-[14px] text-slate-300' />
+          
         </div>
         <span className='flex items-start gap-10'>
           <div className='flex items-center gap-3'>
@@ -66,7 +67,7 @@ export const Navbar = () => {
           </div>
           <div className='flex items-center gap-3'>
             <Link href='/Cart'>
-              <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] text-slate-600' />
+              <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] duration-200 text-slate-600 hover:text-green-400' />
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
               <p className='text-gray-500'>Cart</p>
@@ -74,8 +75,8 @@ export const Navbar = () => {
             </span>
           </div>
           <div className='flex items-center gap-3'>
-            <Link href='/favourite'>
-              <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] text-slate-600' />
+            <Link href='/Favourite'>
+              <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] duration-200 text-slate-600 hover:text-red-500' />
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
               <p className='text-gray-500'>Favourite</p>

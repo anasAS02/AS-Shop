@@ -1,4 +1,5 @@
 'use client'
+import { useStatusContext } from '@/Utils/Status/statusContext';
 import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -6,6 +7,7 @@ import Link from 'next/link';
 import {useState, useEffect} from 'react';
 const Cart = () => {
   const [hi, setHi] = useState<boolean>(false);
+  const {isLoggedIn} = useStatusContext();
   const [pros, setPros] = useState<any[]>();
   useEffect(() => {
     fetch('https://dummyjson.com/carts/1')
@@ -13,6 +15,13 @@ const Cart = () => {
     .then((data) => setPros(data.products));
   }, [])
   return (
+    !isLoggedIn ? 
+    <div className='h-screen'>
+      <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>You must be logged in
+        <Link href='/Auth/Login' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Login now</Link>
+      </h2>
+    </div>
+    :
     <div className={`${pros && pros.length > 0 ? 'h-full' : 'h-screen'} w-full p-10`}>
         {hi ? 
           <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your cart is empty

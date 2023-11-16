@@ -39,7 +39,7 @@ export const ProductCard = (props: ProductData) => {
                 <button className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
                 <FontAwesomeIcon icon={faCartPlus} className='w-[18px] h-[18px]' />
                 Add To Cart</button>
-                <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] text-gray-400 cursor-pointer' />
+                <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] duration-200 text-gray-400 hover:text-red-500 cursor-pointer' />
             </span>
             }
         </span>
