@@ -2,26 +2,24 @@ import express from 'express';
 const router = express.Router();
 
 import verifyToken from '../middlewares/verifyToken';
-import allowedTo from '../middlewares/allowedTo';
-import { userRoles } from '../utils/userRoles';
 import { changeName, changePassword, changeCountry, changeAddress, changePhoneNumber, getInfo } from '../controllers/userControllers';
 
 router.route('/getInfo')
-        .post(verifyToken, allowedTo(userRoles.USER || userRoles.ADMIN || userRoles.MANAGER), getInfo);
+        .post(verifyToken, getInfo);
 
 router.route('/changeName')
-        .put(verifyToken, allowedTo(userRoles.USER || userRoles.ADMIN || userRoles.MANAGER), changeName);
+        .put(verifyToken, changeName);
 
 router.route('/changePassword')
-        .put(verifyToken, allowedTo(userRoles.USER || userRoles.ADMIN || userRoles.MANAGER), changePassword);
+        .put(verifyToken, changePassword);
 
 router.route('/changeCountry')
-        .put(verifyToken, allowedTo(userRoles.USER || userRoles.ADMIN || userRoles.MANAGER), changeCountry);
+        .put(verifyToken, changeCountry);
 
 router.route('/changeAddress')
-        .put(verifyToken, allowedTo(userRoles.USER || userRoles.ADMIN || userRoles.MANAGER), changeAddress);
+        .put(verifyToken, changeAddress);
 
 router.route('/changePhoneNumber')
-        .put(verifyToken, allowedTo(userRoles.USER || userRoles.ADMIN || userRoles.MANAGER), changePhoneNumber);
+        .put(verifyToken, changePhoneNumber);
 
 export { router as userRoute };

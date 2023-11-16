@@ -8,6 +8,7 @@ import Users from './Dashboard/Users';
 import Management from './Dashboard/Management';
 import Categories  from './Dashboard/Categories';
 import Products from './Dashboard/Products';
+import {userRoles} from '../../../../server/src/utils/userRoles';
 
 const Profile = () => {
     const role = Cookie.get('role');
@@ -30,14 +31,13 @@ const Profile = () => {
         const id = e.target.id;
         setControlMode(id);
     }
-  
   return (
     <div className={`${mode === 'Dashboard'? 'h-full' : 'h-screen'} flex items-start max-md:flex-col max-md:justify-center gap-10 p-10`}>
         <aside className='flex flex-col max-md:flex-row max-md:justify-center gap-5 bg-slate-300 h-fit p-5 rounded-md max-md:text-xs max-md:w-full'>
             <button className={`${mode === 'Info' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faCircleInfo} />    
             Info</button>
-            { role !== 'USER' &&
+            { (role === userRoles.MANAGER || userRoles.ADMIN) &&
             <button className={`${mode === 'Dashboard' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Dashboard')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faGear} />    
             Dashboard</button>
@@ -48,7 +48,7 @@ const Profile = () => {
         { mode === 'Info' &&
             <Info />
         }
-        {mode === 'Dashboard' && role !== 'USER' &&
+        {mode === 'Dashboard' &&
             <div className='w-full flex flex-col items-center justify-center'>
                 <nav className='flex items-center gap-2 max-md:text-xs'>
                     <button id='users' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'users' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Users</button>
@@ -57,16 +57,16 @@ const Profile = () => {
                     <button id='products' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'products' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Products</button>
                     <button id='orders' onClick={(e) => handleControlMode(e)} className={`bg-transparent duration-200 ${controlMode === 'orders' ? 'text-yellow-500' : 'text-black'} hover:text-yellow-500`}>Orders</button>
                 </nav>
-            {controlMode === 'users' && role !== 'USER' &&
+            {controlMode === 'users' &&
                 <Users />
             }
-            {controlMode === 'management' && role !== 'USER' &&
+            {controlMode === 'management' &&
                 <Management />
             }
-            {controlMode === 'categories' && role !== 'USER' &&
+            {controlMode === 'categories' &&
                 <Categories />
             }
-            {controlMode === 'products' && role !== 'USER' &&
+            {controlMode === 'products' &&
                 <Products />
             }
             </div>

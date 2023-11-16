@@ -19,7 +19,7 @@ const Register = () => {
         password: '',
         country: 'us',
         address: '',
-        phoneNumber: ''
+        phoneNumber: '',
     })
 
     useEffect(() => {

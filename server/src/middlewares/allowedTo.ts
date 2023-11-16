@@ -9,7 +9,7 @@ interface CustomRequest extends Request {
     };
 }
 
-const allowedTo = (...roles: [string]) => {
+const allowedTo = (...roles: string[]) => {
     return (req: CustomRequest, res: Response, next: NextFunction) => {
         if(!roles.includes(req.currentUser?.role)){
             const error = new AppError('this role is not authorized', 401, httpStatusText.FAIL);

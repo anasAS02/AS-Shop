@@ -9,7 +9,7 @@ import 'react-phone-input-2/lib/style.css'
 import { formData, handleChange } from '@/Utils/Auth/handleChange';
 import { useState, useEffect } from "react";
 import Cookie from 'js-cookie';
-import { faCircleInfo, faEdit, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { config } from "@/Utils/Auth/handleAuth";
 
@@ -26,7 +26,8 @@ const Info = () => {
         address: '',
         phoneNumber: '',
         currentPassword: '',
-        newPassword: ''
+        newPassword: '',
+        role: ''
     });
 
     const getInfo = async () => {
@@ -39,7 +40,7 @@ const Info = () => {
     }
 
     useEffect(() => {
-        handleMsg(setInfo, successMsg, err);
+        handleMsg(undefined, successMsg, err);
         getInfo();
     }, [successMsg, err]);
 
@@ -51,10 +52,10 @@ const Info = () => {
     const updateUserInfo = async (e: React.MouseEvent, url: string) => {
         e.preventDefault();
         try{
-            const res = await axios.put(url, info, config);
+            await axios.put(url, info, config).then((data) => setSuccessMsg(data.data.message));
             setErr(null);
             setUpdateMode(null);
-            setSuccessMsg(res.data.message);
+            setSuccessMsg(null);
         }catch(err: any){
             setErr(err.response?.data.message);
             console.log(err)

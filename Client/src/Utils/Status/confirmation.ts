@@ -23,7 +23,7 @@ const confirmation = async ({ url, config, successMsg, setSuccessMsg, func }: Da
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, remove it!",
       cancelButtonText: "No, cancel!",
       reverseButtons: true,
       preConfirm: async () => {

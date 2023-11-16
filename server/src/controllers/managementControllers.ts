@@ -18,9 +18,9 @@ const getUsers = asyncWrapper((
 
 const addUser = asyncWrapper((
     async (req: Request, res: Response, next: NextFunction) => {
-        const { name, email, password, country, address, phoneNumber, role, verified } = req.body;
+        const { name, email, password, country, address, phoneNumber, role } = req.body;
         
-        if (!name || !email || !password || !country || !email || !address || !phoneNumber || !role) {
+        if (!name || !email || !password || !country || !address || !phoneNumber || !role) {
             const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
             return next(error);
         }
@@ -41,7 +41,7 @@ const addUser = asyncWrapper((
             address,
             phoneNumber,
             role,
-            verified
+            verified: true
         })
 
         newUser.token = jwt.sign({role: newUser.role, email: newUser.email}, process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
@@ -50,17 +50,44 @@ const addUser = asyncWrapper((
     }
 ))
 
-const removeRole = asyncWrapper(
+const changeRole = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.body.id;
+    const { userId, role } = req.body.id;
     const findUser = await User.findOne({_id: userId});
     if(!findUser){
         const error = new AppError('User is not found', 401, httpStatusText.ERROR);
         return next(error);
     }
-    await User.updateOne({_id: findUser._id}, {$set: {... req.body, role: 'USER'}});
-    res.status(200).json({status: httpStatusText.SUCCESS, message: 'User has been deleted successfully'})
+
+    if(role === userRoles.ADMIN){
+        await User.updateOne({_id: findUser._id}, {$set: {... req.body, role: userRoles.MANAGER}});
+    }else if(role === userRoles.MANAGER){
+        await User.updateOne({_id: findUser._id}, {$set: {... req.body, role: userRoles.ADMIN}});
+    }
+    res.status(200).json({status: httpStatusText.SUCCESS, message: 'Role has been updated successfully'})
   }
 )
 
-export { getUsers, addUser, removeRole };
+const removeRole = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId, role } = req.body;
+    const findUser = await User.findOne({_id: userId});
+    if(!findUser){
+        const error = new AppError('User is not found', 401, httpStatusText.ERROR);
+        return next(error);
+    }
+    if(findUser.role === userRoles.MANAGER){
+        if(role === userRoles.MANAGER){
+            await User.updateOne({_id: findUser._id}, {$set: {... req.body, role: userRoles.USER}});
+        }else{
+            const error = new AppError('You cannot remove this role', 401, httpStatusText.ERROR);
+            return next(error);
+        }
+    }else{
+        await User.updateOne({_id: findUser._id}, {$set: {... req.body, role: userRoles.USER}});
+    }
+    res.status(200).json({status: httpStatusText.SUCCESS, message: 'Role has been removed successfully'})
+  }
+)
+
+export { getUsers, addUser, changeRole, removeRole };

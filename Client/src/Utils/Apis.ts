@@ -6,6 +6,7 @@ export const CHECK_TOKEN = `${BASE_URL}auth/checkToken`
 
 export const GET_USERS = `${BASE_URL}management/getUsers`
 export const ADD_USER = `${BASE_URL}management/addUser`
+export const CHANGE_ROLE = `${BASE_URL}management/changeRole`
 export const REMOVE_ROLE = `${BASE_URL}management/removeRole`
 
 export const GET_INFO = `${BASE_URL}user/getInfo`

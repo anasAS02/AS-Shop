@@ -1,20 +1,20 @@
 import Swal from "sweetalert2"
 import { formData } from "../Auth/handleChange";
 
-export const handleMsg = (setForm: React.Dispatch<React.SetStateAction<formData>>, successMsg: string | null, err: string | null): void => {
+export const handleMsg = (setForm?: React.Dispatch<React.SetStateAction<formData>>, successMsg?: string | null, err?: string | null): void => {
     if(successMsg){
         Swal.fire({
             title: "Done",
             text: successMsg,
             icon: "success"
         })
-        setForm({
+        setForm && setForm({
             name: '',
             email: '',
             password: '',
             country: 'us',
             address: '',
-            phoneNumber: ''
+            phoneNumber: '',
         })
     }
     if(err){

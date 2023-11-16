@@ -110,7 +110,7 @@ const changeCountry = asyncWrapper(
         const error = new AppError('Email is required', 404, httpStatusText.ERROR);
         return next(error);
       }else if(!country){
-        const error = new AppError('New name is required', 404, httpStatusText.ERROR);
+        const error = new AppError('Country is required', 404, httpStatusText.ERROR);
         return next(error);
       }
 

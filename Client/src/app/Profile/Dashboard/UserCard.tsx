@@ -1,12 +1,12 @@
 import { formData } from '@/Utils/Auth/handleChange'
 import { faHouse, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import { userRoles } from '../../../../../server/src/utils/userRoles'
 
 interface UserCardProps {
     user: formData;
-    handleChangeRole: (id: any) => void;
-    handleRemoveRole: (id: any) => void;
+    handleChangeRole?: (id: any, role: string) => void;
+    handleRemoveRole?: (id: any) => void;
   }
 
 const UserCard: React.FC<UserCardProps> = ({handleRemoveRole, handleChangeRole, user}) => {
@@ -24,9 +24,9 @@ const UserCard: React.FC<UserCardProps> = ({handleRemoveRole, handleChangeRole, 
         {user.phoneNumber}</p>
       </span>
       <span className='flex items-center max-md:flex-col max-md:justify-center gap-2'>
-        {user.role !== 'USER' && <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{user.role}</p>}
-        {user.role !== 'USER' && <button onClick={() => handleChangeRole(user._id)} className='text-sm p-1 rounded-md duration-200 bg-green-500 hover:bg-green-400 text-white'>{user.role === 'ADMIN' ? 'make manager' : 'Make admin'}</button>}
-        {user.role !== 'USER' && <button onClick={() => handleRemoveRole(user._id)} className='text-sm p-1 rounded-md duration-200 bg-red-500 hover:bg-red-400 text-white'>Remove {user.role}</button>}
+        {user.role === (userRoles.ADMIN || userRoles.MANAGER) && <p className='text-sm p-1 rounded-md bg-slate-200 text-green-500'>{user.role}</p>}
+        {user.role === (userRoles.ADMIN || userRoles.MANAGER) && <button onClick={() => handleChangeRole && handleChangeRole(user._id, user.role || userRoles.USER)} className='text-sm p-1 rounded-md duration-200 bg-green-500 hover:bg-green-400 text-white'>{user.role === 'ADMIN' ? 'Make Manager' : 'Make Admin'}</button>}
+        {user.role === (userRoles.ADMIN || userRoles.MANAGER) && <button onClick={() => handleRemoveRole && handleRemoveRole(user._id)} className='text-sm p-1 rounded-md duration-200 bg-red-500 hover:bg-red-400 text-white'>Remove {user.role}</button>}
       </span>
     </span>
   )

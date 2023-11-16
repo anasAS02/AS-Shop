@@ -8,11 +8,14 @@ import { SkewLoader } from 'react-spinners';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { config } from "@/Utils/Auth/handleAuth";
-import { ADD_USER, GET_USERS } from "@/Utils/Apis";
+import { ADD_USER, CHANGE_ROLE, GET_USERS, REMOVE_ROLE } from "@/Utils/Apis";
+import Cookies from 'js-cookie';
 import axios from "axios";
 import UserCard from "./UserCard";
+import confirmation from "@/Utils/Status/confirmation";
 
 const Management = () => {
+    const role = Cookies.get('role');
 
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
 
@@ -23,8 +26,6 @@ const Management = () => {
         country: 'us',
         address: '',
         phoneNumber: '',
-        role: 'USER',
-        verified: true
     })
 
     const [managers, setManagers] = useState<formData[]>();
@@ -58,7 +59,21 @@ const Management = () => {
     useEffect(() => {
         getUsers();
         handleMsg(setForm, successMsg, err);
-    }, [successMsg, err])
+    }, [successMsg, err]);
+
+    const handleChangeRole = async(id: any, role: string) => {
+        try{
+            const res = await axios.put(CHANGE_ROLE, {id, role}, config);
+            setSuccessMsg(res.data.message);
+        }catch(err: any){
+            setErr(err.response?.data.message);
+            console.log(err);
+        }
+    }
+    
+    const handleRemoveRole = async(id: any) => {
+        confirmation({ url: REMOVE_ROLE + {id, role}, config, successMsg: null, func: getUsers });
+    }
 
   return (
     <div className='w-full flex flex-col items-center gap-5'>
@@ -89,10 +104,10 @@ const Management = () => {
             }
         </div>
         {managers?.map((manager) => (
-               <UserCard key={manager._id} user={manager} handleChangeRole={manager._id} handleRemoveRole={manager._id} />
+               <UserCard key={manager._id} user={manager} handleChangeRole={handleChangeRole} handleRemoveRole={handleRemoveRole} />
             ))}
         {admins?.map((admin) => (
-            <UserCard key={admin._id} user={admin} handleChangeRole={admin._id} handleRemoveRole={admin._id} />
+            <UserCard key={admin._id} user={admin} handleChangeRole={handleChangeRole} handleRemoveRole={handleRemoveRole} />
         ))}
     </div>
   )
