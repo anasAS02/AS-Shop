@@ -8,6 +8,8 @@ const getAllProducts = asyncWrapper(
   async (req: Request, res: Response) => {
     const query = req.query;
 
+    const search = query.search;
+
     const highestPrice = query.highestPrice;
     const lowestPrice = query.lowestPrice;
     
@@ -15,7 +17,10 @@ const getAllProducts = asyncWrapper(
     const sortByHighestPrice = query.sortByHighestPrice;
     
     let products;
-    if(lowestPrice && highestPrice){
+
+    if(search){
+      products = await Product.find({$or: [{title: {$regex: search, $options: 'i'}}, {description: {$regex: search, $options: 'i'}}]});
+    }else if(lowestPrice && highestPrice){
       products = await Product.find({price: { $gte: Number(lowestPrice), $lte: Number(highestPrice)}});
     }else if(sortByLowestPrice === '0'){
       products = await Product.find().sort({price: 1});

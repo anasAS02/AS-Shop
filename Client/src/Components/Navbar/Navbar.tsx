@@ -1,5 +1,5 @@
 'use client'
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Cookies from 'js-cookie';
 import Image from "next/image"
 import Logo from '@/assets/logo.jpg';
@@ -11,13 +11,29 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { useStatusContext } from '@/Utils/Status/statusContext';
 import axios from 'axios';
-import { CHECK_TOKEN } from '@/Utils/Apis';
+import { CHECK_TOKEN, GET_PRODUCTS, SHOW_IMG } from '@/Utils/Apis';
 import Swal from 'sweetalert2';
+import { ProductData } from '../Products/Product/ProductCard';
 
 export const Navbar = () => {
   const token = Cookies.get('token');
   const {isLoggedIn, setIsLoggedIn} = useStatusContext();
+  const [searchKey, setSearchKey] = useState<string>();
+  const [searchResult, setSearchResult] = useState<ProductData[]>();
+
+  const search = async () => {
+    if(searchKey && searchKey.length > 0){
+      const res = await axios.get(GET_PRODUCTS, {
+        params: {
+          search: searchKey
+        }
+      });
+      const data = res.data.data;
+      setSearchResult(data);
+    }
+  }
   useEffect(() => {
+    search();
     const checkToken = async () => {
       try{
         if(token){
@@ -42,7 +58,7 @@ export const Navbar = () => {
       }
   }
     checkToken();
-  }, [])
+  }, [searchKey])
   
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col'>
@@ -51,9 +67,17 @@ export const Navbar = () => {
           AS Shop
         </Link>
         <div className='w-full relative max-md:order-1'>
-          <input type='search' placeholder='Search...' className='p-3 w-full border-slata-200 border-2 outline-none' />
+          <input type='search' placeholder='Search...' onChange={(e) => setSearchKey(e.target.value)} className='p-3 w-full border-slata-200 border-2 outline-none' />
           <FontAwesomeIcon icon={faMagnifyingGlass} className='absolute top-2/4 -translate-x-2/4 -translate-y-2/4 right-0 w-[14px] h-[14px] text-slate-300' />
-          
+          <span className='max-h-[400px] overflow-y-auto flex flex-col items-start gap-3 bg-slate-200 rounded-md'>
+            {searchResult && searchResult.length > 0 && searchKey !== '' && searchResult.map((product: ProductData) => (
+              <span key={product._id} className='p-5 flex items-center gap-2'>
+                <Image src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} width={100} height={100} alt={product.title} />
+                <Link href={`/products/${product._id}`} className='duration-200 hover:text-yellow-500'>{product.title}</Link>
+                <p className='text-sm text-gray-400'>${product.price}</p>
+              </span>
+            ))}
+          </span>
         </div>
         <span className='flex items-start gap-10'>
           <div className='flex items-center gap-3'>
