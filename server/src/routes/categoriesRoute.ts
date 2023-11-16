@@ -33,14 +33,14 @@ router.route('/')
   .get(getAllCategories);
 
 router.route('/add')
-  .post(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), addCategory);
+  .post(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), upload.single('thumbnail'), addCategory);
 
 router.route('/update/:categoryId')
-  .put(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), upload.single('thumbnail'), updateCategory)
+  .put(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), upload.single('thumbnail'), updateCategory)
 
 router.route('/:categoryId')
   .get(getCategory)
-  .delete(verifyToken, allowedTo(userRoles.ADMIN || userRoles.MANAGER), deleteCategory);
+  .delete(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), deleteCategory);
 
 router.route('/products/:category')
   .get(getCategoryProducts);
