@@ -65,7 +65,7 @@ export const Navbar = () => {
             </span>
           </div>
           <div className='flex items-center gap-3'>
-            <Link href='/cart'>
+            <Link href='/Cart'>
               <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] text-slate-600' />
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
