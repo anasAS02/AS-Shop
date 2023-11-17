@@ -16,6 +16,7 @@ export interface ProductData{
     category: string;
     thumbnail: string;
     images?: [string];
+    quantity?: number;
 }
 
 const calc = (price: number, des: number) => {
