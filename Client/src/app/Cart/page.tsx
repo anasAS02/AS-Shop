@@ -5,6 +5,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useState, useEffect} from 'react';
+
+export interface CartProductType {
+    _id: any;
+    title: string;
+    description: string;
+    price: number;
+    discountPercentage: number;
+    total: number;
+    brand: string;
+    category: string;
+    thumbnail: string;
+    images?: [string];
+    quantity: number;
+}
+
 const Cart = () => {
   const [hi, setHi] = useState<boolean>(false);
   const {isLoggedIn} = useStatusContext();

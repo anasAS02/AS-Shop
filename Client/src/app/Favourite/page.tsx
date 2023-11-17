@@ -29,7 +29,7 @@ const Favourite = () => {
         :
         <div className='flex flex-col justify-center items-center gap-5 p-10'>
           {pros?.map((pro: any) => (
-            <ProductCard key={pro.id} title={pro.title} price={pro.price} thumbnail={pro.thumbnail} category='tvs' description={pro.title} discountPercentage={pro.discountPercentage} brand='alAraby' />
+            <ProductCard key={pro.id} _id={pro.id} title={pro.title} quantity={1} price={pro.price} thumbnail={pro.thumbnail} images={pro.images} category='tvs' description={pro.title} discountPercentage={pro.discountPercentage} brand='alAraby' />
           ))}
         </div>
     }

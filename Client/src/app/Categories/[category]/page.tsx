@@ -135,7 +135,7 @@ export default function Category ({params}: any) {
         </div>
         <div className={`gap-5 ${grid ? 'grid items-center grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1' : 'flex flex-col items-start justify-start'}`}>
           {products?.map((product: ProductData) => (
-            <ProductCard style={grid ? true : false} key={product._id} _id={product._id} category={product.category} thumbnail={product.thumbnail} title={product.title} price={product.price} brand={product.brand} discountPercentage={product.discountPercentage} />
+            <ProductCard style={grid ? true : false} key={product._id} _id={product._id} quantity={1} images={product.images} description={product.description} category={product.category} thumbnail={product.thumbnail} title={product.title} price={product.price} brand={product.brand} discountPercentage={product.discountPercentage} />
           ))}
         </div>
       </section>
