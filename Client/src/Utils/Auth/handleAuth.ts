@@ -1,16 +1,14 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import { formData } from "./handleChange";
-
-const token = Cookies.get('token');
-const email = Cookies.get('email');
+import {TOKEN, EMAIL} from '@/Utils/Cookies';
 
 export const config = {
     headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${TOKEN}`,
     },
     params: {
-        email: email
+        email: EMAIL
     }
 };
 

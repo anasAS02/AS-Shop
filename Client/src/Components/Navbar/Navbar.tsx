@@ -1,6 +1,5 @@
 'use client'
 import {useEffect, useState} from 'react';
-import Cookies from 'js-cookie';
 import Image from "next/image"
 import Logo from '@/assets/logo.jpg';
 import Link from "next/link";
@@ -15,9 +14,10 @@ import { CHECK_TOKEN, GET_PRODUCTS, SHOW_IMG } from '@/Utils/Apis';
 import Swal from 'sweetalert2';
 import { ProductData } from '../Products/Product/ProductCard';
 import { useCart } from '@/app/Cart/CartContext';
+import Cookies from 'js-cookie';
+import { TOKEN } from '@/Utils/Cookies';
 
 export const Navbar = () => {
-  const token = Cookies.get('token');
   const {isLoggedIn, setIsLoggedIn} = useStatusContext();
   const [searchKey, setSearchKey] = useState<string>();
   const [searchResult, setSearchResult] = useState<ProductData[]>();
@@ -38,13 +38,13 @@ export const Navbar = () => {
   const savedCart = window.localStorage.getItem('cart');
   const cart = savedCart ? JSON.parse(savedCart) : [];
   const totalAmount = cart.totalAmount;
-  
+
   useEffect(() => {
     search();
     const checkToken = async () => {
       try{
-        if(token){
-          const res = await axios.post(CHECK_TOKEN, {token});
+        if(TOKEN){
+          const res = await axios.post(CHECK_TOKEN, {token: TOKEN});
           if(res.data.data){
           setIsLoggedIn(true);
         }

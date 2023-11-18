@@ -1,18 +1,31 @@
 'use client'
-import { ProductCard } from '@/Components/Products/Product/ProductCard';
-import { useStatusContext } from '@/Utils/Status/statusContext';
+
+import { ProductCard, ProductData } from "@/Components/Products/Product/ProductCard";
+import { GET_FAVORITES_LIST } from "@/Utils/Apis";
+import { EMAIL } from "@/Utils/Cookies";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Link from 'next/link';
-import {useState, useEffect} from 'react';
+import { useStatusContext } from "@/Utils/Status/statusContext";
 
 const Favourite = () => {
-    const {isLoggedIn} = useStatusContext();
-    const [arrs, setArrs] = useState<boolean>(true);
-    const [pros, setPros] = useState<any[]>();
-    useEffect(() => {
-      fetch('https://dummyjson.com/carts/1')
-      .then(res => res.json())
-      .then((data) => setPros(data.products));
-    }, [])
+  const {isLoggedIn} = useStatusContext();
+  const [products, setProducts] = useState<any[]>();
+
+  const getFavoritesList = async () => {
+    try{
+        const res = await axios.post(GET_FAVORITES_LIST, {email: EMAIL});
+        const data = await res.data.data;
+        setProducts(data);
+    }catch(err){
+        console.log(err)
+    }
+}
+
+useEffect(() => {
+  getFavoritesList();
+}, [])
+
   return (
     !isLoggedIn ? 
     <div className='h-screen'>
@@ -21,15 +34,15 @@ const Favourite = () => {
       </h2>
     </div>
     :
-    <div className={`${pros && pros.length > 0 ? 'h-full' : 'h-screen'} flex flex-col justify-center items-center gap-5`}>
-      {pros && pros?.length < 0 ? 
+    <div className={`${products && products.length > 0 ? 'h-full' : 'h-screen'} flex flex-col justify-center items-center gap-5`}>
+      {products && products?.length < 1 ? 
           <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your favourite list is empty
             <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>
           </h2>
         :
         <div className='flex flex-col justify-center items-center gap-5 p-10'>
-          {pros?.map((pro: any) => (
-            <ProductCard key={pro.id} _id={pro.id} title={pro.title} quantity={1} price={pro.price} thumbnail={pro.thumbnail} images={pro.images} category='tvs' description={pro.title} discountPercentage={pro.discountPercentage} brand='alAraby' />
+          {products?.map((product: ProductData) => (
+            <ProductCard key={product._id} _id={product._id} title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} images={product.images} category={product.category} description={product.description} discountPercentage={product.discountPercentage} brand={product.brand} />
           ))}
         </div>
     }

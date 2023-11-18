@@ -8,16 +8,13 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css'
 import { formData, handleChange } from '@/Utils/Auth/handleChange';
 import { useState, useEffect } from "react";
-import Cookie from 'js-cookie';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { config } from "@/Utils/Auth/handleAuth";
-
+import { EMAIL } from "@/Utils/Cookies";
 
 
 const Info = () => {
-    const email = Cookie.get('email');
-
     const {successMsg, setSuccessMsg, err, setErr} = useStatusContext();
     const [updateMode, setUpdateMode] = useState<string | null>(null);
     const [info, setInfo] = useState<formData>({
@@ -32,7 +29,7 @@ const Info = () => {
 
     const getInfo = async () => {
         try{
-            await axios.post(GET_INFO, {email}, config)
+            await axios.post(GET_INFO, {EMAIL}, config)
             .then((data) => setInfo(data.data.data))
         }catch(err){
             console.log(err)

@@ -1,9 +1,8 @@
 'use client';
 import { useContext, createContext, useState, useCallback } from 'react';
 import { CartProductType } from './page';
-import Cookies from 'js-cookie';
-
-const email = Cookies.get('email');
+import Swal from 'sweetalert2';
+import { EMAIL } from '@/Utils/Cookies';
 
 type CartContextType = {
   cartItems: CartProductType[] | null;
@@ -37,18 +36,23 @@ export const CartContextProvider = (props: Props) => {
           updatedCart = [...prev];
           updatedCart[findProduct] = updatedProduct;
         } else {
-          updatedCart = [...prev, product];
+            updatedCart = [...prev, product];
         }
-      } else {
+    } else {
         updatedCart = [product];
       }
-
+      Swal.fire({
+        position: 'center',
+        icon: "success",
+        title: "The product has been added to your cart",
+        showConfirmButton: false,
+        timer: 1500
+      });
       const totalAmount = updatedCart.reduce((acc: any, productInfo) => {
         acc += productInfo.total * (productInfo.quantity || 1);
         return acc;
       }, 0);
-
-      const cart = { products: updatedCart, totalAmount: totalAmount, email: email };
+      const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
       window.localStorage.setItem('cart', JSON.stringify(cart));
       return updatedCart as CartProductType[];
     });
@@ -66,13 +70,21 @@ export const CartContextProvider = (props: Props) => {
         return acc;
       }, 0);
 
-      const cart = { products: updatedCart, totalAmount: totalAmount, email: email };
+      const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
       if (updatedCart.length > 0) {
         window.localStorage.setItem('cart', JSON.stringify(cart));
       } else {
         window.localStorage.removeItem('cart');
       }
 
+      Swal.fire({
+        position: 'center',
+        icon: "success",
+        title: "The product has been removed from your cart",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      
       return updatedCart as CartProductType[];
     });
   }, []);
@@ -102,7 +114,15 @@ export const CartContextProvider = (props: Props) => {
         return acc;
       }, 0);
 
-      const cart = { products: updatedCart, totalAmount: totalAmount, email: email };
+      Swal.fire({
+        position: 'center',
+        icon: "success",
+        title: "The product has been removed from your cart",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      
+      const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
       if (updatedCart.length > 0) {
         window.localStorage.setItem('cart', JSON.stringify(cart));
       } else {

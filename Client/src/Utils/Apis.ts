@@ -9,6 +9,9 @@ export const ADD_USER = `${BASE_URL}management/addUser`
 export const CHANGE_ROLE = `${BASE_URL}management/changeRole`
 export const REMOVE_ROLE = `${BASE_URL}management/removeRole`
 
+export const GET_FAVORITES_LIST = `${BASE_URL}favorites/`
+export const ADD_TO_FAVORITES_LIST = `${BASE_URL}favorites/add`
+
 export const GET_INFO = `${BASE_URL}user/getInfo`
 export const CHANGE_NAME = `${BASE_URL}user/changeName`
 export const CHANGE_PASSWORD = `${BASE_URL}user/changePassword`

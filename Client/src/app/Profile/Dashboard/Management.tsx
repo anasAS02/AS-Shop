@@ -9,14 +9,12 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { config } from "@/Utils/Auth/handleAuth";
 import { ADD_USER, CHANGE_ROLE, GET_USERS, REMOVE_ROLE } from "@/Utils/Apis";
-import Cookies from 'js-cookie';
 import axios from "axios";
 import UserCard from "./UserCard";
 import confirmation from "@/Utils/Status/confirmation";
+import {ROLE} from '@/Utils/Cookies';
 
 const Management = () => {
-    const role = Cookies.get('role');
-
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
 
     const [form, setForm] = useState<formData> ({
@@ -63,7 +61,7 @@ const Management = () => {
 
     const handleChangeRole = async(id: any, role: string) => {
         try{
-            const res = await axios.put(CHANGE_ROLE, {id, role}, config);
+            const res = await axios.put(CHANGE_ROLE, {id, ROLE}, config);
             setSuccessMsg(res.data.message);
         }catch(err: any){
             setErr(err.response?.data.message);
@@ -72,7 +70,7 @@ const Management = () => {
     }
     
     const handleRemoveRole = async(id: any) => {
-        confirmation({ url: REMOVE_ROLE, data: {id, role}, config, successMsg: null, func: getUsers });
+        confirmation({ url: REMOVE_ROLE, data: {id, ROLE}, config, successMsg: null, func: getUsers });
     }
 
   return (

@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useState, useEffect} from 'react';
 import { useCart } from './CartContext';
-import { getProducts } from '@/Utils/Products/getProducts';
 
 export interface CartProductType {
     _id: any;
