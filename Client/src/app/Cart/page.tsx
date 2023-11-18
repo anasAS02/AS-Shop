@@ -25,22 +25,27 @@ export interface CartProductType {
 const Cart = () => {
   const {isLoggedIn} = useStatusContext();
   const {handleAddToCart, handleDeleteFromCart, handleDecreaseQty} = useCart();
-  const [cartProducts, setCartProducts] = useState<CartProductType[]>();
+  const [cartProducts, setCartProducts] = useState<CartProductType[] | null>();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [userEmail, setUserEmail] = useState<string>('');
   const savedCart = window.localStorage.getItem('cart');
-  const cart = savedCart ? JSON.parse(savedCart) : [];
+  const cart = savedCart && JSON.parse(savedCart);
+  const {cartItems} = useCart();
 
   const getCartProducts = () => {
     if(cart){
       setCartProducts(cart.products);
       setTotalAmount(cart.totalAmount);
       setUserEmail(cart.email);
+    }else{
+      setCartProducts(null);
+      setTotalAmount(0);
     }
   }
+  
   useEffect(() => {
     getCartProducts();
-  }, [cart])
+  }, [cartItems])
 
   return (
     !isLoggedIn ? 
@@ -57,9 +62,9 @@ const Cart = () => {
           </h2>
         :
         <div className='flex justify-around items-start gap-14 max-md:flex-col max-md:justify-center max-md:gap-5'>
-          <div className='w-fit h-screen flex flex-col items-start gap-5 max-md:justify-center max-md:items-center'>
+          <div className='w-fit max-md:w-full h-screen flex flex-col items-start gap-5 max-md:justify-center max-md:items-center'>
             {cartProducts && cartProducts.map((product: CartProductType) =>
-              <span className='w-full flex items-center max-md:flex-col max-md:justify-center gap-5 p-2 border-2 border-gray-100 rounded-md'>
+              <span key={product._id} className='w-full flex items-center max-md:flex-col max-md:justify-center gap-5 p-2 border-2 border-gray-100 rounded-md'>
                 <Image width={100} height={100} src={product.thumbnail} alt='' />
                 <span className='md:w-[300px] flex flex-col gap-2 items-start max-md:items-center max-md:text-center'>
                   <h2 className='text-xl max-md:text-lg'>{product.title}</h2>

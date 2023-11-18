@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 const email = Cookies.get('email');
 
 type CartContextType = {
-  cartProducts: CartProductType[] | null;
+  cartItems: CartProductType[] | null;
   handleAddToCart: (product: CartProductType) => void;
   handleDeleteFromCart: (product: CartProductType) => void;
   handleDecreaseQty: (product: CartProductType) => void;
@@ -19,13 +19,13 @@ interface Props {
 }
 
 export const CartContextProvider = (props: Props) => {
-  const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(() => {
+  const [cartItems, setCartItems] = useState<CartProductType[] | null>(() => {
     const storedCart = window.localStorage.getItem('cart');
     return storedCart ? JSON.parse(storedCart).products : null;
   });
 
   const handleAddToCart = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
+    setCartItems((prev) => {
       let updatedCart;
       if (prev) {
         const findProduct = prev.findIndex((pro) => pro._id === product._id);
@@ -55,7 +55,7 @@ export const CartContextProvider = (props: Props) => {
   }, []);
 
   const handleDeleteFromCart = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
+    setCartItems((prev) => {
       let updatedCart: CartProductType[] = [];
       if (prev) {
         updatedCart = prev.filter((pro) => pro._id !== product._id);
@@ -78,7 +78,7 @@ export const CartContextProvider = (props: Props) => {
   }, []);
 
   const handleDecreaseQty = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
+    setCartItems((prev) => {
       let updatedCart: CartProductType[] = [];
       if (prev) {
         const findProduct = prev.findIndex((pro) => pro._id === product._id);
@@ -114,7 +114,7 @@ export const CartContextProvider = (props: Props) => {
   }, []);
 
   const value: CartContextType = {
-    cartProducts,
+    cartItems,
     handleAddToCart,
     handleDeleteFromCart,
     handleDecreaseQty,

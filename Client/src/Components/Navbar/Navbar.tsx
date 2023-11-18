@@ -14,12 +14,14 @@ import axios from 'axios';
 import { CHECK_TOKEN, GET_PRODUCTS, SHOW_IMG } from '@/Utils/Apis';
 import Swal from 'sweetalert2';
 import { ProductData } from '../Products/Product/ProductCard';
+import { useCart } from '@/app/Cart/CartContext';
 
 export const Navbar = () => {
   const token = Cookies.get('token');
   const {isLoggedIn, setIsLoggedIn} = useStatusContext();
   const [searchKey, setSearchKey] = useState<string>();
   const [searchResult, setSearchResult] = useState<ProductData[]>();
+  const {cartItems} = useCart();
 
   const search = async () => {
     if(searchKey && searchKey.length > 0){
@@ -63,7 +65,7 @@ export const Navbar = () => {
       }
   }
     checkToken();
-  }, [searchKey, cart.products])
+  }, [searchKey, cartItems])
   
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>
