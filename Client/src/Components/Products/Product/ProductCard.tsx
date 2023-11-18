@@ -5,7 +5,7 @@ import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Image from "next/image"
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export interface ProductData{
     style?: boolean;

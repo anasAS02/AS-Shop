@@ -32,6 +32,11 @@ export const Navbar = () => {
       setSearchResult(data);
     }
   }
+  
+  const savedCart = window.localStorage.getItem('cart');
+  const cart = savedCart ? JSON.parse(savedCart) : [];
+  const totalAmount = cart.totalAmount;
+  
   useEffect(() => {
     search();
     const checkToken = async () => {
@@ -58,16 +63,16 @@ export const Navbar = () => {
       }
   }
     checkToken();
-  }, [searchKey])
+  }, [searchKey, cart.products])
   
   return (
-    <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col'>
+    <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
           <Image src={Logo} width={100} height={100} alt='Logo' />
           AS Shop
         </Link>
         <div className='w-full relative max-md:order-1'>
-          <input type='search' placeholder='Search...' onChange={(e) => setSearchKey(e.target.value)} className='p-3 w-full border-slata-200 border-2 outline-none' />
+          <input type='search' placeholder='Search...' onChange={(e) => setSearchKey(e.target.value)} className='p-3 w-full border-slate-200 border-2 outline-none' />
           <FontAwesomeIcon icon={faMagnifyingGlass} className='absolute top-2/4 -translate-x-2/4 -translate-y-2/4 right-0 w-[14px] h-[14px] text-slate-300' />
           <span className='max-h-[400px] overflow-y-auto flex flex-col items-start gap-3 bg-slate-200 rounded-md'>
             {searchResult && searchResult.length > 0 && searchKey !== '' && searchResult.map((product: ProductData) => (
@@ -89,13 +94,14 @@ export const Navbar = () => {
               </span>
             </span>
           </div>
-          <div className='flex items-center gap-3'>
+          <div className='flex items-center gap-3 relative'>
             <Link href='/Cart'>
               <FontAwesomeIcon icon={faCartShopping} className='w-[18px] h-[18px] duration-200 text-slate-600 hover:text-green-400' />
+              {cart.products && <span className='absolute -left-3 top-0 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full'>{cart.products.length}</span>}
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
               <p className='text-gray-500'>Cart</p>
-              <p>$0</p>
+              <p>${cart.products ? totalAmount.toFixed(2) : '0'}</p>
             </span>
           </div>
           <div className='flex items-center gap-3'>

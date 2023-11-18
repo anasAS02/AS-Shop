@@ -21,7 +21,7 @@ export default function Category ({params}: any) {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(categoryParam === 'AllProducts' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + categoryParam, {
+      const res = await axios.get(categoryParam === 'All-Products' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + categoryParam, {
         params: {
           lowestPrice: from,
           highestPrice: to,
@@ -98,9 +98,9 @@ export default function Category ({params}: any) {
         </span>
           </span>
           <span className={openCategories ? '' : 'hidden'}>
-            <Link href='/Categories/AllProducts' className={`flex items-center gap-5 mb-2 ${categoryParam === 'AllProducts' ? 'text-green-400' : 'text-gray-400'}`}>
+            <Link href='/Categories/All-Products' className={`flex items-center gap-5 mb-2 ${categoryParam === 'All-Products' ? 'text-green-400' : 'text-gray-400'}`}>
               <p>All Products</p>
-              <span className={`p-2 border-2 rounded-full ml-auto ${categoryParam === 'AllProducts' ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
+              <span className={`p-2 border-2 rounded-full ml-auto ${categoryParam === 'All-Products' ? 'bg-green-400 border-green-400' : 'bg-white border-gray-400'}`}></span>
             </Link>
             {categories?.map((category: CategoryData) => (
               <Link href={`/Categories/${category.href}`} key={category._id} className={`flex items-center gap-5 mb-2 ${categoryParam === category.href ? 'text-green-400' : 'text-gray-400'}`}>
