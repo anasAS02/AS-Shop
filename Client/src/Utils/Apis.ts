@@ -11,6 +11,7 @@ export const REMOVE_ROLE = `${BASE_URL}management/removeRole`
 
 export const GET_FAVORITES_LIST = `${BASE_URL}favorites/`
 export const ADD_TO_FAVORITES_LIST = `${BASE_URL}favorites/add`
+export const REMOVE_FROM_FAVORITES_LIST = `${BASE_URL}favorites/remove`
 
 export const GET_INFO = `${BASE_URL}user/getInfo`
 export const CHANGE_NAME = `${BASE_URL}user/changeName`

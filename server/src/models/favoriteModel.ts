@@ -1,6 +1,7 @@
 import { Document, model, Schema } from 'mongoose';
 
 interface Favorite extends Document {
+  id: string;
   email: string;
   title: string;
   description: string;
@@ -13,6 +14,10 @@ interface Favorite extends Document {
 }
 
 const FavoriteSchema = new Schema<Favorite>({
+  id: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,

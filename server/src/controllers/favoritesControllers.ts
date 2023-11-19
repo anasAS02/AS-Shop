@@ -16,39 +16,47 @@ const getFavoritesList = asyncWrapper(
     }
   );
   
-const addToFavoritesList = asyncWrapper(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const {email, _id, title, description, price, discountPercentage, brand, category, thumbnail, images} = req.body;
-      
-      if(!email || !_id || !title || !description || !price || !discountPercentage || !brand || !category || !thumbnail || !images){
-        const error = new AppError('All details are required', 401, httpStatusText.ERROR);
-        return next(error);
-      }
-
-      const isProductFavorited = await Favorite.findOne({_id: _id});
-
-      if(isProductFavorited){
-        await Favorite.deleteOne({_id: _id});
-        res.status(200).json({ status: httpStatusText.SUCCESS, message: 'The product has been removed from your favorites list' });
-      }
-
-      const newItem = new Favorite({
-        email,
-        title,
-        description,
-        price,
-        discountPercentage,
-        brand,
-        category,
-        thumbnail,
-        images
-      })
-      await newItem.save();
-      res.status(200).json({ status: httpStatusText.SUCCESS, message: 'The product has been added to your favorites list' });
+  const addToFavoritesList = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+    const { id, email, title, description, price, discountPercentage, brand, category, thumbnail, images } = req.body;
+  
+    if (!id || !email || !title || !description || !price || !discountPercentage || !brand || !category || !thumbnail || !images) {
+      const error = new AppError('All details are required', 401, httpStatusText.ERROR);
+      return next(error);
     }
-);
 
+
+    const newItem = new Favorite({
+      id,
+      email,
+      title,
+      description,
+      price,
+      discountPercentage,
+      brand,
+      category,
+      thumbnail,
+      images,
+    });
+
+    await newItem.save();
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'The product has been added to your favorites list' });
+  });
+    
+  const removeFromFavoritesList = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+      const { id } = req.body;
+    
+    const findProduct = await Favorite.findOne({id: id});
+    if (!findProduct) {
+      const error = new AppError('This product is not found', 401, httpStatusText.ERROR);
+      return next(error);
+    }
+  
+    await Favorite.deleteOne({ id: id });  
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'The product has been removed from your favorites list' });
+  });
+  
 export{
     getFavoritesList,
-    addToFavoritesList
+    addToFavoritesList,
+    removeFromFavoritesList
 }

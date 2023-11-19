@@ -1,5 +1,4 @@
 'use client'
-
 import { ProductCard, ProductData } from "@/Components/Products/Product/ProductCard";
 import { GET_FAVORITES_LIST } from "@/Utils/Apis";
 import { EMAIL } from "@/Utils/Cookies";
