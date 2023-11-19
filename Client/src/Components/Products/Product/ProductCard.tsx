@@ -1,5 +1,5 @@
 'use client'
-import { ADD_TO_FAVORITES_LIST, GET_FAVORITES_LIST } from "@/Utils/Apis";
+import { GET_FAVORITES_LIST } from "@/Utils/Apis";
 import { useCart } from "@/app/Cart/CartContext";
 import { CartProductType } from "@/app/Cart/page";
 import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons"
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { EMAIL } from "@/Utils/Cookies";
 import { addToFavoritesList, favProduct } from "@/Utils/Favorites/addToFavList";
 import { removeFromFavList } from "@/Utils/Favorites/removeFromFavList";
+import { useStatusContext } from "@/Utils/Status/statusContext";
 
 export interface ProductData{
     style?: boolean;
@@ -34,6 +35,7 @@ const calcPrice = (price: number, des: number) => {
 export const ProductCard = (props: ProductData) => {
 const {handleAddToCart} = useCart();
 const [favourites, setFavorites] = useState<favProduct[]>();
+const {isLoggedIn} = useStatusContext();
 
 const favProduct = {
     id: EMAIL+props.description,
@@ -52,7 +54,7 @@ const getFavoritesList = async () => {
     try{
         const res = await axios.post(GET_FAVORITES_LIST, {email: EMAIL});
         const data = await res.data.data;
-        setFavorites(data);
+        setFavorites((prevFavorites) => [...data]);
     }catch(err){
         console.log(err)
     }
@@ -79,8 +81,10 @@ const [cartProduct] = useState<CartProductType>({
 })
 
 useEffect(() => {
-    getFavoritesList();
-}, [favourites])
+    if(isLoggedIn){
+        getFavoritesList();
+    }
+}, [favourites, isLoggedIn])
 
 return (
 <span key={props._id} className={`w-full p-2 duration-300 border-2 border-transparent rounded-md hover:border-green-400 flex ${props.style && 'flex-col'} gap-6 items-center relative`}>
@@ -95,19 +99,19 @@ return (
         {props.discountPercentage && <span className='text-lg max-md:text-base text-red-500'>${calcPrice(props.price, props.discountPercentage).toFixed(2)}</span>}
         {!props.style && 
         <span className='flex justify-end items-center gap-3'>
-            <button onClick={() => handleAddToCart(cartProduct)} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
+            <button onClick={() => isLoggedIn ? handleAddToCart(cartProduct) : window.location.pathname = '/Auth/Login'} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
             <FontAwesomeIcon icon={faCartPlus} className='w-[18px] h-[18px]' />
             Add To Cart</button>
-            <FontAwesomeIcon onClick={() => isProductFavorited() ? removeFromFavList(favProduct) : addToFavoritesList(favProduct)} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
+            <FontAwesomeIcon onClick={() => isLoggedIn ? isProductFavorited() ? removeFromFavList(favProduct.id) : addToFavoritesList(favProduct) : window.location.pathname = '/Auth/Login'} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
         </span>
         }
     </span>
     {props.style &&
     <span className='flex items-center gap-3'>
-    <button onClick={() => handleAddToCart(cartProduct)} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 max-md:text-sm text-black hover:text-white font-bold  flex items-center gap-2 rounded-md'> 
+    <button onClick={() => isLoggedIn ? handleAddToCart(cartProduct) : window.location.pathname = '/Auth/Login'} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 max-md:text-sm text-black hover:text-white font-bold  flex items-center gap-2 rounded-md'> 
     <FontAwesomeIcon icon={faCartPlus} className='w-[18px] h-[18px]' />
     Add To Cart</button>
-    <FontAwesomeIcon onClick={() => isProductFavorited() ? removeFromFavList(favProduct) : addToFavoritesList(favProduct)} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
+    <FontAwesomeIcon onClick={() => isLoggedIn ? isProductFavorited() ? removeFromFavList(favProduct.id) : addToFavoritesList(favProduct) : window.location.pathname = '/Auth/Login'} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
     </span>
     }
 </span>

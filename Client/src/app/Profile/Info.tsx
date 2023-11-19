@@ -29,7 +29,7 @@ const Info = () => {
 
     const getInfo = async () => {
         try{
-            await axios.post(GET_INFO, {EMAIL}, config)
+            await axios.post(GET_INFO, {email: EMAIL}, config)
             .then((data) => setInfo(data.data.data))
         }catch(err){
             console.log(err)

@@ -43,8 +43,7 @@ const getFavoritesList = asyncWrapper(
   });
     
   const removeFromFavoritesList = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
-      const { id } = req.body;
-    
+    const id = req.body.productId;
     const findProduct = await Favorite.findOne({id: id});
     if (!findProduct) {
       const error = new AppError('This product is not found', 401, httpStatusText.ERROR);

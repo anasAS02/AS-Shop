@@ -75,27 +75,11 @@ export default function Category ({params}: any) {
     fetchProducts();
   }
 
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [closeFilter, setCloseFilter] = useState<boolean>(true);
-  
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
-    setCloseFilter(false);
-  }
-
-  const handleCloseFilter = () => {
-    setCloseFilter(true);
-    setOpenFilter(false);
-  }
-
   return (
-    <div className={`p-16 max-md:p-4 flex items-start gap-10 ${products?.length > 0 ? 'h-full' : 'h-screen'}`}>
-      <aside className={`${openFilter ? 'flex' : 'hidden'} md:flex flex-col gap-5`}>
+    <div className={`p-16 max-md:p-4 flex items-start gap-10 ${products?.length > 0 ? 'h-full' : 'h-screen'} max-md:flex-col`}>
+      <aside className='flex flex-col gap-5 max-md:w-full'>
         <span className='flex items-center gap-12 mb-2'>Category 
-        <span className='flex items-center gap-3 md:ml-auto'>
-          <FontAwesomeIcon onClick={handleCategories} icon={openCategories ? faAngleUp : faAngleDown} className='text-green-400 w-[18px] h-[18px] cursor-pointer' />
-          <FontAwesomeIcon onClick={handleCloseFilter} icon={faCircleXmark} className='text-red-500 w-[18px] h-[18px] cursor-pointer md:hidden' />
-        </span>
+          <FontAwesomeIcon onClick={handleCategories} icon={openCategories ? faAngleUp : faAngleDown} className='text-green-400 w-[18px] h-[18px] cursor-pointer ml-auto' />
           </span>
           <span className={openCategories ? '' : 'hidden'}>
             <Link href='/Categories/All-Products' className={`flex items-center gap-5 mb-2 ${categoryParam === 'All-Products' ? 'text-green-400' : 'text-gray-400'}`}>
@@ -118,12 +102,11 @@ export default function Category ({params}: any) {
           <button onClick={(event) => handleFilter(event)} className='p-2 bg-blue-400 duration-300 hover:bg-blue-300 rounded-md text-white'>Filter</button>
         </span>
       </aside>
-      <section className={`${openFilter ? 'hidden' : 'flex'} w-full md:flex flex-col gap-12 justify-between`}>
+      <section className='flex w-full md:flex flex-col gap-12 justify-between'>
           <div className='flex items-center gap-10 justify-between'>
           <span className='flex items-center gap-5'>
-          <FontAwesomeIcon onClick={handleOpenFilter} icon={faBarsStaggered} className={`${openFilter && 'hidden'} md:hidden w-[18px] h-[18px] text-gray-400 cursor-pointer`} />
-          <FontAwesomeIcon onClick={() => handleGrid('grid')} icon={faTableCells} className={`w-[18px] h-[18px] ${grid ? 'text-green-400' : 'text-gray-400'} cursor-pointer`} />
-          <FontAwesomeIcon onClick={() => handleGrid('')} icon={faBars} className={`w-[18px] h-[18px] ${!grid ? 'text-green-400' : 'text-gray-400'} cursor-pointer`} />
+            <FontAwesomeIcon onClick={() => handleGrid('grid')} icon={faTableCells} className={`w-[18px] h-[18px] ${grid ? 'text-green-400' : 'text-gray-400'} cursor-pointer`} />
+            <FontAwesomeIcon onClick={() => handleGrid('')} icon={faBars} className={`w-[18px] h-[18px] ${!grid ? 'text-green-400' : 'text-gray-400'} cursor-pointer`} />
           </span>
           <span className='flex gap-3 items-center relative max-md:text-sm'>
           Sort By: 

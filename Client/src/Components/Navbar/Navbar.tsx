@@ -10,18 +10,30 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { useStatusContext } from '@/Utils/Status/statusContext';
 import axios from 'axios';
-import { CHECK_TOKEN, GET_PRODUCTS, SHOW_IMG } from '@/Utils/Apis';
+import { CHECK_TOKEN, GET_FAVORITES_LIST, GET_PRODUCTS, SHOW_IMG } from '@/Utils/Apis';
 import Swal from 'sweetalert2';
 import { ProductData } from '../Products/Product/ProductCard';
 import { useCart } from '@/app/Cart/CartContext';
 import Cookies from 'js-cookie';
-import { TOKEN } from '@/Utils/Cookies';
+import { EMAIL, TOKEN } from '@/Utils/Cookies';
+import { favProduct } from '@/Utils/Favorites/addToFavList';
 
 export const Navbar = () => {
   const {isLoggedIn, setIsLoggedIn} = useStatusContext();
   const [searchKey, setSearchKey] = useState<string>();
   const [searchResult, setSearchResult] = useState<ProductData[]>();
   const {cartItems} = useCart();
+  const [favourites, setFavorites] = useState<favProduct[]>();
+
+  const getFavoritesList = async () => {
+      try{
+          const res = await axios.post(GET_FAVORITES_LIST, {email: EMAIL});
+          const data = await res.data.data;
+          setFavorites((prevFavorites) => [...data]);
+      }catch(err){
+          console.log(err)
+      }
+  }
 
   const search = async () => {
     if(searchKey && searchKey.length > 0){
@@ -40,6 +52,9 @@ export const Navbar = () => {
   const totalAmount = cart.totalAmount;
 
   useEffect(() => {
+    if(isLoggedIn){
+      getFavoritesList();
+    }
     search();
     const checkToken = async () => {
       try{
@@ -65,8 +80,7 @@ export const Navbar = () => {
       }
   }
     checkToken();
-  }, [searchKey, cartItems])
-  
+  }, [searchKey, cartItems, favourites, isLoggedIn])
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
@@ -112,7 +126,7 @@ export const Navbar = () => {
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
               <p className='text-gray-500'>Favourite</p>
-              <p>0</p>
+              <p className={`${favourites && favourites.length > 0 ? 'text-red-500' : ''}`}>{favourites ? favourites.length : 0}</p>
             </span>
           </div>
         </span>
