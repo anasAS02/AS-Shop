@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from 'next/link';
 import { useStatusContext } from "@/Utils/Status/statusContext";
+import { calcPrice } from "@/Utils/Products/calcPrice";
 
 const Favourite = () => {
   const {isLoggedIn} = useStatusContext();
@@ -23,6 +24,7 @@ const Favourite = () => {
 
 useEffect(() => {
   getFavoritesList();
+  document.title = 'AS-Shop Favorites list';
 }, [])
 
   return (
@@ -41,7 +43,7 @@ useEffect(() => {
         :
         <div className='flex flex-col justify-center items-center gap-5 p-10'>
           {products?.map((product: ProductData) => (
-            <ProductCard key={product._id} _id={product._id} title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} images={product.images} category={product.category} description={product.description} discountPercentage={product.discountPercentage} brand={product.brand} />
+            <ProductCard key={product._id} _id={product._id} total={calcPrice(product.price, product.discountPercentage || 0)} title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} images={product.images} category={product.category} description={product.description} discountPercentage={product.discountPercentage} brand={product.brand} />
           ))}
         </div>
     }

@@ -1,7 +1,6 @@
 'use client'
 import { GET_FAVORITES_LIST } from "@/Utils/Apis";
 import { useCart } from "@/app/Cart/CartContext";
-// import { ProductData } from '@/Components/Products/Product/ProductCard';
 import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios";
@@ -12,6 +11,7 @@ import { EMAIL } from "@/Utils/Cookies";
 import { addToFavoritesList, favProduct } from "@/Utils/Favorites/addToFavList";
 import { removeFromFavList } from "@/Utils/Favorites/removeFromFavList";
 import { useStatusContext } from "@/Utils/Status/statusContext";
+import { calcPrice } from "@/Utils/Products/calcPrice";
 
 export interface ProductData{
     style?: boolean;
@@ -27,10 +27,6 @@ export interface ProductData{
     thumbnail: string;
     images: [string];
     quantity: number;
-}
-
-const calcPrice = (price: number, des: number) => {
-    return price - (price * des / 100);
 }
 
 export const ProductCard = (props: ProductData) => {

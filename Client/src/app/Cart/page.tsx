@@ -45,6 +45,7 @@ const Cart = () => {
   
   useEffect(() => {
     getCartProducts();
+    document.title = 'AS-Shop Cart';
   }, [cartItems])
 
   return (
