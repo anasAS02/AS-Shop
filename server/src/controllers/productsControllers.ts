@@ -63,7 +63,7 @@ const addProduct = asyncWrapper(
 
 const getProduct = asyncWrapper(
   async (req: Request, res: Response) => {
-    const id = req.params.produtId;
+    const id = req.params.productId;
     const product = await Product.find({ _id: id });
     res.status(200).json({ status: httpStatusText.SUCCESS, data: product });
   }

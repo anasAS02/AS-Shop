@@ -37,7 +37,7 @@ router.route('/add')
         .post(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'images', maxCount: 12 }]), addProduct);
 
 router.route('/:productId')
-        .get(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), getProduct)
+        .get(getProduct)
         .put(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'images', maxCount: 12 }]), updateProduct)
         .delete(verifyToken, allowedTo(userRoles.ADMIN , userRoles.MANAGER), deleteProduct);
 

@@ -1,7 +1,7 @@
 'use client'
 import { GET_FAVORITES_LIST } from "@/Utils/Apis";
 import { useCart } from "@/app/Cart/CartContext";
-import { CartProductType } from "@/app/Cart/page";
+// import { ProductData } from '@/Components/Products/Product/ProductCard';
 import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios";
@@ -19,6 +19,7 @@ export interface ProductData{
     title: string;
     description: string;
     price: number;
+    total: number;
     discountPercentage?: number;
     stock?: number;
     brand: string;
@@ -43,6 +44,7 @@ const favProduct = {
     title: props.title,
     description: props.description,
     price: props.price,
+    total: calcPrice(props.price, props.discountPercentage || 0),
     discountPercentage: props.discountPercentage || 0,
     brand: props.brand,
     category: props.category,
@@ -66,7 +68,7 @@ const isProductFavorited = () => {
     return findProduct ? true : false;
 };
 
-const [cartProduct] = useState<CartProductType>({
+const [cartProduct] = useState<ProductData>({
     _id: props._id,
     title: props.title,
     description: props.description,
@@ -88,7 +90,7 @@ useEffect(() => {
 
 return (
 <span key={props._id} className={`w-full p-2 duration-300 border-2 border-transparent rounded-md hover:border-green-400 flex ${props.style && 'flex-col'} gap-6 items-center relative`}>
-    <Link href={`/products/${props._id}`}>
+    <Link href={`/Product/${props._id}`}>
         <Image src={props.thumbnail} className='w-[200px] h-[200px] max-md:w-[100px] max-md:h-[100px]' width={800} height={800} objectFit="contain" alt={props.title} />
     </Link>
     <span className={`${props.style && 'text-center'} w-full`}>

@@ -6,25 +6,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useState, useEffect} from 'react';
 import { useCart } from './CartContext';
+import { ProductData } from '@/Components/Products/Product/ProductCard';
 
 export interface CartProductType {
-    _id: any;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    total: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: [string];
-    quantity: number;
+  _id: any;
+  title: string;
+  description: string;
+  price: number;
+  discountPercentage: number;
+  total: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
+  images: [string];
+  quantity: number;
 }
 
 const Cart = () => {
   const {isLoggedIn} = useStatusContext();
   const {handleAddToCart, handleDeleteFromCart, handleDecreaseQty} = useCart();
-  const [cartProducts, setCartProducts] = useState<CartProductType[] | null>();
+  const [cartProducts, setCartProducts] = useState<ProductData[] | null>();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [userEmail, setUserEmail] = useState<string>('');
   const savedCart = window.localStorage.getItem('cart');
@@ -62,7 +63,7 @@ const Cart = () => {
         :
         <div className='flex justify-around items-start gap-14 max-md:flex-col max-md:justify-center max-md:gap-5'>
           <div className='w-fit max-md:w-full h-screen flex flex-col items-start gap-5 max-md:justify-center max-md:items-center'>
-            {cartProducts && cartProducts.map((product: CartProductType) =>
+            {cartProducts && cartProducts.map((product: ProductData) =>
               <span key={product._id} className='w-full flex items-center max-md:flex-col max-md:justify-center gap-5 p-2 border-2 border-gray-100 rounded-md'>
                 <Image width={100} height={100} src={product.thumbnail} alt='' />
                 <span className='md:w-[300px] flex flex-col gap-2 items-start max-md:items-center max-md:text-center'>
@@ -83,7 +84,7 @@ const Cart = () => {
             <h2 className='text-xl max-md:text-lg mr-auto'>Order summary</h2>
             <span className='w-full flex justify-between items-center gap-6 text-gray-500 max-md:text-xs'>
               <p>total products</p>
-              <p className='ml-auto'>${totalAmount.toFixed(2)}</p>
+              <p className='ml-auto'>${totalAmount}</p>
             </span>
             <span className='w-full flex justify-between items-center gap-6 text-gray-500 max-md:text-xs font-bold'>
               <p>total <small className='text-red-500 align-super'>* </small>(includes shipping and tax)</p>

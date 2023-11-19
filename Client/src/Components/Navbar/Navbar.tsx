@@ -117,7 +117,7 @@ export const Navbar = () => {
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
               <p className='text-gray-500'>Cart</p>
-              <p>${cart.products ? totalAmount.toFixed(2) : '0'}</p>
+              <p>${cart.products ? totalAmount : '0'}</p>
             </span>
           </div>
           <div className='flex items-center gap-3'>

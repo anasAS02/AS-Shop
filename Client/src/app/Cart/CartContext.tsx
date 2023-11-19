@@ -1,14 +1,15 @@
 'use client';
 import { useContext, createContext, useState, useCallback } from 'react';
-import { CartProductType } from './page';
+// import { ProductData } from './page';
 import Swal from 'sweetalert2';
 import { EMAIL } from '@/Utils/Cookies';
+import { ProductData } from '@/Components/Products/Product/ProductCard';
 
 type CartContextType = {
-  cartItems: CartProductType[] | null;
-  handleAddToCart: (product: CartProductType) => void;
-  handleDeleteFromCart: (product: CartProductType) => void;
-  handleDecreaseQty: (product: CartProductType) => void;
+  cartItems: ProductData[] | null;
+  handleAddToCart: (product: ProductData) => void;
+  handleDeleteFromCart: (product: ProductData) => void;
+  handleDecreaseQty: (product: ProductData) => void;
 };
 
 export const CartContext = createContext<CartContextType | null>(null);
@@ -18,12 +19,12 @@ interface Props {
 }
 
 export const CartContextProvider = (props: Props) => {
-  const [cartItems, setCartItems] = useState<CartProductType[] | null>(() => {
+  const [cartItems, setCartItems] = useState<ProductData[] | null>(() => {
     const storedCart = window.localStorage.getItem('cart');
     return storedCart ? JSON.parse(storedCart).products : null;
   });
 
-  const handleAddToCart = useCallback((product: CartProductType) => {
+  const handleAddToCart = useCallback((product: ProductData) => {
     setCartItems((prev) => {
       let updatedCart;
       if (prev) {
@@ -54,13 +55,13 @@ export const CartContextProvider = (props: Props) => {
       }, 0);
       const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
       window.localStorage.setItem('cart', JSON.stringify(cart));
-      return updatedCart as CartProductType[];
+      return updatedCart as ProductData[];
     });
   }, []);
 
-  const handleDeleteFromCart = useCallback((product: CartProductType) => {
+  const handleDeleteFromCart = useCallback((product: ProductData) => {
     setCartItems((prev) => {
-      let updatedCart: CartProductType[] = [];
+      let updatedCart: ProductData[] = [];
       if (prev) {
         updatedCart = prev.filter((pro) => pro._id !== product._id);
       }
@@ -85,13 +86,13 @@ export const CartContextProvider = (props: Props) => {
         timer: 1500
       });
       
-      return updatedCart as CartProductType[];
+      return updatedCart as ProductData[];
     });
   }, []);
 
-  const handleDecreaseQty = useCallback((product: CartProductType) => {
+  const handleDecreaseQty = useCallback((product: ProductData) => {
     setCartItems((prev) => {
-      let updatedCart: CartProductType[] = [];
+      let updatedCart: ProductData[] = [];
       if (prev) {
         const findProduct = prev.findIndex((pro) => pro._id === product._id);
         if (findProduct !== -1) {
@@ -129,7 +130,7 @@ export const CartContextProvider = (props: Props) => {
         window.localStorage.removeItem('cart');
       }
 
-      return updatedCart as CartProductType[];
+      return updatedCart as ProductData[];
     });
   }, []);
 
