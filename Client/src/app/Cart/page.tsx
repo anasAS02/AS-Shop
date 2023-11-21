@@ -7,6 +7,11 @@ import Link from 'next/link';
 import {useState, useEffect} from 'react';
 import { useCart } from './CartContext';
 import { ProductData } from '@/Components/Products/Product/ProductCard';
+import axios from 'axios';
+import { CREATE_ORDER } from '@/Utils/Apis';
+import { EMAIL } from '@/Utils/Cookies';
+import { config } from '@/Utils/Auth/handleAuth';
+import { loadStripe } from '@stripe/stripe-js';
 
 export interface CartProductType {
   _id: any;
@@ -26,8 +31,6 @@ const Cart = () => {
   const {isLoggedIn} = useStatusContext();
   const {handleAddToCart, handleDeleteFromCart, handleDecreaseQty} = useCart();
   const [cartProducts, setCartProducts] = useState<ProductData[] | null>();
-  const [totalAmount, setTotalAmount] = useState<number>(0);
-  const [userEmail, setUserEmail] = useState<string>('');
   const savedCart = window.localStorage.getItem('cart');
   const cart = savedCart && JSON.parse(savedCart);
   const {cartItems} = useCart();
@@ -35,18 +38,48 @@ const Cart = () => {
   const getCartProducts = () => {
     if(cart){
       setCartProducts(cart.products);
-      setTotalAmount(cart.totalAmount);
-      setUserEmail(cart.email);
     }else{
       setCartProducts(null);
-      setTotalAmount(0);
     }
   }
+
+  const items = cartProducts?.map((item: ProductData) => ({
+    title: item.title,
+    thumbnail: item.thumbnail,
+    quantity: item.quantity,
+    totalPrice: item.total
+  }));
+
+  const orderId = EMAIL && EMAIL + Date.now();
   
   useEffect(() => {
-    getCartProducts();
     document.title = 'AS-Shop Cart';
-  }, [cartItems])
+    getCartProducts();
+  }, [cartItems]);
+
+  const [sessionId, setSessionId] = useState(null);
+
+  const handleCheckout = async () => {
+    axios.post(CREATE_ORDER, { items, totalAmount: cart?.totalAmount, email: EMAIL, orderId: orderId }, config)
+    .then(async (res) => {
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        return Promise.reject(res.data);
+      }
+    })
+    .then(({ url }) => {
+        window.location = url;
+    })
+    .catch((error) => {
+        console.error('Error creating Stripe Checkout Session:', error);
+    });
+      const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY || '');
+      if (sessionId) {
+        const result = await stripe?.redirectToCheckout({ sessionId });
+        console.error('Error redirecting to Stripe Checkout:', result?.error);
+    }
+};
 
   return (
     !isLoggedIn ? 
@@ -81,17 +114,13 @@ const Cart = () => {
               </span>
             )}
           </div>
-          <div className='w-fit h-fit p-5 border-2 border-gray-100 rounded-md flex flex-col items-center gap-4'>
+          <div className='w-fit max-md:w-full h-fit p-5 ronded-md flex flex-col gap-5 items-center'>
             <h2 className='text-xl max-md:text-lg mr-auto'>Order summary</h2>
             <span className='w-full flex justify-between items-center gap-6 text-gray-500 max-md:text-xs'>
-              <p>total products</p>
-              <p className='ml-auto'>${totalAmount}</p>
+              <p>Total amount</p>
+              <p className='ml-auto'>${cart?.totalAmount.toFixed(2)}</p>
             </span>
-            <span className='w-full flex justify-between items-center gap-6 text-gray-500 max-md:text-xs font-bold'>
-              <p>total <small className='text-red-500 align-super'>* </small>(includes shipping and tax)</p>
-              <p className='ml-auto'>${(totalAmount + 304).toFixed(2)}</p>
-            </span>
-            <button className='outline-none border-none rounded-md p-4 max-md:p-2 duration-300 bg-blue-400 hover:bg-blue-300 text-white text-center'>Checkout</button>
+            <button onClick={handleCheckout} className='outline-none border-none rounded-md p-4 max-md:p-2 duration-300 bg-blue-400 hover:bg-blue-300 text-white text-center'>Checkout</button>
           </div>
         </div>
         }

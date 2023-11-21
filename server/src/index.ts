@@ -11,6 +11,7 @@ import { managementRoute } from './routes/managementRoute';
 import { userRoute } from './routes/userRoute';
 import { categoriesRoute } from './routes/categoriesRoute';
 import { favoritesRoute } from './routes/favoritesRoute';
+import { ordersRoute } from './routes/ordersRoute';
 
 const app = express();
 app.use(cors());
@@ -26,6 +27,7 @@ app.use('/categories', categoriesRoute);
 app.use('/user', userRoute);
 app.use('/management', managementRoute);
 app.use('/favorites', favoritesRoute);
+app.use('/orders', ordersRoute);
 
 import path from 'path';
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))

@@ -49,7 +49,6 @@ export const Navbar = () => {
   
   const savedCart = window.localStorage.getItem('cart');
   const cart = savedCart ? JSON.parse(savedCart) : [];
-  const totalAmount = cart.totalAmount;
 
   useEffect(() => {
     if(isLoggedIn){
@@ -76,6 +75,7 @@ export const Navbar = () => {
             text: "Your session has ended, login again",
             icon: "error"
           });
+          window.location.pathname = '/';
         }
       }
   }
@@ -94,7 +94,7 @@ export const Navbar = () => {
             {searchResult && searchResult.length > 0 && searchKey !== '' && searchResult.map((product: ProductData) => (
               <span key={product._id} className='p-5 flex items-center gap-2'>
                 <Image src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} width={100} height={100} alt={product.title} />
-                <Link href={`/products/${product._id}`} className='duration-200 hover:text-yellow-500'>{product.title}</Link>
+                <Link href={`/Product/${product._id}`} className='duration-200 hover:text-yellow-500'>{product.title}</Link>
                 <p className='text-sm text-gray-400'>${product.price}</p>
               </span>
             ))}
@@ -117,7 +117,7 @@ export const Navbar = () => {
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
               <p className='text-gray-500'>Cart</p>
-              <p>${cart.products ? totalAmount : '0'}</p>
+              <p>${cart.products ? cart?.totalAmount?.toFixed(2) : '0'}</p>
             </span>
           </div>
           <div className='flex items-center gap-3'>

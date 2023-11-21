@@ -1,9 +1,10 @@
 'use client'
-import { faCircleInfo, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faGear, faShop, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookie from 'js-cookie';
 import { useState } from 'react';
 import Info from './Info';
+import MyOrders from './MyOrders';
 import Users from './Dashboard/Users';
 import Management from './Dashboard/Management';
 import Categories  from './Dashboard/Categories';
@@ -37,6 +38,9 @@ const Profile = () => {
             <button className={`${mode === 'Info' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faCircleInfo} />    
             Info</button>
+            <button className={`${mode === 'myOrders' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'myOrders')}>
+            <FontAwesomeIcon className='mr-3 text-white' icon={faShoppingBasket} />    
+            My orders</button>
             { (ROLE === userRoles.MANAGER || ROLE === userRoles.ADMIN) &&
             <button className={`${mode === 'Dashboard' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Dashboard')}>
             <FontAwesomeIcon className='mr-3 text-white' icon={faGear} />    
@@ -47,6 +51,9 @@ const Profile = () => {
         <section className='w-full flex flex-col gap-5 p-5 rounded-md'>
         { mode === 'Info' &&
             <Info />
+        }
+        { mode === 'myOrders' &&
+            <MyOrders />
         }
         {mode === 'Dashboard' &&
             <div className='w-full flex flex-col items-center justify-center'>

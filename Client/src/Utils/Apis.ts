@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:4000/';
+export const BASE_URL = 'http://localhost:4000/';
 
 export const REGISTER = `${BASE_URL}auth/register`
 export const LOGIN = `${BASE_URL}auth/login`
@@ -12,6 +12,11 @@ export const REMOVE_ROLE = `${BASE_URL}management/removeRole`
 export const GET_FAVORITES_LIST = `${BASE_URL}favorites/`
 export const ADD_TO_FAVORITES_LIST = `${BASE_URL}favorites/add`
 export const REMOVE_FROM_FAVORITES_LIST = `${BASE_URL}favorites/remove`
+
+export const GET_ORDERS = `${BASE_URL}orders/`
+export const CREATE_ORDER = `${BASE_URL}orders/create`
+export const SAVE_ORDER = `${BASE_URL}orders/save`
+export const GET_MY_ORDERS = `${BASE_URL}orders/myOrders`
 
 export const GET_INFO = `${BASE_URL}user/getInfo`
 export const CHANGE_NAME = `${BASE_URL}user/changeName`

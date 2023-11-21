@@ -1,8 +1,6 @@
 'use client';
 import { useContext, createContext, useState, useCallback } from 'react';
-// import { ProductData } from './page';
 import Swal from 'sweetalert2';
-import { EMAIL } from '@/Utils/Cookies';
 import { ProductData } from '@/Components/Products/Product/ProductCard';
 
 type CartContextType = {
@@ -53,7 +51,7 @@ export const CartContextProvider = (props: Props) => {
         acc += productInfo.total * (productInfo.quantity || 1);
         return acc;
       }, 0);
-      const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
+      const cart = { products: updatedCart, totalAmount: totalAmount };
       window.localStorage.setItem('cart', JSON.stringify(cart));
       return updatedCart as ProductData[];
     });
@@ -71,7 +69,7 @@ export const CartContextProvider = (props: Props) => {
         return acc;
       }, 0);
 
-      const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
+      const cart = { products: updatedCart, totalAmount: totalAmount };
       if (updatedCart.length > 0) {
         window.localStorage.setItem('cart', JSON.stringify(cart));
       } else {
@@ -123,7 +121,7 @@ export const CartContextProvider = (props: Props) => {
         timer: 1500
       });
       
-      const cart = { products: updatedCart, totalAmount: totalAmount, email: EMAIL };
+      const cart = { products: updatedCart, totalAmount: totalAmount };
       if (updatedCart.length > 0) {
         window.localStorage.setItem('cart', JSON.stringify(cart));
       } else {
