@@ -35,8 +35,8 @@ const getAllProducts = asyncWrapper(
 
 const addProduct = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, description, price, discountPercentage, stock, brand, category } = req.body;
-    if (!title || !description || !price || !discountPercentage || !stock || !brand || !category) {
+    const { title, description, price, discountPercentage, brand, category } = req.body;
+    if (!title || !description || !price || !discountPercentage || !brand || !category) {
       const error = new AppError('All fields are required', 401, httpStatusText.ERROR);
       return next(error);
     }
@@ -49,7 +49,6 @@ const addProduct = asyncWrapper(
       description,
       price,
       discountPercentage,
-      stock,
       brand,
       category,
       thumbnail,

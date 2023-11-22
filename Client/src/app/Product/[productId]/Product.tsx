@@ -67,7 +67,6 @@ return(
                 <h3 className='text-2xl max-md:text-base'>{product.title}</h3>
                 <span className='flex items-center gap-2'>
                     <FontAwesomeIcon icon={faBagShopping} className='text-green-400' />
-                    <p>Left: {product.stock}</p>
                     <p>From: <span className='text-green-400'>{product.brand}</span></p>
                 </span>
                 <p>{product.description}</p>

@@ -6,6 +6,7 @@ import { faCheck, faTruck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export interface orders {
@@ -35,6 +36,11 @@ const MyOrders = () => {
     }, [])
 
   return (
+    orders && orders.length < 1 ?
+    <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your orders list is empty
+        <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>
+    </h2>
+    :
     <div className='w-full h-full flex items-start gap-5 flex-co p-5'>
         {orders && orders.map((order: orders) => (
         <div className='flex flex-col items-start gap-5 max-md:items-center'>

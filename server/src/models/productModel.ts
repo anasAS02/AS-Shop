@@ -4,8 +4,8 @@ interface Product extends Document {
   title: string;
   description: string;
   price: number;
-  discountPercentage: number;
   stock: number;
+  discountPercentage: number;
   brand: string;
   category: string;
   thumbnail: string;
@@ -31,7 +31,7 @@ const productSchema = new Schema<Product>({
   },
   stock: {
     type: Number,
-    required: true,
+    required: false,
   },
   brand: {
     type: String,

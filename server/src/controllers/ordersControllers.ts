@@ -7,6 +7,7 @@ import AppError from '../utils/appError';
 import { BASE_URL } from '../../../Client/src/Utils/Apis'
 import dotenv from 'dotenv';
 import { sendEmail } from './authControllers';
+import { User } from '../models/userModel';
 dotenv.config();
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -14,19 +15,35 @@ const stripeInstance = new stripe(stripeSecretKey);
 
 const getAllOrders = asyncWrapper(
   async (req: Request, res: Response) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const orders: any[] = await Order.find({paid: true});
+    
+    interface orders {
+      email: string;
+      items: { title: string, thumbnail: string , totalPrice: number, quantity: number}[];
+      totalAmount: number;
+      delivered: boolean;
+      createdAt: string;
+    }
+
+    const orders: orders[] = await Order.find({paid: true});
     const monthlyRevenue: { [key: number]: number } = {};
+
     for (const order of orders) {
-      const month = order.createdAt.getMonth();
-      let revenueForOrder = 0;
-      for (const item of order.items) {
-        revenueForOrder += item.totalPrice;
+      const createdAtDate = new Date(order.createdAt);
+    
+      if (!isNaN(createdAtDate.getTime())) {
+        const month = createdAtDate.getMonth();
+        let revenueForOrder = 0;
+    
+        for (const item of order.items) {
+          revenueForOrder += item.totalPrice;
+        }
+    
+        monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
+      } else {
+        console.error(`Invalid createdAt date: ${order.createdAt}`);
       }
-      monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
     }
     
-    // Convert monthlyRevenue to graphData format
     const graphData: { name: string; total: number }[] = [
       { name: 'Jan', total: 0 },
       { name: 'Feb', total: 0 },
@@ -45,7 +62,6 @@ const getAllOrders = asyncWrapper(
     for (const month in monthlyRevenue) {
       graphData[parseInt(month)].total = monthlyRevenue[parseInt(month)];
     }
-    
     
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { orders, graphData } });
   }
@@ -124,8 +140,10 @@ const confirmOrder = asyncWrapper(
       const error = new AppError('Order is not found', 404, httpStatusText.ERROR);
       return next(error);
     }
+    const findUser = await User.findOne({email: findOrder.email});
+    const address = findUser?.address;
     await Order.updateOne({orderId: findOrder?.orderId},  { $set: { paid: true } });
-    await sendEmail(findOrder.email, 'Your order from AS-Shop', 'Great news! Your order’s been successfully placed.')
+    await sendEmail(findOrder.email, 'Your order from AS-Shop', `Great news! Your order has been booked and is currently in transit to ${address}. Keep an eye out for its arrival.`)
     res.redirect('http://localhost:3000/Profile');
   }
 );
@@ -141,7 +159,7 @@ const updateOrderStatus = asyncWrapper(
     }
 
     await Order.updateOne({_id: findOrder?._id},  { $set: { delivered: true } });
-    await sendEmail(findOrder.email, 'Your order from AS-Shop', 'Your order has been delivered, thanks for your order!')
+    await sendEmail(findOrder.email, 'Your order from AS-Shop', 'Good news! Your order has been successfully handed over. Thank you for choosing us. We invite you to explore our products and shop with us again.')
     res.status(200).json({status: httpStatusText.SUCCESS, message: 'Order status has been updated.'});
   }
 )

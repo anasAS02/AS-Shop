@@ -23,7 +23,6 @@ const Products = () => {
         description: string;
         price: string;
         discountPercentage: string;
-        stock: string;
         brand: string;
         category: string;
         thumbnail?: string;
@@ -36,7 +35,6 @@ const Products = () => {
         description: '',
         price: '',
         discountPercentage: '',
-        stock: '',
         brand: '',
         category: 'Laptops'
     });
@@ -84,7 +82,6 @@ const Products = () => {
             formData.append('description', productData.description);
             formData.append('price', productData.price);
             formData.append('discountPercentage', productData.discountPercentage);
-            formData.append('stock', productData.stock);
             formData.append('brand', productData.brand);
             formData.append('category', productData.category);
 
@@ -120,7 +117,6 @@ const Products = () => {
                 description: '',
                 price: '',
                 discountPercentage: '',
-                stock: '',
                 brand: '',
                 category: 'Laptops'
             });
@@ -146,7 +142,6 @@ const Products = () => {
                 description: findProduct.description,
                 price: findProduct.price,
                 discountPercentage: findProduct.discountPercentage,
-                stock: findProduct.stock,
                 brand: findProduct.brand,
                 category: findProduct.category
             })
@@ -183,7 +178,6 @@ const Products = () => {
             <input type='text' name='description' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='text' name='price' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='text' name='discountPercentage' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='stock' placeholder='product stock' value={productData.stock} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             {isLoading ?
             <SkewLoader color="#ffffff" />
@@ -200,7 +194,6 @@ const Products = () => {
             <input multiple id='selectImager' accept="image/*" className='hidden' type='file' onChange={(e) => e.target.files && setImages([...e.target.files])} />
             <button onClick={() => document.getElementById('selectImager')?.click()} className='p-2 max-md:p-1 bg-white max-md:text-xs text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose images</button>
             {showImgs}
-            
             {isLoading ?
                 <SkewLoader color="#ffffff" />
                 :
@@ -209,13 +202,14 @@ const Products = () => {
         </div>
         <div className='w-full flex flex-col items-center gap-3 mt-10'>
             {products?.map((product: ProductData) => (
-                <span key={product._id} className='w-full flex justify-between items-center max-md:justify-center max-md:p-1 p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
+                <span key={product._id} className='w-full flex justify-between items-center max-md:flex-col max-md:justify-center max-md:gap-3 p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
                     <Link href={`/categories/${product._id}`}>
-                        <Image width={200} height={200} className='w-[100px] h-[100px] max-md:w-[50px] max-md:h-[50px] mr-1 duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
+                        <Image width={200} height={200} className='md:w-[100px] md:h-[100px] md:mr-1 duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
                     </Link>
-                    <p className='text-xs'>{product.title}</p>
-                    <p className='text-xs'>left: {product.stock}</p>
-                    <span className='max-md:ml-auto max-md:flex max-md:items-center max-md:flex-col max-md:gap-1'>
+                    <p className='text-sm'>{product.title}</p>
+                    <p className='text-sm'>{product.category}</p>
+                    <p className='text-sm'>From: {product.brand}</p>
+                    <span className='max-md:flex max-md:items-center max-md:gap-3'>
                         <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(product._id)}} className='md:mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
                         <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(product._id)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />
                     </span>
