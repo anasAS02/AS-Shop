@@ -20,29 +20,29 @@ export default function Category ({params}: any) {
   const [sortLowest, setSortLowest] = useState<string | null>(null);
   const [sortHighest, setSortHighest] = useState<string | null>(null);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get(categoryParam === 'All-Products' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + categoryParam, {
-        params: {
-          lowestPrice: from,
-          highestPrice: to,
-          sortByLowestPrice: sortLowest,
-          sortByHighestPrice: sortHighest,
-        },
-      });
-      const data = res.data.data;
-      setProducts(data)
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(categoryParam === 'All-Products' ? GET_PRODUCTS : GET_CATEGORIES_PRODUCTS + categoryParam, {
+          params: {
+            lowestPrice: from,
+            highestPrice: to,
+            sortByLowestPrice: sortLowest,
+            sortByHighestPrice: sortHighest,
+          },
+        });
+        const data = res.data.data;
+        setProducts(data)
+      } catch (err) {
+        console.log(err);
+      }
+    };
     fetchProducts();
     getCategories().then((data) => setCategories(data));
     document.title = categoryParam;
     categories
-  }, [sortLowest, sortHighest])
+  }, [sortLowest, sortHighest, categoryParam, categories, from, to])
 
   const [grid, setGrid] = useState<boolean>(true);
 
@@ -68,13 +68,12 @@ export default function Category ({params}: any) {
       setSortHighest('0');
       setSortLowest(null);
     }
-    fetchProducts();
   }
 
-  const handleFilter = (event: React.MouseEvent) => {
-    event.preventDefault();
-    fetchProducts();
-  }
+  // const handleFilter = (event: React.MouseEvent) => {
+  //   event.preventDefault();
+  //   fetchProducts();
+  // }
 
   return (
     <div className={`p-16 max-md:p-4 flex items-start gap-10 ${products?.length > 0 ? 'h-full' : 'h-screen'} max-md:flex-col`}>
@@ -100,7 +99,7 @@ export default function Category ({params}: any) {
             <input type='number' placeholder='from' onChange={(e) => setFrom(Number(e.target.value))} className='border-none outline-none bg-gray-300 placeholder:text-slate-700 p-2 rounded-md w-20' />
             <input type='number' placeholder='to' onChange={(e) => setTo(Number(e.target.value))} className='border-none outline-none bg-gray-300 placeholder:text-slate-700 p-2 rounded-md w-20' />
           </span>
-          <button onClick={(event) => handleFilter(event)} className='p-2 bg-blue-400 duration-300 hover:bg-blue-300 rounded-md text-white'>Filter</button>
+          <button className='p-2 bg-blue-400 duration-300 hover:bg-blue-300 rounded-md text-white'>Filter</button>
         </span>
       </aside>
       <section className='flex w-full md:flex flex-col gap-12 justify-between'>

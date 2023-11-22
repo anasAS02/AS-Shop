@@ -18,7 +18,7 @@ const Login = () => {
 
     useEffect(() => {
         handleMsg(setForm, successMsg, setSuccessMsg, err, setErr);
-    }, [successMsg, err])
+    }, [successMsg, err, setSuccessMsg, setErr])
 
 
   return (
@@ -31,7 +31,7 @@ const Login = () => {
             :
             <span className='flex flex-col items-center gap-2'>
                 <button onClick={(e) => handleAuth(e, LOGIN, form, setIsLoading, setSuccessMsg, setErr)} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>Login</button>
-                <p className='text-white max-md:text-sm'>Don't have an account? <Link href='/Auth/Register' className='text-red-500 duration-200 hover:text-black'>Register</Link></p>
+                <p className='text-white max-md:text-sm'>Don&apos;t have an account? <Link href='/Auth/Register' className='text-red-500 duration-200 hover:text-black'>Register</Link></p>
             </span>
             }
         </div>

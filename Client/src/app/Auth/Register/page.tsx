@@ -24,7 +24,7 @@ const Register = () => {
 
     useEffect(() => {
         handleMsg(setForm, successMsg, setSuccessMsg, err, setErr);
-    }, [successMsg, err])
+    }, [successMsg, err, setSuccessMsg, setErr])
 
   return (
     <div className='h-screen flex justify-center relative'>

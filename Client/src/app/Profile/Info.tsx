@@ -39,7 +39,7 @@ const Info = () => {
     useEffect(() => {
         handleMsg(undefined, successMsg, setSuccessMsg, err, setErr);
         getInfo();
-    }, [successMsg, err]);
+    }, [successMsg, err, setSuccessMsg, setErr]);
 
     const handleUpdateMode = (e: any) => {
         const id = e.target.id;

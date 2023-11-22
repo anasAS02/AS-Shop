@@ -33,23 +33,23 @@ const ProductComp = (props: {productId: any}) => {
         setAbout(false);
     }
 
-    const getProduct = async() => {
-        try{
-            const res = await axios.get(GET_PRODUCT + productId);
-            const data = await res.data.data[0];
-            setProduct({...data, quantity: 1, total: calcPrice(data.price, data.discountPercentage || 0)});
-            setImgs(data.images);
-        }catch(err){
-            console.log(err)
-        }
-    }
     
     useEffect(() => {
+        const getProduct = async() => {
+            try{
+                const res = await axios.get(GET_PRODUCT + productId);
+                const data = await res.data.data[0];
+                setProduct({...data, quantity: 1, total: calcPrice(data.price, data.discountPercentage || 0)});
+                setImgs(data.images);
+            }catch(err){
+                console.log(err)
+            }
+        }
         getProduct();
         if(product){
             getCategory(product.category).then((data) => setProducts(data?.data.data));
         }
-    }, [cartItems, product])
+    }, [cartItems, product, productId])
 
 return(
     product && imgs &&

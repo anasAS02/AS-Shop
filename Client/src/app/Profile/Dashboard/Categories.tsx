@@ -34,7 +34,7 @@ const Categories = () => {
             title: '',
             href: ''
         })
-    }, [successMsg, err]);
+    }, [successMsg, err, setSuccessMsg, setErr]);
 
     
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

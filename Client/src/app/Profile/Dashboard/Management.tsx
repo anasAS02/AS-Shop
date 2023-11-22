@@ -57,7 +57,7 @@ const Management = () => {
     useEffect(() => {
         getUsers();
         handleMsg(setForm, successMsg, setSuccessMsg, err, setErr);
-    }, [successMsg, err]);
+    }, [successMsg, err, setSuccessMsg, setErr]);
 
     const handleChangeRole = async(id: any, role: string) => {
         try{

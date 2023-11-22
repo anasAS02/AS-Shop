@@ -91,8 +91,8 @@ const Orders = () => {
                         <tr className='text-center max-md:text-xs' key={order._id}>
                             <td>{order.email}</td>
                             <td className='flex flex-col gap-1 items-center'>
-                                {order.items.map((item) => (
-                                    <p>{item.title} <span className='text-gray-700 font-bold text-sm max-md:font-normal max-md:text-xs'>x{item.quantity}</span></p>
+                                {order.items.map((item, i) => (
+                                    <p key={i}>{item.title} <span className='text-gray-700 font-bold text-sm max-md:font-normal max-md:text-xs'>x{item.quantity}</span></p>
                                 ))}
                             </td>
                             <td>

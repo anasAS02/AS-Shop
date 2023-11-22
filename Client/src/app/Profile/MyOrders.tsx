@@ -43,13 +43,13 @@ const MyOrders = () => {
     :
     <div className='w-full h-full flex items-start gap-5 flex-co p-5'>
         {orders && orders.map((order: orders) => (
-        <div className='flex flex-col items-start gap-5 max-md:items-center'>
+        <div key={order._id} className='flex flex-col items-start gap-5 max-md:items-center'>
             <span className='flex gap-5 items-center'>
                 <h2 className='text-2xl max-md:text-base'>{order.delivered ? 'On the way' : 'Delivered'}</h2>
                 <FontAwesomeIcon icon={order.delivered ? faTruck : faCheck} className='animate-pulse' />
             </span>
-            {order.items.map((item) => (
-                <span className='flex items-center gap-5 max-md:flex-col max-md:justify-center'>
+            {order.items.map((item, i) => (
+                <span key={i} className='flex items-center gap-5 max-md:flex-col max-md:justify-center'>
                     <Image src={item.thumbnail} width={200} height={200} alt='as' />
                     <span className='flex flex-col items-start gap-2 max-md:items-center'>
                         <h2>{item.title} <span className='text-gray-400 font-bold text-base max-md:text-sm'>x{item.quantity}</span></h2>

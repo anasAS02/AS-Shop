@@ -35,14 +35,6 @@ const Cart = () => {
   const cart = savedCart && JSON.parse(savedCart);
   const {cartItems} = useCart();
 
-  const getCartProducts = () => {
-    if(cart){
-      setCartProducts(cart.products);
-    }else{
-      setCartProducts(null);
-    }
-  }
-
   const items = cartProducts?.map((item: ProductData) => ({
     title: item.title,
     thumbnail: item.thumbnail,
@@ -53,9 +45,16 @@ const Cart = () => {
   const orderId = EMAIL && EMAIL + Date.now();
   
   useEffect(() => {
+    const getCartProducts = () => {
+      if(cart){
+        setCartProducts(cart.products);
+      }else{
+        setCartProducts(null);
+      }
+    }
     document.title = 'AS-Shop Cart';
     getCartProducts();
-  }, [cartItems]);
+  }, [cart, cartItems]);
 
   const [sessionId, setSessionId] = useState(null);
 

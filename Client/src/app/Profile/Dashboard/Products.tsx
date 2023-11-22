@@ -66,7 +66,7 @@ const Products = () => {
         setIsLoading(true);
         getCategories().then((data) => {setCategories(data); setIsLoading(false)});
         getProducts();
-    }, [successMsg, err]);
+    }, [successMsg, err, setSuccessMsg, setErr, setIsLoading]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = e.target;

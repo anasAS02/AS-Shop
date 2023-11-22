@@ -19,6 +19,7 @@ import { EMAIL, TOKEN } from '@/Utils/Cookies';
 import { favProduct } from '@/Utils/Favorites/addToFavList';
 
 export const Navbar = () => {
+  
   const {isLoggedIn, setIsLoggedIn} = useStatusContext();
   const [searchKey, setSearchKey] = useState<string>();
   const [searchResult, setSearchResult] = useState<ProductData[]>();
@@ -35,52 +36,92 @@ export const Navbar = () => {
       }
   }
 
-  const search = async () => {
-    if(searchKey && searchKey.length > 0){
-      const res = await axios.get(GET_PRODUCTS, {
-        params: {
-          search: searchKey
-        }
-      });
-      const data = res.data.data;
-      setSearchResult(data);
-    }
-  }
+
   
   const savedCart = window.localStorage.getItem('cart');
   const cart = savedCart ? JSON.parse(savedCart) : [];
 
+  // useEffect(() => {
+  //   if(isLoggedIn){
+  //     getFavoritesList();
+  //   }
+  //   search();
+  //   const checkToken = async () => {
+  //     try{
+  //       if(TOKEN){
+  //         const res = await axios.post(CHECK_TOKEN, {token: TOKEN});
+  //         if(res.data.data){
+  //         setIsLoggedIn(true);
+  //       }
+  //     }
+  //     }catch(err: any){
+  //       console.log(err)
+  //       if(!err.response?.data.data){
+  //         Swal.fire({
+  //           title: "Session",
+  //           text: "Your session has ended, login again",
+  //           icon: "error"
+  //         });
+  //         Cookies.remove('token');
+  //         Cookies.remove('email');
+  //         Cookies.remove('role');
+  //         window.localStorage.removeItem('cart');
+  //         window.location.pathname = '/';
+  //       }
+  //     }
+  // }
+  //   checkToken();
+  // }, [searchKey, cartItems, favourites, isLoggedIn])
+
   useEffect(() => {
-    if(isLoggedIn){
-      getFavoritesList();
+    const search = async () => {
+      if(searchKey && searchKey.length > 0){
+        const res = await axios.get(GET_PRODUCTS, {
+          params: {
+            search: searchKey
+          }
+        });
+        const data = res.data.data;
+        setSearchResult(data);
+      }
     }
-    search();
-    const checkToken = async () => {
-      try{
-        if(TOKEN){
-          const res = await axios.post(CHECK_TOKEN, {token: TOKEN});
-          if(res.data.data){
-          setIsLoggedIn(true);
+
+    if (typeof window !== 'undefined') {
+        const savedCart = window.localStorage.getItem('cart');
+        const cart = savedCart ? JSON.parse(savedCart) : [];
+
+        if (isLoggedIn) {
+            getFavoritesList();
         }
-      }
-      }catch(err: any){
-        console.log(err)
-        if(!err.response?.data.data){
-          Swal.fire({
-            title: "Session",
-            text: "Your session has ended, login again",
-            icon: "error"
-          });
-          Cookies.remove('token');
-          Cookies.remove('email');
-          Cookies.remove('role');
-          window.localStorage.removeItem('cart');
-          window.location.pathname = '/';
-        }
-      }
-  }
-    checkToken();
-  }, [searchKey, cartItems, favourites, isLoggedIn])
+        search();
+        const checkToken = async () => {
+            try {
+                if (TOKEN) {
+                    const res = await axios.post(CHECK_TOKEN, { token: TOKEN });
+                    if (res.data.data) {
+                        setIsLoggedIn(true);
+                    }
+                }
+            } catch (err: any) {
+                console.log(err);
+                if (!err.response?.data.data) {
+                    Swal.fire({
+                        title: 'Session',
+                        text: 'Your session has ended, login again',
+                        icon: 'error',
+                    });
+                    Cookies.remove('token');
+                    Cookies.remove('email');
+                    Cookies.remove('role');
+                    window.localStorage.removeItem('cart');
+                    window.location.pathname = '/';
+                }
+            }
+        };
+        checkToken();
+    }
+}, [isLoggedIn, searchKey, setIsLoggedIn]);
+
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
