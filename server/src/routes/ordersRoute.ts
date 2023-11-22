@@ -17,4 +17,7 @@ router.route('/create')
 router.route('/confirm/:orderId')
     .get(ordersControllers.confirmOrder);
 
+router.route('/update/:orderId')
+    .put(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANAGER), ordersControllers.updateOrderStatus);
+
 export { router as ordersRoute };

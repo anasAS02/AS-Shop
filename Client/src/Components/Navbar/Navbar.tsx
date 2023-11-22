@@ -66,15 +66,15 @@ export const Navbar = () => {
       }catch(err: any){
         console.log(err)
         if(!err.response?.data.data){
-          Cookies.remove('token');
-          Cookies.remove('role');
-          Cookies.remove('email');
-          setIsLoggedIn(false);
           Swal.fire({
             title: "Session",
             text: "Your session has ended, login again",
             icon: "error"
           });
+          Cookies.remove('token');
+          Cookies.remove('email');
+          Cookies.remove('role');
+          window.localStorage.removeItem('cart');
           window.location.pathname = '/';
         }
       }

@@ -6,6 +6,7 @@ import stripe from 'stripe';
 import AppError from '../utils/appError';
 import { BASE_URL } from '../../../Client/src/Utils/Apis'
 import dotenv from 'dotenv';
+import { sendEmail } from './authControllers';
 dotenv.config();
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -13,15 +14,47 @@ const stripeInstance = new stripe(stripeSecretKey);
 
 const getAllOrders = asyncWrapper(
   async (req: Request, res: Response) => {
-    const orders = await Order.find({}, { __v: false });
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { orders } });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const orders: any[] = await Order.find({paid: true});
+    const monthlyRevenue: { [key: number]: number } = {};
+    for (const order of orders) {
+      const month = order.createdAt.getMonth();
+      let revenueForOrder = 0;
+      for (const item of order.items) {
+        revenueForOrder += item.totalPrice;
+      }
+      monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
+    }
+    
+    // Convert monthlyRevenue to graphData format
+    const graphData: { name: string; total: number }[] = [
+      { name: 'Jan', total: 0 },
+      { name: 'Feb', total: 0 },
+      { name: 'Mar', total: 0 },
+      { name: 'Apr', total: 0 },
+      { name: 'May', total: 0 },
+      { name: 'Jun', total: 0 },
+      { name: 'Jul', total: 0 },
+      { name: 'Aug', total: 0 },
+      { name: 'Sep', total: 0 },
+      { name: 'Oct', total: 0 },
+      { name: 'Nov', total: 0 },
+      { name: 'Dec', total: 0 },
+    ];
+    
+    for (const month in monthlyRevenue) {
+      graphData[parseInt(month)].total = monthlyRevenue[parseInt(month)];
+    }
+    
+    
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { orders, graphData } });
   }
 );
 
 const getMyOrders = asyncWrapper(
   async (req: Request, res: Response) => {
     const userEmail = req.body.email;
-    const orders = await Order.find({ email: userEmail });
+    const orders = await Order.find({ email: userEmail, paid: true });
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { orders } });
   }
 );
@@ -92,13 +125,31 @@ const confirmOrder = asyncWrapper(
       return next(error);
     }
     await Order.updateOne({orderId: findOrder?.orderId},  { $set: { paid: true } });
+    await sendEmail(findOrder.email, 'Your order from AS-Shop', 'Great news! Your order’s been successfully placed.')
     res.redirect('http://localhost:3000/Profile');
   }
 );
+
+const updateOrderStatus = asyncWrapper(
+  async(req: Request, res: Response, next: NextFunction) => {
+    const orderId = req.params.orderId;
+
+    const findOrder = await Order.findOne({_id: orderId});
+    if(!findOrder){
+      const error = new AppError('This order id is not found', 404, httpStatusText.ERROR);
+      return next(error);
+    }
+
+    await Order.updateOne({_id: findOrder?._id},  { $set: { delivered: true } });
+    await sendEmail(findOrder.email, 'Your order from AS-Shop', 'Your order has been delivered, thanks for your order!')
+    res.status(200).json({status: httpStatusText.SUCCESS, message: 'Order status has been updated.'});
+  }
+)
 
 export default {
   getAllOrders,
   getMyOrders,
   createOrder,
   confirmOrder,
+  updateOrderStatus,
 };

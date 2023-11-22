@@ -77,6 +77,7 @@ const Cart = () => {
       const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY || '');
       if (sessionId) {
         const result = await stripe?.redirectToCheckout({ sessionId });
+        window.localStorage.removeItem('cart');
         console.error('Error redirecting to Stripe Checkout:', result?.error);
     }
 };
