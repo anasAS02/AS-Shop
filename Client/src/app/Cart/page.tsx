@@ -73,7 +73,7 @@ const Cart = () => {
     .catch((error) => {
         console.error('Error creating Stripe Checkout Session:', error);
     });
-      const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY || '');
+      const stripe = await loadStripe('pk_test_51OECliFpWZPgcl8EsH5W3Xzt10dJFIfTtEF9I3jsq0nF89e5XHxbERXOcqH2SGawifNW20QspguRawZHYqUc9jl800dICpw9Me');
       if (sessionId) {
         const result = await stripe?.redirectToCheckout({ sessionId });
         window.localStorage.removeItem('cart');
