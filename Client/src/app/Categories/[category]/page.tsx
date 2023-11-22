@@ -69,12 +69,7 @@ export default function Category ({params}: any) {
       setSortLowest(null);
     }
   }
-
-  // const handleFilter = (event: React.MouseEvent) => {
-  //   event.preventDefault();
-  //   fetchProducts();
-  // }
-
+  
   return (
     <div className={`p-16 max-md:p-4 flex items-start gap-10 ${products?.length > 0 ? 'h-full' : 'h-screen'} max-md:flex-col`}>
       <aside className='flex flex-col gap-5 max-md:w-full'>
@@ -99,7 +94,7 @@ export default function Category ({params}: any) {
             <input type='number' placeholder='from' onChange={(e) => setFrom(Number(e.target.value))} className='border-none outline-none bg-gray-300 placeholder:text-slate-700 p-2 rounded-md w-20' />
             <input type='number' placeholder='to' onChange={(e) => setTo(Number(e.target.value))} className='border-none outline-none bg-gray-300 placeholder:text-slate-700 p-2 rounded-md w-20' />
           </span>
-          <button className='p-2 bg-blue-400 duration-300 hover:bg-blue-300 rounded-md text-white'>Filter</button>
+          {/* <button className='p-2 bg-blue-400 duration-300 hover:bg-blue-300 rounded-md text-white'>Filter</button> */}
         </span>
       </aside>
       <section className='flex w-full md:flex flex-col gap-12 justify-between'>

@@ -36,16 +36,16 @@ useEffect(() => {
     </div>
     :
     <div className={`${products && products.length > 0 ? 'h-full' : 'h-screen'} flex flex-col justify-center items-center gap-5`}>
-      {products && products?.length < 1 ? 
-          <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your favourite list is empty
-            <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>
-          </h2>
-        :
+      {products && products?.length > 0 ? 
         <div className='flex flex-col justify-center items-center gap-5 p-10'>
           {products?.map((product: ProductData) => (
             <ProductCard key={product._id} _id={product._id} total={calcPrice(product.price, product.discountPercentage || 0)} title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} images={product.images} category={product.category} description={product.description} discountPercentage={product.discountPercentage} brand={product.brand} />
           ))}
         </div>
+        :
+        <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your favourite list is empty
+          <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>
+        </h2>
     }
     </div>
   )
