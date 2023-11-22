@@ -11,7 +11,7 @@ import { User } from '../models/userModel';
 dotenv.config();
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-const stripeInstance = new stripe(stripeSecretKey);
+const stripeInstance = new stripe(stripeSecretKey || '');
 
 const getAllOrders = asyncWrapper(
   async (req: Request, res: Response) => {
