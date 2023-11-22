@@ -72,7 +72,7 @@ return(
                 <p>{product.description}</p>
                 {product.discountPercentage && product.discountPercentage > 0 && <p className='text-red-500'>{product.discountPercentage}% off</p>}
                 <span className='flex gap-5 items-center'>
-                    <button onClick={() => isLoggedIn ? handleAddToCart(product) : window.location.pathname = '/Auth/Login'} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
+                    <button onClick={() => isLoggedIn ? handleAddToCart(product) : (typeof window !== 'undefined' && (window.location.pathname = '/Auth/Login'))} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
                     <FontAwesomeIcon icon={faCartPlus} />
                     Add To Cart</button>
                     <p className='text-green-400 font-bold text-lg'>${product.total}</p>

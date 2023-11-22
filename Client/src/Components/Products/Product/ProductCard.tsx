@@ -96,19 +96,19 @@ return (
         {props.discountPercentage && <span className='text-lg max-md:text-base text-red-500'>${calcPrice(props.price, props.discountPercentage).toFixed(2)}</span>}
         {!props.style && 
         <span className='flex justify-end items-center gap-3'>
-            <button onClick={() => isLoggedIn ? handleAddToCart(cartProduct) : window.location.pathname = '/Auth/Login'} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
+            <button onClick={() => isLoggedIn ? handleAddToCart(cartProduct) : (typeof window !== 'undefined' && (window.location.pathname = '/Auth/Login'))} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 text-black hover:text-white font-bold max-md:text-xs flex items-center gap-2 rounded-md'> 
             <FontAwesomeIcon icon={faCartPlus} className='w-[18px] h-[18px]' />
             Add To Cart</button>
-            <FontAwesomeIcon onClick={() => isLoggedIn ? isProductFavorited() ? removeFromFavList(favProduct.id) : addToFavoritesList(favProduct) : window.location.pathname = '/Auth/Login'} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
+            <FontAwesomeIcon onClick={() => isLoggedIn ? isProductFavorited() ? removeFromFavList(favProduct.id) : addToFavoritesList(favProduct) : (typeof window !== 'undefined' &&  (window.location.pathname = '/Auth/Login'))} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
         </span>
         }
     </span>
     {props.style &&
     <span className='flex items-center gap-3'>
-    <button onClick={() => isLoggedIn ? handleAddToCart(cartProduct) : window.location.pathname = '/Auth/Login'} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 max-md:text-sm text-black hover:text-white font-bold  flex items-center gap-2 rounded-md'> 
+    <button onClick={() => isLoggedIn ? handleAddToCart(cartProduct) : (typeof window !== 'undefined' &&  (window.location.pathname = '/Auth/Login'))} className='duration-200 p-3 max-md:p-1 hover:bg-blue-400 max-md:text-sm text-black hover:text-white font-bold  flex items-center gap-2 rounded-md'> 
     <FontAwesomeIcon icon={faCartPlus} className='w-[18px] h-[18px]' />
     Add To Cart</button>
-    <FontAwesomeIcon onClick={() => isLoggedIn ? isProductFavorited() ? removeFromFavList(favProduct.id) : addToFavoritesList(favProduct) : window.location.pathname = '/Auth/Login'} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
+    <FontAwesomeIcon onClick={() => isLoggedIn ? isProductFavorited() ? removeFromFavList(favProduct.id) : addToFavoritesList(favProduct) : (typeof window !== 'undefined' && ( window.location.pathname = '/Auth/Login'))} icon={faHeart} className={`${isProductFavorited() ? 'text-red-500' : 'text-gray-400'} w-[18px] h-[18px] duration-200 hover:text-red-400 cursor-pointer`} />
     </span>
     }
 </span>

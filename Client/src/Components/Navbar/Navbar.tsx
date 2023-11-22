@@ -41,38 +41,6 @@ export const Navbar = () => {
   const savedCart = window.localStorage.getItem('cart');
   const cart = savedCart ? JSON.parse(savedCart) : [];
 
-  // useEffect(() => {
-  //   if(isLoggedIn){
-  //     getFavoritesList();
-  //   }
-  //   search();
-  //   const checkToken = async () => {
-  //     try{
-  //       if(TOKEN){
-  //         const res = await axios.post(CHECK_TOKEN, {token: TOKEN});
-  //         if(res.data.data){
-  //         setIsLoggedIn(true);
-  //       }
-  //     }
-  //     }catch(err: any){
-  //       console.log(err)
-  //       if(!err.response?.data.data){
-  //         Swal.fire({
-  //           title: "Session",
-  //           text: "Your session has ended, login again",
-  //           icon: "error"
-  //         });
-  //         Cookies.remove('token');
-  //         Cookies.remove('email');
-  //         Cookies.remove('role');
-  //         window.localStorage.removeItem('cart');
-  //         window.location.pathname = '/';
-  //       }
-  //     }
-  // }
-  //   checkToken();
-  // }, [searchKey, cartItems, favourites, isLoggedIn])
-
   useEffect(() => {
     const search = async () => {
       if(searchKey && searchKey.length > 0){
@@ -113,8 +81,8 @@ export const Navbar = () => {
                     Cookies.remove('token');
                     Cookies.remove('email');
                     Cookies.remove('role');
-                    window.localStorage.removeItem('cart');
-                    window.location.pathname = '/';
+                    // window.localStorage.removeItem('cart');
+                    // window.location.pathname = '/';
                 }
             }
         };

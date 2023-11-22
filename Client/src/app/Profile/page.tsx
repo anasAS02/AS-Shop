@@ -32,7 +32,7 @@ const Profile = () => {
         Cookie.remove('email');
         Cookie.remove('role');
         window.localStorage.removeItem('cart');
-        window.location.pathname = '/';
+        // window.location.pathname = '/';
     }
 
   return (
