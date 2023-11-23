@@ -30,7 +30,7 @@ useEffect(() => {
   return (
     !isLoggedIn ? 
     <div className='h-screen'>
-      <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>You must be logged in
+      <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-sm flex flex-col items-center'>You must be logged in
         <Link href='/Auth/Login' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Login now</Link>
       </h2>
     </div>
