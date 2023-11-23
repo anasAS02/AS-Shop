@@ -12,11 +12,12 @@ import Products from './Dashboard/Products';
 import {userRoles} from '../../../../server/src/utils/userRoles';
 import { ROLE } from '@/Utils/Cookies';
 import Orders from './Dashboard/Orders';
+import { useStatusContext } from '@/Utils/Status/statusContext';
 
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
     const [controlMode, setControlMode] = useState<string>('users');
-
+    const isLoggedIn = useStatusContext();
     const handleMode = (e: React.MouseEvent, mode: string) => {
         e.preventDefault();
         setMode(mode);
@@ -31,11 +32,14 @@ const Profile = () => {
         Cookie.remove('token');
         Cookie.remove('email');
         Cookie.remove('role');
-        window.localStorage.removeItem('cart');
-        // window.location.pathname = '/';
+        if (typeof window !== 'undefined') {
+            window.localStorage.removeItem('cart');
+            window.location.pathname = '/';
+        }
     }
 
   return (
+    isLoggedIn ?
     <div className={`${mode === 'Dashboard'? 'h-full' : 'h-screen'} flex items-start max-md:flex-col max-md:justify-center gap-10 p-10`}>
         <aside className='flex flex-col max-md:justify-center gap-5 bg-slate-300 h-fit p-5 rounded-md max-md:text-xs max-md:w-full'>
             <button className={`${mode === 'Info' ? 'bg-blue-500': 'bg-blue-600 hover:bg-blue-500'} flex items-center max-md:justify-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
@@ -86,6 +90,8 @@ const Profile = () => {
         }
         </section>
     </div>
+    :
+    <></>
   )
 }
 

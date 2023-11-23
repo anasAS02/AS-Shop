@@ -1,5 +1,5 @@
-'use client';
-import { useContext, createContext, useState, useCallback } from 'react';
+'use client'
+import React, { useContext, createContext, useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { ProductData } from '@/Components/Products/Product/ProductCard';
 
@@ -35,17 +35,17 @@ export const CartContextProvider = (props: Props) => {
           updatedCart = [...prev];
           updatedCart[findProduct] = updatedProduct;
         } else {
-            updatedCart = [...prev, product];
+          updatedCart = [...prev, product];
         }
-    } else {
+      } else {
         updatedCart = [product];
       }
       Swal.fire({
         position: 'center',
-        icon: "success",
-        title: "The product has been added to your cart",
+        icon: 'success',
+        title: 'The product has been added to your cart',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
       const totalAmount = updatedCart.reduce((acc: any, productInfo) => {
         acc += productInfo.total * (productInfo.quantity || 1);
@@ -78,12 +78,12 @@ export const CartContextProvider = (props: Props) => {
 
       Swal.fire({
         position: 'center',
-        icon: "success",
-        title: "The product has been removed from your cart",
+        icon: 'success',
+        title: 'The product has been removed from your cart',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
-      
+
       return updatedCart as ProductData[];
     });
   }, []);
@@ -115,12 +115,12 @@ export const CartContextProvider = (props: Props) => {
 
       Swal.fire({
         position: 'center',
-        icon: "success",
-        title: "The product has been removed from your cart",
+        icon: 'success',
+        title: 'The product has been removed from your cart',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
-      
+
       const cart = { products: updatedCart, totalAmount: totalAmount };
       if (updatedCart.length > 0) {
         window.localStorage.setItem('cart', JSON.stringify(cart));
