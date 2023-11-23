@@ -45,7 +45,7 @@ const Orders = () => {
 
     const totalRevenue = orders?.reduce((acc: any, order) => {
         acc += order.totalAmount;
-        return acc.toFixed(2);
+        return acc;
     }, 0);
 
   return (
@@ -53,7 +53,7 @@ const Orders = () => {
         <div className='mt-12 flex items-start gap-10 max-md:w-full'>
             <span className='p-5 rounded-md bg-slate-300 flex flex-col gap-2'>
                 <h2 className='text-2xl max-md:text-sm'>Total revenue</h2>
-                <p className='font-bold text-yellow-500'>${totalRevenue}</p>
+                <p className='font-bold text-yellow-500'>${totalRevenue?.toFixed(2)}</p>
             </span>
             <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={graphData}>

@@ -60,7 +60,7 @@ const Info = () => {
     }
 
   return (
-    <div className='flex items-start gap-5 flex-col'>
+    <div className='h-screen flex items-start gap-5 flex-col'>
         <span className='flex flex-col items-start gap-2'>
             <label>Name</label>
             <span className='flex items-center'>

@@ -96,10 +96,10 @@ const Register = () => {
               Register
             </button>
             <p className="text-white max-md:text-sm">
-              already have an account?
+              already have an account? 
               <Link
                 href="/Auth/Login"
-                className="text-red-500 duration-200 hover:text-black"
+                className="md:!ml-2 text-red-500 duration-200 hover:text-black"
               >
                 Login
               </Link>
