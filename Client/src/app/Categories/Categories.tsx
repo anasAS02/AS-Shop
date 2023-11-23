@@ -27,7 +27,7 @@ const Categories = () => {
       <div className='flex items-center flex-wrap gap-5'>
         {categories?.map((category: CategoryData) => (
           <span key={category._id} className='flex flex-col items-center gap-2 relative'>
-            <Link href={`/${category.href}`} className='flex flex-col items-center gap-2'>
+            <Link href={`/Categories/${category.href}`} className='flex flex-col items-center gap-2'>
               <Image
                 src={SHOW_IMG + category.thumbnail}
                 style={{ width: '150px', height: '150px' }}
