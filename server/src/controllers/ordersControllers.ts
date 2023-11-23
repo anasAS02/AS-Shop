@@ -70,20 +70,25 @@ const getAllOrders = asyncWrapper(
 const getMyOrders = asyncWrapper(
   async (req: Request, res: Response) => {
     const userEmail = req.body.email;
-    const orders = await Order.find({ email: userEmail, paid: true });
+    const orders = await Order.find({ email: userEmail, paid: true }).sort({createdAt: -1});
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { orders } });
   }
 );
 
 const createOrder = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+  interface itemType {
+    title: string;
+    thumbnail: string;
+    quantity: number;
+    totalPrice: number;
+  }
   try {
     const { items, totalAmount, email, orderId } = req.body;
     const session = await stripeInstance.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       submit_type: 'auto',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      line_items: items.map((item: any) => {
+      line_items: items.map((item: itemType) => {
         return {
           price_data: {
             currency: 'usd',

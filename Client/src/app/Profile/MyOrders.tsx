@@ -41,12 +41,12 @@ const MyOrders = () => {
         <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>
     </h2>
     :
-    <div className='w-full h-full flex items-start gap-5 flex-co p-5'>
+    <div className='w-full flex flex-col items-start gap-5 p-5'>
         {orders && orders.map((order: orders) => (
         <div key={order._id} className='flex flex-col items-start gap-5 max-md:items-center'>
             <span className='flex gap-5 items-center'>
-                <h2 className='text-2xl max-md:text-base'>{order.delivered ? 'On the way' : 'Delivered'}</h2>
-                <FontAwesomeIcon icon={order.delivered ? faTruck : faCheck} className='animate-pulse' />
+                <h2 className='text-2xl max-md:text-base'>{order.delivered ? 'Delivered' : 'On the way'}</h2>
+                <FontAwesomeIcon icon={order.delivered ? faCheck : faTruck} className='animate-pulse' />
             </span>
             {order.items.map((item, i) => (
                 <span key={i} className='flex items-center gap-5 max-md:flex-col max-md:justify-center'>

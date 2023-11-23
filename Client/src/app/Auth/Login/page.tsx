@@ -53,7 +53,7 @@ const Login = () => {
               Login
             </button>
             <p className="text-white max-md:text-sm">
-              Do not have an account?{' '}
+              Don&apos;t have an account?
               <Link
                 href="/Auth/Register"
                 className="text-red-500 duration-200 hover:text-black"
