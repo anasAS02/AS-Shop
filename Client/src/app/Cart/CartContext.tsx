@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, createContext, useState, useCallback } from 'react';
+import { useContext, createContext, useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { ProductData } from '@/Components/Products/Product/ProductCard';
 
@@ -18,8 +18,10 @@ interface Props {
 
 export const CartContextProvider = (props: Props) => {
   const [cartItems, setCartItems] = useState<ProductData[] | null>(() => {
-    const storedCart = window.localStorage.getItem('cart');
-    return storedCart ? JSON.parse(storedCart).products : null;
+    if(typeof window !== 'undefined'){
+      const storedCart = window.localStorage.getItem('cart');
+      return storedCart ? JSON.parse(storedCart).products : null;
+    }
   });
 
   const handleAddToCart = useCallback((product: ProductData) => {
@@ -35,24 +37,24 @@ export const CartContextProvider = (props: Props) => {
           updatedCart = [...prev];
           updatedCart[findProduct] = updatedProduct;
         } else {
-          updatedCart = [...prev, product];
+            updatedCart = [...prev, product];
         }
-      } else {
+    } else {
         updatedCart = [product];
       }
       Swal.fire({
         position: 'center',
-        icon: 'success',
-        title: 'The product has been added to your cart',
+        icon: "success",
+        title: "The product has been added to your cart",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1500
       });
       const totalAmount = updatedCart.reduce((acc: any, productInfo) => {
         acc += productInfo.total * (productInfo.quantity || 1);
         return acc;
       }, 0);
       const cart = { products: updatedCart, totalAmount: totalAmount };
-      window.localStorage.setItem('cart', JSON.stringify(cart));
+      typeof window !== 'undefined' && window.localStorage.setItem('cart', JSON.stringify(cart));
       return updatedCart as ProductData[];
     });
   }, []);
@@ -71,19 +73,19 @@ export const CartContextProvider = (props: Props) => {
 
       const cart = { products: updatedCart, totalAmount: totalAmount };
       if (updatedCart.length > 0) {
-        window.localStorage.setItem('cart', JSON.stringify(cart));
+        typeof window !== 'undefined' && window.localStorage.setItem('cart', JSON.stringify(cart));
       } else {
-        window.localStorage.removeItem('cart');
+        typeof window !== 'undefined' && window.localStorage.removeItem('cart');
       }
 
       Swal.fire({
         position: 'center',
-        icon: 'success',
-        title: 'The product has been removed from your cart',
+        icon: "success",
+        title: "The product has been removed from your cart",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1500
       });
-
+      
       return updatedCart as ProductData[];
     });
   }, []);
@@ -115,17 +117,17 @@ export const CartContextProvider = (props: Props) => {
 
       Swal.fire({
         position: 'center',
-        icon: 'success',
-        title: 'The product has been removed from your cart',
+        icon: "success",
+        title: "The product has been removed from your cart",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1500
       });
-
+      
       const cart = { products: updatedCart, totalAmount: totalAmount };
       if (updatedCart.length > 0) {
-        window.localStorage.setItem('cart', JSON.stringify(cart));
+        typeof window !== 'undefined' && window.localStorage.setItem('cart', JSON.stringify(cart));
       } else {
-        window.localStorage.removeItem('cart');
+        typeof window !== 'undefined' && window.localStorage.removeItem('cart');
       }
 
       return updatedCart as ProductData[];
