@@ -97,7 +97,7 @@ const createOrder = asyncWrapper(async (req: Request, res: Response, next: NextF
         };
       }),
       success_url: `${BASE_URL}orders/confirm/${orderId}`,
-      cancel_url: `http://localhost:3000`,
+      cancel_url: `https://as-shop.vercel.app/`,
     });
     const orderItems: OrderItemType[] = [];
     for (const item of items) {

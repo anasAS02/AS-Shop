@@ -39,7 +39,7 @@ const verifyEmail = async(req: Request, res: Response, next: NextFunction) => {
     const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY || '');
     if (currentUser && typeof currentUser === 'object' && 'email' in currentUser) {
       await User.updateOne({ email: currentUser.email }, { $set: { verified: true } });
-      return res.redirect('http://localhost:3000/Auth/Login');
+      return res.redirect('https://as-shop.vercel.app/Auth/Login');
     } else {
       return res.status(400).json({ error: 'Invalid token or missing email information' });
     }
@@ -80,7 +80,7 @@ const register = asyncWrapper((
         process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
         await newUser.save();
 
-        const url = `http://localhost:4000/auth/confirm/${newUser.token}`;
+        const url = `https://as-shop.onrender.com/auth/confirm/${newUser.token}`;
         const subject = 'Verify Email Address for AS Shop';
         const text = `Confirm now: ${url}`;
         await sendEmail(newUser.email, subject, text);
@@ -118,7 +118,7 @@ const login = asyncWrapper(
       if(user.verified){
         res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, role: user.role, email: user.email }, verified: user.verified });
       }else{
-        const url = `http://localhost:4000/auth/confirm/${user.token}`;
+        const url = `https://as-shop.onrender.com/auth/confirm/${user.token}`;
         const email = user.email;
         const subject = 'Verify Email Address for AS Shop';
         const text = `Confirm now: ${url}`;
