@@ -128,7 +128,7 @@ export const Navbar = () => {
             </span>
           </div>
           <div className='flex items-center gap-3'>
-            <Link href='/Favourite'>
+            <Link href='/Favorites'>
               <FontAwesomeIcon icon={faHeart} className='w-[18px] h-[18px] duration-200 text-slate-600 hover:text-red-500' />
             </Link>
             <span className='flex flex-col items-start gap-1 text-sm'>
