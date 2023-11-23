@@ -86,7 +86,7 @@ export const Navbar = () => {
         };
         checkToken();
     }
-}, [isLoggedIn, searchKey, setIsLoggedIn]);
+}, [isLoggedIn, searchKey, setIsLoggedIn, cart, favourites]);
 
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>

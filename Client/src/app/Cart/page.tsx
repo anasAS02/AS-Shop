@@ -56,7 +56,7 @@ const Cart = () => {
     }
     document.title = 'AS-Shop Cart';
     getCartProducts();
-  }, [cart, cartItems]);
+  }, [cartItems]);
 
   const [sessionId, setSessionId] = useState(null);
 
@@ -64,6 +64,7 @@ const Cart = () => {
     axios.post(CREATE_ORDER, { items, totalAmount: cart?.totalAmount, email: EMAIL, orderId: orderId }, config)
     .then(async (res) => {
       if (res.status === 200) {
+        window.localStorage.clear();
         return res.data;
       } else {
         return Promise.reject(res.data);
@@ -78,7 +79,6 @@ const Cart = () => {
       const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
       if (sessionId) {
         const result = await stripe?.redirectToCheckout({ sessionId });
-        window.localStorage.removeItem('cart');
         console.error('Error redirecting to Stripe Checkout:', result?.error);
     }
 };
@@ -92,14 +92,14 @@ const Cart = () => {
     </div>
     :
     typeof window !== 'undefined' &&
-    <div className={`${cartProducts && cartProducts?.length > 0 ? 'h-full' : 'h-screen'} w-full p-10`}>
+    <div className={`${cartProducts && cartProducts?.length > 0 ? 'h-full' : 'h-screen'} w-full md:mb-72 p-10`}>
         {!cartProducts ? 
           <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your cart is empty
             <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>
           </h2>
         :
         <div className='flex justify-around items-start gap-14 max-md:flex-col max-md:justify-center max-md:gap-5'>
-          <div className='w-fit max-md:w-full h-screen flex flex-col items-start gap-5 max-md:justify-center max-md:items-center'>
+          <div className='w-fit max-md:w-full flex flex-col items-start gap-5 max-md:justify-center max-md:items-center'>
             {cartProducts && cartProducts.map((product: ProductData) =>
               <span key={product._id} className='w-full flex items-center max-md:flex-col max-md:justify-center gap-5 p-2 border-2 border-gray-100 rounded-md'>
                 <Image width={100} height={100} src={product.thumbnail} alt='' />

@@ -149,7 +149,7 @@ const confirmOrder = asyncWrapper(
     const address = findUser?.address;
     await Order.updateOne({orderId: findOrder?.orderId},  { $set: { paid: true } });
     await sendEmail(findOrder.email, 'Your order from AS-Shop', `Great news! Your order has been booked and is currently in transit to ${address}. Keep an eye out for its arrival.`)
-    res.redirect('http://localhost:3000/Profile');
+    res.redirect('https://as-shop.vercel.app/Profile');
   }
 );
 

@@ -25,7 +25,7 @@ const Favourite = () => {
 useEffect(() => {
   getFavoritesList();
   document.title = 'AS-Shop Favorites list';
-}, [])
+}, [products])
 
   return (
     !isLoggedIn ? 
@@ -35,9 +35,9 @@ useEffect(() => {
       </h2>
     </div>
     :
-    <div className={`${products && products.length > 0 ? 'h-full' : 'h-screen'} flex flex-col justify-center items-center gap-5`}>
+    <div className={`${products && products.length > 0 ? 'h-full' : 'h-screen'} flex flex-col gap-5`}>
       {products && products?.length > 0 ? 
-        <div className='flex flex-col justify-center items-center gap-5 p-10'>
+        <div className='flex flex-col justify-center items-center w-full gap-5 p-10'>
           {products?.map((product: ProductData) => (
             <ProductCard key={product._id} _id={product._id} total={calcPrice(product.price, product.discountPercentage || 0)} title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} images={product.images} category={product.category} description={product.description} discountPercentage={product.discountPercentage} brand={product.brand} />
           ))}
