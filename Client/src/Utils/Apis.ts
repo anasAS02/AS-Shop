@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:4000/';
+export const BASE_URL = 'https://as-shop.onrender.com/';
 
 export const REGISTER = `${BASE_URL}auth/register`
 export const LOGIN = `${BASE_URL}auth/login`
