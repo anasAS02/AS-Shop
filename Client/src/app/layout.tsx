@@ -5,6 +5,7 @@ import { Navbar } from '@/Components/Navbar/Navbar'
 import { Footer } from '@/Components/Footer/Footer'
 import { StatusContextProvider } from '@/Utils/Status/statusContext'
 import { CartContextProvider } from './Cart/CartContext'
+import { Links } from '@/Components/Navbar/Links'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400'] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
       <StatusContextProvider>
         <CartContextProvider>
           <Navbar />
+          <Links />
           {children}
           <Footer />
         </CartContextProvider>
