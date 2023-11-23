@@ -35,7 +35,7 @@ const Register = () => {
 
   return (
     <div className="h-screen flex justify-center relative">
-      <div className="w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14 max-md:p-20">
+      <div className="w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14">
         <input
           type="text"
           name="name"

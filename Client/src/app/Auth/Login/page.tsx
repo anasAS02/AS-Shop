@@ -23,14 +23,14 @@ const Login = () => {
 
   return (
     <div className="h-screen flex justify-center relative">
-      <div className="w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14 max-md:p-20">
+      <div className="w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14">
         <input
           type="text"
           name="email"
           placeholder="your email"
           value={form.email}
           onChange={(e) => handleChange(e, form, setForm)}
-          className="w-fit p-3 rounded-md border-none outline-none"
+          className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         <input
           type="password"
@@ -38,7 +38,7 @@ const Login = () => {
           placeholder="your password"
           value={form.password}
           onChange={(e) => handleChange(e, form, setForm)}
-          className="w-fit p-3 rounded-md border-none outline-none"
+          className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         {isLoading ? (
           <SkewLoader color="#ffffff" />
