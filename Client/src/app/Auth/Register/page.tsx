@@ -42,7 +42,7 @@ const Register = () => {
           placeholder="name"
           value={form.name}
           onChange={(e) => handleChange(e, form, setForm)}
-          className="w-fit p-3 rounded-md border-none outline-none"
+          className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         <input
           type="email"
@@ -50,7 +50,7 @@ const Register = () => {
           placeholder="your email"
           value={form.email}
           onChange={(e) => handleChange(e, form, setForm)}
-          className="w-fit p-3 rounded-md border-none outline-none"
+          className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         <input
           type="password"
@@ -58,7 +58,7 @@ const Register = () => {
           placeholder="your password"
           value={form.password}
           onChange={(e) => handleChange(e, form, setForm)}
-          className="w-fit p-3 rounded-md border-none outline-none"
+          className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         <input
           type="text"
@@ -66,7 +66,7 @@ const Register = () => {
           placeholder="your address"
           value={form.address}
           onChange={(e) => handleChange(e, form, setForm)}
-          className="w-fit p-3 rounded-md border-none outline-none"
+          className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         <select
           name="country"
