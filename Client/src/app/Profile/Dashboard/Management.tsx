@@ -75,7 +75,7 @@ const Management = () => {
 
   return (
     <div className='w-full flex flex-col items-center gap-5'>
-        <div className='mt-5 w-full h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-8'>
+        <div className='mt-5 w-full h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-20'>
             <input type='text' name='name' placeholder='name' value={form.name} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='email' name='email' placeholder='your email' value={form.email} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='password' name='password' placeholder='your password' value={form.password} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none' />
