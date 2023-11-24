@@ -92,7 +92,18 @@ return(
             {products &&
             <span className='flex flex-wrap items-center gap-5'>
                 {products.map((product: ProductData) => (
-                    <ProductCard key={product._id} _id={product._id} category={product.category} description={product.description} brand={product.brand} images={product.images} thumbnail={product.thumbnail} price={product.price} quantity={1} discountPercentage={product.discountPercentage} title={product.title} total={calcPrice(product.price, product.discountPercentage || 0)} /> 
+                <ProductCard key={product._id} 
+                    _id={product._id} 
+                    category={product.category} 
+                    description={product.description} 
+                    brand={product.brand} images={product.images} 
+                    thumbnail={product.thumbnail} 
+                    price={product.price} 
+                    quantity={1} 
+                    discountPercentage={product.discountPercentage} 
+                    title={product.title} 
+                    total={calcPrice(product.price, product.discountPercentage || 0)} 
+                /> 
                 ))}
             </span>
             }

@@ -39,7 +39,16 @@ useEffect(() => {
       {products && products?.length > 0 ? 
         <div className='flex flex-col justify-center items-center w-full gap-5 p-10'>
           {products?.map((product: ProductData) => (
-            <ProductCard key={product._id} _id={product._id} total={calcPrice(product.price, product.discountPercentage || 0)} title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} images={product.images} category={product.category} description={product.description} discountPercentage={product.discountPercentage} brand={product.brand} />
+            <ProductCard key={product._id} 
+              _id={product._id} 
+              total={calcPrice(product.price, product.discountPercentage || 0)} 
+              title={product.title} quantity={1} price={product.price} thumbnail={product.thumbnail} 
+              images={product.images} 
+              category={product.category} 
+              description={product.description} 
+              discountPercentage={product.discountPercentage} 
+              brand={product.brand} 
+            />
           ))}
         </div>
         :

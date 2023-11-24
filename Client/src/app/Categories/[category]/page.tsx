@@ -19,8 +19,6 @@ export default function Category ({params}: any) {
   const [to, setTo] = useState<number | undefined>(undefined);
   const [sortLowest, setSortLowest] = useState<string | null>(null);
   const [sortHighest, setSortHighest] = useState<string | null>(null);
-
-  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -94,7 +92,6 @@ export default function Category ({params}: any) {
             <input type='number' placeholder='from' onChange={(e) => setFrom(Number(e.target.value))} className='border-none outline-none bg-gray-300 placeholder:text-slate-700 p-2 rounded-md w-20' />
             <input type='number' placeholder='to' onChange={(e) => setTo(Number(e.target.value))} className='border-none outline-none bg-gray-300 placeholder:text-slate-700 p-2 rounded-md w-20' />
           </span>
-          {/* <button className='p-2 bg-blue-400 duration-300 hover:bg-blue-300 rounded-md text-white'>Filter</button> */}
         </span>
       </aside>
       <section className='flex w-full md:flex flex-col gap-12 justify-between'>
@@ -113,7 +110,20 @@ export default function Category ({params}: any) {
         </div>
         <div className={`gap-5 ${grid ? 'grid items-center grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1' : 'flex flex-col items-start justify-start'}`}>
           {products?.map((product: ProductData) => (
-            <ProductCard style={grid ? true : false} key={product._id} _id={product._id} quantity={1} images={product.images} description={product.description} category={product.category} thumbnail={product.thumbnail} title={product.title} price={product.price} brand={product.brand} discountPercentage={product.discountPercentage} total={calcPrice(product.price, product.discountPercentage || 0)} />
+            <ProductCard style={grid ? true : false}
+              key={product._id}
+              _id={product._id}
+              quantity={1}
+              images={product.images}
+              description={product.description} 
+              category={product.category} 
+              thumbnail={product.thumbnail} 
+              title={product.title} 
+              price={product.price} 
+              brand={product.brand} 
+              discountPercentage={product.discountPercentage} 
+              total={calcPrice(product.price, product.discountPercentage || 0)}
+            />
           ))}
         </div>
       </section>
