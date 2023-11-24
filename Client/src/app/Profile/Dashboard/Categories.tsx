@@ -108,8 +108,8 @@ const Categories = () => {
   return (
     <div className='w-full'>
         <div className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
-            <input type='text' name='title' placeholder='category title' value={categoryData.title} onChange={handleChange} className='w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='title' placeholder='category title' value={categoryData.title} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
             <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 max-md:p-1 max-md:text-xs bg-white text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose img</button>
             {showThumbnail}
