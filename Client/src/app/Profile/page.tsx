@@ -17,7 +17,7 @@ import { useStatusContext } from '@/Utils/Status/statusContext';
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
     const [controlMode, setControlMode] = useState<string>('users');
-    const isLoggedIn = useStatusContext();
+    const {isLoggedIn} = useStatusContext();
     const handleMode = (e: React.MouseEvent, mode: string) => {
         e.preventDefault();
         setMode(mode);
@@ -91,7 +91,7 @@ const Profile = () => {
         </section>
     </div>
     :
-    <></>
+    <div className='h-screen'></div>
   )
 }
 
