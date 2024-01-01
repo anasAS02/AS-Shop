@@ -36,6 +36,7 @@ const Orders = () => {
             console.log(err)
         }finally{
             setIsLoading(false);
+            getOrders();
         }
     }
 
