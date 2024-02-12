@@ -34,7 +34,11 @@ export const Navbar = () => {
       }
   }
 
-
+  const showDelayAlert = () => {
+    setTimeout(() => {
+      alert("Please note: Data may take a few seconds to load due to server limitations.");
+    }, 3000);
+  };
   
   const savedCart = typeof window !== 'undefined' && window.localStorage.getItem('cart');
   const cart = savedCart ? JSON.parse(savedCart) : [];
@@ -86,6 +90,8 @@ export const Navbar = () => {
         };
         checkToken();
     }
+
+    showDelayAlert();
 }, [isLoggedIn, searchKey, setIsLoggedIn, cart, favourites]);
 
   return (
