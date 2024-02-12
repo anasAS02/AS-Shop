@@ -49,7 +49,14 @@ const ProductComp = (props: {productId: any}) => {
         if(product){
             getCategory(product.category).then((data) => setProducts(data?.data.data));
         }
+        showDelayAlert();
     }, [cartItems, product, productId])
+
+    const showDelayAlert = () => {
+        setTimeout(() => {
+          alert("Please note: Data may take a few seconds to load due to server limitations.");
+        }, 3000);
+      };
 
 return(
     product && imgs &&
