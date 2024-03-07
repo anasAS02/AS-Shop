@@ -15,7 +15,7 @@ import { calcPrice } from "@/Utils/Products/calcPrice";
 
 export interface ProductData{
     style?: boolean;
-    _id: any;
+    _id?: any;
     title: string;
     description: string;
     price: number;
@@ -85,9 +85,11 @@ useEffect(() => {
 
 return (
 <span key={props._id} className={`w-full p-2 duration-300 border-2 border-transparent rounded-md hover:border-green-400 flex ${props.style && 'flex-col'} gap-6 items-center relative`}>
-    <Link href={`/Product/${props._id}`}>
+    {props._id ? <Link href={`/Product/${props._id}`}>
         <Image src={props.thumbnail} className='w-[200px] h-[200px] max-md:w-[100px] max-md:h-[100px]' width={800} height={800} objectFit="contain" alt={props.title} />
-    </Link>
+    </Link> :
+        <Image src={props.thumbnail} className='w-[200px] h-[200px] max-md:w-[100px] max-md:h-[100px]' width={800} height={800} objectFit="contain" alt={props.title} />
+    }
     <span className={`${props.style && 'text-center'} w-full`}>
         <p className='text-sm text-right text-green-600'>{props.category}</p>
         <p className='text-lg max-md:text-base'>{props.title}</p>
