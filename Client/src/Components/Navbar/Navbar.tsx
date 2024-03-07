@@ -33,12 +33,6 @@ export const Navbar = () => {
           console.log(err)
       }
   }
-
-  const showDelayAlert = () => {
-    setTimeout(() => {
-      alert("Please note: Data may take a few seconds to load due to server limitations.");
-    }, 3000);
-  };
   
   const savedCart = typeof window !== 'undefined' && window.localStorage.getItem('cart');
   const cart = savedCart ? JSON.parse(savedCart) : [];
@@ -90,9 +84,11 @@ export const Navbar = () => {
         };
         checkToken();
     }
-
-    showDelayAlert();
 }, [isLoggedIn, searchKey, setIsLoggedIn, cart, favourites]);
+
+  useEffect(() => {
+    alert("Please note: Data may take a few seconds to load due to server limitations.");
+  }, [])
 
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>
@@ -106,7 +102,7 @@ export const Navbar = () => {
           <span className='max-h-[400px] overflow-y-auto flex flex-col items-start gap-3 bg-slate-200 rounded-md'>
             {searchResult && searchResult.length > 0 && searchKey !== '' && searchResult.map((product: ProductData) => (
               <span key={product._id} className='p-5 flex items-center gap-2'>
-                <Image src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} width={100} height={100} alt={product.title} />
+                <Image src={product.thumbnail?.startsWith('https://cdn.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} width={100} height={100} alt={product.title} />
                 <Link href={`/Product/${product._id}`} className='duration-200 hover:text-yellow-500'>{product.title}</Link>
                 <p className='text-sm text-gray-400'>${product.price}</p>
               </span>

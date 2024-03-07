@@ -204,7 +204,7 @@ const Products = () => {
             {products?.map((product: ProductData) => (
                 <span key={product._id} className='w-full flex justify-between items-center max-md:flex-col max-md:justify-center max-md:gap-3 p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
                     <Link href={`/categories/${product._id}`}>
-                        <Image width={200} height={200} className='md:w-[100px] md:h-[100px] md:mr-1 duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://i.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
+                        <Image width={200} height={200} className='md:w-[100px] md:h-[100px] md:mr-1 duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://cdn.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
                     </Link>
                     <p className='text-sm'>{product.title}</p>
                     <p className='text-sm'>{product.category}</p>
