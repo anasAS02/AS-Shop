@@ -43,7 +43,7 @@ const MyOrders = () => {
         </h2>
     </div>
     :
-    <div className='w-full flex flex-col items-start gap-5 p-5'>
+    <div className='w-full min-h-screen flex flex-col items-start gap-5 p-5'>
         {orders && orders.map((order: orders) => (
         <div key={order._id} className='flex flex-col items-start gap-5 max-md:items-center'>
             <span className='flex gap-5 items-center'>
