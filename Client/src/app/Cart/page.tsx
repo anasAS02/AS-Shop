@@ -92,7 +92,7 @@ const Cart = () => {
     </div>
     :
     typeof window !== 'undefined' &&
-    <div className={`${cartProducts && cartProducts?.length > 0 ? 'h-full' : 'h-screen'} w-full md:mb-72 p-10`}>
+    <div className='min-h-screen w-full md:mb-72 p-10'>
         {!cartProducts ? 
           <h2 className='absolute left-2/4 -translate-x-2/4 -translate-y-2/4 top-2/4 max-md:top-full font-bold text-red-500 text-3xl max-md:text-base flex flex-col items-center'>Your cart is empty
             <Link href='/Categories/All-Products' className='text-base max-md:text-sm text-black hover:text-yellow-500 duration-200'>Shop now</Link>

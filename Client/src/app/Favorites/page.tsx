@@ -35,7 +35,7 @@ useEffect(() => {
       </h2>
     </div>
     :
-    <div className={`${products && products.length > 0 ? 'h-full' : 'h-screen'} flex flex-col gap-5`}>
+    <div className='min-h-screen flex flex-col gap-5'>
       {products && products?.length > 0 ? 
         <div className='flex flex-col justify-center items-center w-full gap-5 p-10'>
           {products?.map((product: ProductData) => (

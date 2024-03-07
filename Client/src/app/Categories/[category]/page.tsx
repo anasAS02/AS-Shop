@@ -69,7 +69,7 @@ export default function Category ({params}: any) {
   }
   
   return (
-    <div className={`p-16 max-md:p-4 flex items-start gap-10 ${products?.length > 0 ? 'h-full' : 'h-screen'} max-md:flex-col`}>
+    <div className='p-16 max-md:p-4 flex items-start gap-10 min-h-screen max-md:flex-col'>
       <aside className='flex flex-col gap-5 max-md:w-full'>
         <span className='flex items-center gap-12 mb-2'>Category 
           <FontAwesomeIcon onClick={handleCategories} icon={openCategories ? faAngleUp : faAngleDown} className='text-green-400 w-[18px] h-[18px] cursor-pointer ml-auto' />
