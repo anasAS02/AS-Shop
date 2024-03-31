@@ -4,7 +4,6 @@ import { Order, OrderDocument, OrderItemType } from '../models/orderModel';
 import { httpStatusText } from '../utils/httpStatusText';
 import stripe from 'stripe';
 import AppError from '../utils/appError';
-import { BASE_URL } from '../../../Client/src/Utils/Apis'
 import dotenv from 'dotenv';
 import { sendEmail } from './authControllers';
 import { User } from '../models/userModel';
@@ -101,7 +100,7 @@ const createOrder = asyncWrapper(async (req: Request, res: Response, next: NextF
           quantity: item.quantity,
         };
       }),
-      success_url: `${BASE_URL}orders/confirm/${orderId}`,
+      success_url: `https://as-shop-uql0.onrender.com/orders/confirm/${orderId}`,
       cancel_url: `https://as-shop.vercel.app/`,
     });
     const orderItems: OrderItemType[] = [];

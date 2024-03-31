@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://as-shop-ny7g.onrender.com/';
+export const BASE_URL = 'https://as-shop-uql0.onrender.com/';
 
 export const REGISTER = `${BASE_URL}auth/register`
 export const LOGIN = `${BASE_URL}auth/login`

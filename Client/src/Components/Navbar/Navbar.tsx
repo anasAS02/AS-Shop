@@ -86,10 +86,6 @@ export const Navbar = () => {
     }
 }, [isLoggedIn, searchKey, setIsLoggedIn, cart, favourites]);
 
-  useEffect(() => {
-    alert("Please note: Data may take a few seconds to load due to server limitations.");
-  }, [])
-
   return (
     <nav className='w-full flex justify-around items-center gap-14 p-5 max-md:justify-center max-md:flex-col bg-white '>
         <Link href='/' className='flex items-center gap-1 text-sm font-bold'>
