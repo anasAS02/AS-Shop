@@ -203,6 +203,7 @@ const Products = () => {
         >
             {products?.map((product: ProductData) => (
                 <div
+                key={product._id}
                 className='flex items-center gap-4 flex-wrap'
                 >
                     <div
