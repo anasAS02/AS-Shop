@@ -1,5 +1,5 @@
 'use client'
-import { GET_MY_ORDERS } from '@/Utils/Apis';
+import { GET_MY_ORDERS, SHOW_IMG } from '@/Utils/Apis';
 import { config } from '@/Utils/Auth/handleAuth';
 import { EMAIL } from '@/Utils/Cookies';
 import { faCheck, faTruck } from '@fortawesome/free-solid-svg-icons';
@@ -52,7 +52,7 @@ const MyOrders = () => {
             </span>
             {order.items.map((item, i) => (
                 <span key={i} className='flex items-center gap-5 max-md:flex-col max-md:justify-center'>
-                    <Image src={item.thumbnail} width={200} height={200} alt='as' />
+                    <Image src={SHOW_IMG + item.thumbnail} width={200} height={200} alt='as' />
                     <span className='flex flex-col items-start gap-2 max-md:items-center'>
                         <h2>{item.title} <span className='text-gray-400 font-bold text-base max-md:text-sm'>x{item.quantity}</span></h2>
                         <p className='text-green-400 font-bold'>${item.totalPrice.toFixed(2)}</p>

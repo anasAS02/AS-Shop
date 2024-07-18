@@ -119,10 +119,10 @@ const Categories = () => {
                 <button onClick={(e) => {updateMode ? handleSubmit(e, UPDATE_CATEGORY + categoryId) : handleSubmit(e, ADD_CATEGORY)}} className='p-3 max-md:p-1 max-md:text-xs bg-white text-black hover:text-green-400 duration-200 rounded-md'>{updateMode ? 'Update' : 'Add'}</button>
             }
         </div>
-        <div className='w-full flex flex-col items-center gap-3 mt-10'>
+        <div className='w-full flex flex-wrap justify-center items-center gap-3 mt-10'>
             {categories?.map((category: CategoryData) => (
-                <span key={category._id} className='w-full flex justify-between items-center p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
-                    <Image width={200} height={200} className='w-[100px] h-[100px] max-md:w-[50px] max-md:h-[50px]' src={SHOW_IMG + category.thumbnail} alt={category.title} />
+                <span key={category._id} className='flex flex-col justify-center items-center gap-3 border-[1px] border-solid border-green-500 hover:border-green-300 duration-200 p-2 rounded-xl'>
+                    <Image width={200} height={200} className='w-[200px] h-[200px] max-md:w-[50px] max-md:h-[50px]' src={SHOW_IMG + category.thumbnail} alt={category.title} />
                     <Link className='duration-200 hover:text-yellow-500 max-md:text-xs' href={`/categories/${category.href}`}>{category.title}</Link>
                     <span>
                         <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(category._id)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />

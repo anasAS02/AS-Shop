@@ -8,7 +8,7 @@ import {useState, useEffect} from 'react';
 import { useCart } from './CartContext';
 import { ProductData } from '@/Components/Products/Product/ProductCard';
 import axios from 'axios';
-import { CREATE_ORDER } from '@/Utils/Apis';
+import { CREATE_ORDER, SHOW_IMG } from '@/Utils/Apis';
 import { EMAIL } from '@/Utils/Cookies';
 import { config } from '@/Utils/Auth/handleAuth';
 import { loadStripe } from '@stripe/stripe-js';
@@ -102,7 +102,7 @@ const Cart = () => {
           <div className='w-fit max-md:w-full flex flex-col items-start gap-5 max-md:justify-center max-md:items-center'>
             {cartProducts && cartProducts.map((product: ProductData) =>
               <span key={product._id} className='w-full flex items-center max-md:flex-col max-md:justify-center gap-5 p-2 border-2 border-gray-100 rounded-md'>
-                <Image width={100} height={100} src={product.thumbnail} alt='' />
+                <Image width={100} height={100} src={SHOW_IMG + product.thumbnail} alt='' />
                 <span className='md:w-[300px] flex flex-col gap-2 items-start max-md:items-center max-md:text-center'>
                   <h2 className='text-xl max-md:text-lg'>{product.title}</h2>
                   <p className='text-gray-400'>${product.total.toFixed(2)}</p>

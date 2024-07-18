@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { SkewLoader } from 'react-spinners';
 import { ADD_PRODUCT, DELETE_PRODUCT, GET_PRODUCTS, SHOW_IMG, UPDATE_PRODUCT } from "@/Utils/Apis";
 import axios from "axios";
-import Swal from "sweetalert2";
-import Link from "next/link";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -200,20 +198,59 @@ const Products = () => {
                 <button onClick={(e) => {updateMode ? handleSubmit(e, UPDATE_PRODUCT + productId) : handleSubmit(e, ADD_PRODUCT)}} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>{updateMode ? 'Update' : 'Add'}</button>
             }
         </div>
-        <div className='w-full flex flex-col items-center gap-3 mt-10'>
+        <div 
+        className='w-full flex items-center gap-4 flex-wrap mt-10'
+        >
             {products?.map((product: ProductData) => (
-                <span key={product._id} className='w-full flex justify-between items-center max-md:flex-col max-md:justify-center max-md:gap-3 p-2 rounded-md bg-slate-300 hover:bg-slate-200 duration-200'>
-                    <Link href={`/categories/${product._id}`}>
-                        <Image width={200} height={200} className='md:w-[100px] md:h-[100px] md:mr-1 duration-200 scale-105 rounded-md' src={product.thumbnail?.startsWith('https://cdn.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} alt={product.title} />
-                    </Link>
-                    <p className='text-sm'>{product.title}</p>
-                    <p className='text-sm'>{product.category}</p>
-                    <p className='text-sm'>From: {product.brand}</p>
-                    <span className='max-md:flex max-md:items-center max-md:gap-3'>
-                        <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(product._id)}} className='md:mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
-                        <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(product._id)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />
-                    </span>
-                </span>
+                <div
+                className='flex items-center gap-4 flex-wrap'
+                >
+                    <div
+                    className='flex flex-col justify-center items-center gap-2 border-[1px] border-solid border-green-500 hover:border-green-400 duration-200 rounded-lg p-2'
+                    >
+                        <Image 
+                        src={SHOW_IMG + product.thumbnail} 
+                        alt='product thumbnail' 
+                        width={400}
+                        height={400}
+                        className='w-[200px] h-[200px]'
+                        />
+                        <h2 
+                        className='text-lg'
+                        >
+                            {product.title.slice(0, 15)}
+                        </h2>
+                        <p 
+                        className='text-gray-400'
+                        >
+                            {product.category}
+                        </p>
+                        <p 
+                        className='font-bold'
+                        >
+                            ${product.price}
+                        </p>
+                        <p 
+                        className='font-bold text-red-500'
+                        >
+                            {product.discountPercentage}% off
+                        </p>
+                        <span
+                        className='flex items-center justify-center gap-2'
+                        >
+                            <FontAwesomeIcon 
+                            icon={faTrash}
+                            onClick={() => handleDelete(product._id)}
+                            className='w-[16px] h-[16px] cursor-pointer duration-200 text-red-500 hover:text-red-400'
+                            />
+                            <FontAwesomeIcon 
+                            icon={faEdit}
+                            onClick={() => handleUpdate(product._id)}
+                            className='w-[16px] h-[16px] cursor-pointer duration-200 text-blue-500 hover:text-blue-400'
+                            />
+                        </span>
+                    </div>
+                </div>
             ))}
         </div>
     </div>
