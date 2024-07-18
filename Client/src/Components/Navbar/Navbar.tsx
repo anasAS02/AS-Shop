@@ -93,12 +93,12 @@ export const Navbar = () => {
           AS Shop
         </Link>
         <div className='w-full relative max-md:order-1'>
-          <input type='search' placeholder='Search...' onChange={(e) => setSearchKey(e.target.value)} className='p-3 w-full border-slate-200 border-2 outline-none' />
+          <input type='search' placeholder='Search...' onChange={(e) => setSearchKey(e.target.value)} className='p-3 w-full border-slate-200 border-[1px] rounded-xl outline-none' />
           <FontAwesomeIcon icon={faMagnifyingGlass} className='absolute top-2/4 -translate-x-2/4 -translate-y-2/4 right-0 w-[14px] h-[14px] text-slate-300' />
           <span className='max-h-[400px] overflow-y-auto flex flex-col items-start gap-3 bg-slate-200 rounded-md'>
             {searchResult && searchResult.length > 0 && searchKey !== '' && searchResult.map((product: ProductData) => (
               <span key={product._id} className='p-5 flex items-center gap-2'>
-                <Image src={product.thumbnail?.startsWith('https://cdn.dummyjson.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} width={100} height={100} alt={product.title} />
+                <Image src={SHOW_IMG + product.thumbnail} width={100} height={100} alt={product.title} />
                 <Link href={`/Product/${product._id}`} className='duration-200 hover:text-yellow-500'>{product.title}</Link>
                 <p className='text-sm text-gray-400'>${product.price}</p>
               </span>

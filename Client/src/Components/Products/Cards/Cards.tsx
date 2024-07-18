@@ -4,6 +4,7 @@ import { getProducts } from '@/Utils/Products/getProducts';
 import { ProductData } from '../Product/ProductCard';
 import Image from 'next/image';
 import Link from 'next/link';
+import { SHOW_IMG } from '@/Utils/Apis';
 
 const Cards = () => {
   const [products, setProducts] = useState<ProductData[] | null>(null);
@@ -26,7 +27,7 @@ const Cards = () => {
       {products?.slice(7, 10).map((product: ProductData) => (
         <span key={product._id} className='relative'>
           <Image
-            src={product.thumbnail}
+            src={SHOW_IMG + product.thumbnail}
             style={{ width: '400px', height: '300px' }}
             width={800}
             height={800}
