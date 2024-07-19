@@ -100,7 +100,7 @@ const createOrder = asyncWrapper(async (req: Request, res: Response, next: NextF
           quantity: item.quantity,
         };
       }),
-      success_url: `https://as-shop-uql0.onrender.com/orders/confirm/${orderId}`,
+      success_url: `https://as-shop-ny7g.onrender.com/orders/confirm/${orderId}`,
       cancel_url: `https://as-shop.vercel.app/`,
     });
     const orderItems: OrderItemType[] = [];
