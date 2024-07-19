@@ -80,7 +80,7 @@ const register = asyncWrapper((
         process.env.JWT_SECRET_KEY || '', {expiresIn: '1d'});
         await newUser.save();
 
-        const url = `https://as-shop-uql0.onrender.com/auth/confirm/${newUser.token}`;
+        const url = `https://as-shop-ny7g.onrender.com/auth/confirm/${newUser.token}`;
         const subject = 'Verify Email Address for AS Shop';
         const text = `Confirm now: ${url}`;
         await sendEmail(newUser.email, subject, text);
@@ -118,7 +118,7 @@ const login = asyncWrapper(
       if(user.verified){
         res.status(200).json({ status: httpStatusText.SUCCESS, User: { token, role: user.role, email: user.email }, verified: user.verified });
       }else{
-        const url = `https://as-shop-uql0.onrender.com/auth/confirm/${user.token}`;
+        const url = `https://as-shop-ny7g.onrender.com/auth/confirm/${user.token}`;
         const email = user.email;
         const subject = 'Verify Email Address for AS Shop';
         const text = `Confirm now: ${url}`;
