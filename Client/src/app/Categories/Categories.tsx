@@ -29,7 +29,7 @@ const Categories = () => {
           <span key={category._id} className='flex flex-col items-center gap-2 relative'>
             <Link href={`/Categories/${category.href}`} className='flex flex-col items-center gap-2'>
               <Image
-                src={category.thumbnail.startsWith('https://imgur.com/') ? category.thumbnail : SHOW_IMG + category.thumbnail}
+                src={category.thumbnail.startsWith('https://i.imgur.com/') ? category.thumbnail : SHOW_IMG + category.thumbnail}
                 style={{ width: '150px', height: '150px' }}
                 width={800}
                 height={800}
