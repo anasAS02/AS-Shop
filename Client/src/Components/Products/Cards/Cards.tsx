@@ -27,7 +27,7 @@ const Cards = () => {
       {products?.slice(7, 10).map((product: ProductData) => (
         <span key={product._id} className='relative'>
           <Image
-            src={product.thumbnail.startsWith('https://imgur.com') ? product.thumbnail : SHOW_IMG + product.thumbnail}
+            src={product.thumbnail.startsWith('https://i.imgur.com/') ? product.thumbnail : SHOW_IMG + product.thumbnail}
             style={{ width: '400px', height: '300px' }}
             width={800}
             height={800}
