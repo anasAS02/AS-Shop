@@ -58,10 +58,10 @@ return(
             <span className='flex max-md:flex-col-reverse items-center gap-5'>
                 <span className='flex md:flex-col items-start gap-2 max-md:flex-wrap'>
                     {imgs.map((img: string, index: number) => (
-                        <Image onClick={() => setImgIndes(index)} key={index} src={SHOW_IMG + img} width={130} height={170} alt={product.title} className={`${index === imgIndex ? 'opacity-100' : 'opacity-60'} rounded-md cursor-pointer duration-200 hover:opacity-100`} />
+                        <Image onClick={() => setImgIndes(index)} key={index} src={img.startsWith('https://imgur.com') ? img : SHOW_IMG + img} width={130} height={170} alt={product.title} className={`${index === imgIndex ? 'opacity-100' : 'opacity-60'} rounded-md cursor-pointer duration-200 hover:opacity-100`} />
                     ))}
                 </span>
-                <Image src={SHOW_IMG + imgs[imgIndex]} width={600} height={600} alt={product.title} className='rounded-md' />
+                <Image src={imgs[imgIndex].startsWith('https://imgur.com') ? imgs[imgIndex] : SHOW_IMG + imgs[imgIndex]} width={600} height={600} alt={product.title} className='rounded-md' />
             </span>
             <span className='flex flex-col items-start gap-2'>
                 <h3 className='text-2xl max-md:text-base'>{product.title}</h3>

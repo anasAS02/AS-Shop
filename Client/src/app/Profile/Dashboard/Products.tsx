@@ -210,7 +210,7 @@ const Products = () => {
                     className='flex flex-col justify-center items-center gap-2 border-[1px] border-solid border-green-500 hover:border-green-400 duration-200 rounded-lg p-2'
                     >
                         <Image 
-                        src={SHOW_IMG + product.thumbnail} 
+                        src={product.thumbnail.startsWith('https://imgur.com') ? product.thumbnail : SHOW_IMG + product.thumbnail} 
                         alt='product thumbnail' 
                         width={400}
                         height={400}

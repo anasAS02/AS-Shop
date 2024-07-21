@@ -122,7 +122,7 @@ const Categories = () => {
         <div className='w-full flex flex-wrap justify-center items-center gap-3 mt-10'>
             {categories?.map((category: CategoryData) => (
                 <span key={category._id} className='flex flex-col justify-center items-center gap-3 border-[1px] border-solid border-green-500 hover:border-green-300 duration-200 p-2 rounded-xl'>
-                    <Image width={200} height={200} className='w-[200px] h-[200px] max-md:w-[50px] max-md:h-[50px]' src={SHOW_IMG + category.thumbnail} alt={category.title} />
+                    <Image width={200} height={200} className='w-[200px] h-[200px] max-md:w-[50px] max-md:h-[50px]' src={category.thumbnail.startsWith('https://imgur.com') ? category.thumbnail : SHOW_IMG + category.thumbnail} alt={category.title} />
                     <Link className='duration-200 hover:text-yellow-500 max-md:text-xs' href={`/categories/${category.href}`}>{category.title}</Link>
                     <span>
                         <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(category._id)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
