@@ -50,7 +50,7 @@ const Orders = () => {
     }, 0);
 
   return (
-    <div className='w-full h-screen flex flex-col items-center gap-10'>
+    <div className='w-full min-h-screen flex flex-col items-center gap-10'>
         <div className='mt-12 flex items-start gap-10 max-md:w-full'>
             <span className='p-5 rounded-md bg-slate-300 flex flex-col gap-2'>
                 <h2 className='text-2xl max-md:text-sm'>Total revenue</h2>
