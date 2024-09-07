@@ -41,7 +41,7 @@ const Users = () => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
     
   return (
-    <>
+    <div className='w-full flex flex-col justify-center items-center gap-10'>
         <span className='flex items-center justify-center max-md:flex-col'>
             <PieChart width={250} height={400}>
                 <Pie
@@ -70,7 +70,7 @@ const Users = () => {
                <UserCard key={user._id} user={user} />
             ))}
         </span>
-    </>
+    </div>
   )
 }
 

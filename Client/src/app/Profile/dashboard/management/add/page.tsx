@@ -10,11 +10,16 @@ import 'react-phone-input-2/lib/style.css'
 import { config } from "@/Utils/Auth/handleAuth";
 import { ADD_USER, CHANGE_ROLE, GET_USERS, REMOVE_ROLE } from "@/Utils/Apis";
 import axios from "axios";
-import UserCard from "./UserCard";
+import UserCard from "../../users/UserCard";
 import confirmation from "@/Utils/Status/confirmation";
 import {ROLE} from '@/Utils/Cookies';
+import SideBar from "../../Side bar/SideBar";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAdd } from "@fortawesome/free-solid-svg-icons";
 
-const Management = () => {
+const AddAdmin = () => {
+
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
 
     const [form, setForm] = useState<formData> ({
@@ -74,17 +79,18 @@ const Management = () => {
     }
 
   return (
-    <div className='w-full flex flex-col items-center gap-5'>
-        <div className='mt-5 w-full h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
-            <input type='text' name='name' placeholder='name' value={form.name} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='email' name='email' placeholder='your email' value={form.email} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='password' name='password' placeholder='your password' value={form.password} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='address' placeholder='your address' value={form.address} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <select name="country" value={form.country} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none'>
+    <div className='flex items-start gap-14'>
+        <SideBar />
+        <form className='mt-5 w-full h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
+            <input required type='text' name='name' placeholder='name' value={form.name} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input required type='email' name='email' placeholder='your email' value={form.email} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input required type='password' name='password' placeholder='your password' value={form.password} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <input required type='text' name='address' placeholder='your address' value={form.address} onChange={(e) => handleChange(e, form, setForm)} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
+            <select required name="country" value={form.country} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none'>
                 <option value='us'>United States</option>
                 <option value='ca'>Canada</option>
             </select>
-            <select name="role" value={form.role} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none'>
+            <select required name="role" value={form.role} onChange={(e) => handleChange(e, form, setForm)} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none'>
                 <option value='MANAGER'>Manager</option>
                 <option value='ADMIN'>Admin</option>
                 <option value='USER'>User</option>
@@ -100,15 +106,9 @@ const Management = () => {
                 :
                 <button onClick={(e) => handleAdd(e)} className='p-3 max-md:p-1 max-md:text-sm bg-white text-black hover:text-green-400 duration-200 rounded-md'>Add</button>
             }
-        </div>
-        {managers?.map((manager) => (
-               <UserCard key={manager._id} user={manager} handleChangeRole={handleChangeRole} handleRemoveRole={handleRemoveRole} />
-            ))}
-        {admins?.map((admin) => (
-            <UserCard key={admin._id} user={admin} handleChangeRole={handleChangeRole} handleRemoveRole={handleRemoveRole} />
-        ))}
+        </form>
     </div>
   )
 }
 
-export default Management
+export default AddAdmin

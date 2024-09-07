@@ -8,13 +8,15 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
 import confirmation from "@/Utils/Status/confirmation";
 import { handleMsg } from "@/Utils/Status/handleStatusMsg";
+import SideBar from "../../Side bar/SideBar";
 
-const Categories = () => {
+const AddCategory = () => {
+
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
 
     const [categoryData, setCategoryData] = useState<CategoryData> ({
@@ -106,8 +108,9 @@ const Categories = () => {
     )
 
   return (
-    <div className='w-full'>
-        <div className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
+    <div className='flex items-start gap-14'>
+        <SideBar />
+        <form className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
             <input type='text' name='title' placeholder='category title' value={categoryData.title} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
@@ -118,21 +121,9 @@ const Categories = () => {
                 :
                 <button onClick={(e) => {updateMode ? handleSubmit(e, UPDATE_CATEGORY + categoryId) : handleSubmit(e, ADD_CATEGORY)}} className='p-3 max-md:p-1 max-md:text-xs bg-white text-black hover:text-green-400 duration-200 rounded-md'>{updateMode ? 'Update' : 'Add'}</button>
             }
-        </div>
-        <div className='w-full flex flex-wrap justify-center items-center gap-3 mt-10'>
-            {categories?.map((category: CategoryData) => (
-                <span key={category._id} className='flex flex-col justify-center items-center gap-3 border-[1px] border-solid border-green-500 hover:border-green-300 duration-200 p-2 rounded-xl'>
-                    <Image width={200} height={200} className='w-[200px] h-[200px] max-md:w-[50px] max-md:h-[50px]' src={category.thumbnail.startsWith('https://i.imgur.com/') ? category.thumbnail : SHOW_IMG + category.thumbnail} alt={category.title} />
-                    <Link className='duration-200 hover:text-yellow-500 max-md:text-xs' href={`/categories/${category.href}`}>{category.title}</Link>
-                    <span>
-                        <FontAwesomeIcon icon={faEdit} onClick={() => {handleUpdate(category._id)}} className='mr-3 duration-200 text-blue-500 hover:text-blue-400 cursor-pointer' />
-                        <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(category._id)} className='duration-200 text-red-500 hover:text-red-400 cursor-pointer' />
-                    </span>
-                </span>
-            ))}
-        </div>
+        </form>
     </div>
   )
 }
 
-export default Categories
+export default AddCategory

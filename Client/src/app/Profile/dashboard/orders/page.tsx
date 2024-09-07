@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { handleMsg } from "@/Utils/Status/handleStatusMsg";
-import { orders } from "../MyOrders";
+import { orders } from "../../my-orders/page";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 const Orders = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();

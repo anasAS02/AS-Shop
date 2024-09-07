@@ -3,16 +3,18 @@ import { faCircleInfo, faGear, faShop, faShoppingBasket } from '@fortawesome/fre
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookie from 'js-cookie';
 import { useState } from 'react';
-import Info from './Info';
-import MyOrders from './MyOrders';
-import Users from './Dashboard/Users';
-import Management from './Dashboard/Management';
-import Categories  from './Dashboard/Categories';
-import Products from './Dashboard/Products';
+import Info from './Info/Info';
+import MyOrders from './my-orders/page';
+import Users from './dashboard/users/Users';
+import Management from './dashboard/management/page';
+import Categories  from './dashboard/categories/page';
+import Products from './dashboard/products/page';
 import {userRoles} from '../../../../server/src/utils/userRoles';
 import { ROLE } from '@/Utils/Cookies';
-import Orders from './Dashboard/Orders';
+import Orders from './dashboard/orders/page';
 import { useStatusContext } from '@/Utils/Status/statusContext';
+import SideBar from './Side bar/SideBar';
+import { usePathname } from 'next/navigation';
 
 const Profile = () => {
     const [mode, setMode] = useState<string>('Info');
@@ -38,25 +40,13 @@ const Profile = () => {
         }
     }
 
+
   return (
     isLoggedIn ?
-    <div className={`${mode === 'Dashboard' && 'h-full'} flex items-start max-md:flex-col max-md:justify-center gap-10 p-10`}>
-        <aside className='flex flex-col max-md:justify-center gap-5 bg-slate-300 h-fit p-5 rounded-md max-md:text-xs max-md:w-full'>
-            <button className={`${mode === 'Info' ? 'bg-slate-600': 'bg-slate-700 hover:bg-late-600'} flex items-center max-md:justify-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Info')}>
-            <FontAwesomeIcon className='mr-3 text-white' icon={faCircleInfo} />    
-            Info</button>
-            <button className={`${mode === 'myOrders' ? 'bg-slate-600': 'bg-slate-700 hover:bg-late-600'} flex items-center max-md:justify-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'myOrders')}>
-            <FontAwesomeIcon className='mr-3 text-white' icon={faShoppingBasket} />    
-            My orders</button>
-            { (ROLE === userRoles.MANAGER || ROLE === userRoles.ADMIN) &&
-            <button className={`${mode === 'Dashboard' ? 'bg-slate-600': 'bg-slate-700 hover:bg-late-600'} flex items-center max-md:justify-center p-2 rounded-md text-white duration-300`} onClick={(e) => handleMode(e, 'Dashboard')}>
-            <FontAwesomeIcon className='mr-3 text-white' icon={faGear} />    
-            Dashboard</button>
-            }
-            <button className='p-2 rounded-md text-white bg-red-600 hover:bg-red-500 duration-300' onClick={handleLogout}>Logout</button>
-        </aside>
+    <div className={`min-h-screen h-full flex items-start max-md:flex-col max-md:justify-center gap-10`}>
+        <SideBar />
         <section className='w-full flex flex-col gap-5 p-5 rounded-md'>
-        { mode === 'Info' &&
+        {/* { mode === 'Info' &&
             <Info />
         }
         { mode === 'myOrders' &&
@@ -87,7 +77,8 @@ const Profile = () => {
                 <Orders />
             }
             </div>
-        }
+        } */}
+        <Info />
         </section>
     </div>
     :

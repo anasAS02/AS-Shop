@@ -22,9 +22,10 @@ const Login = () => {
   }, [successMsg, err, setSuccessMsg, setErr]);
 
   return (
-    <div className="h-screen flex justify-center relative">
+    <form className="h-screen flex justify-center relative">
       <div className="w-2/4 max-md:w-3/4 h-fit absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14">
         <input
+          required
           type="text"
           name="email"
           placeholder="your email"
@@ -33,6 +34,7 @@ const Login = () => {
           className="w-fit p-3 max-md:p-1 rounded-md border-none outline-none"
         />
         <input
+          required
           type="password"
           name="password"
           placeholder="your password"
@@ -44,7 +46,7 @@ const Login = () => {
           <SkewLoader color="#ffffff" />
         ) : (
           <span className="flex flex-col items-center gap-2">
-            <button
+            <button type='submit'
               onClick={(e) =>
                 handleAuth(e, LOGIN, form, setIsLoading, setSuccessMsg, setErr)
               }
@@ -64,7 +66,7 @@ const Login = () => {
           </span>
         )}
       </div>
-    </div>
+    </form>
   );
 };
 
