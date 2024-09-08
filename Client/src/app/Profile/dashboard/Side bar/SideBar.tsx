@@ -1,3 +1,4 @@
+import isAuth from "@/Utils/Auth/isAuth";
 import { faBagShopping, faCartFlatbed, faGear, faTableCells, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
@@ -26,4 +27,4 @@ const SideBar = () => {
   )
 }
 
-export default SideBar
+export default isAuth(SideBar)

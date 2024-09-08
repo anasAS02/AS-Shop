@@ -1,8 +1,10 @@
 'use client'
+import isAuth from '@/Utils/Auth/isAuth'
 import SideBar from './Side bar/SideBar'
 import Users from './users/Users'
 
-const page = () => {
+const Dashboard = () => {
+
   return (
     <div className='w-full min-h-screen flex items-start justify-center gap-14'>
         <SideBar />
@@ -11,4 +13,4 @@ const page = () => {
   )
 }
 
-export default page
+export default isAuth(Dashboard);

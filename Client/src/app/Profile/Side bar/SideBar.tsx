@@ -4,13 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookie from 'js-cookie';
 import {userRoles} from '../../../../../server/src/utils/userRoles';
 import { ROLE } from '@/Utils/Cookies';
-import { useStatusContext } from '@/Utils/Status/statusContext';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const SideBar = () => {
-
-    const {isLoggedIn} = useStatusContext();
 
     const handleLogout = () => {
         Cookie.remove('token');
