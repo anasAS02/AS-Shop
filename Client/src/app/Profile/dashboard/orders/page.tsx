@@ -10,6 +10,7 @@ import { config } from "@/Utils/Auth/handleAuth";
 import { handleMsg } from "@/Utils/Status/handleStatusMsg";
 import { orders } from "../../my-orders/page";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import SideBar from "../Side bar/SideBar";
 const Orders = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
     const [orders, setOrders] = useState<orders[]> ();
@@ -50,70 +51,73 @@ const Orders = () => {
     }, 0);
 
   return (
-    <div className='w-full min-h-screen flex flex-col items-center gap-10'>
-        <div className='mt-12 flex items-start gap-10 max-md:w-full'>
-            <span className='p-5 rounded-md bg-slate-300 flex flex-col gap-2'>
-                <h2 className='text-2xl max-md:text-sm'>Total revenue</h2>
-                <p className='font-bold text-yellow-500'>${totalRevenue?.toFixed(2)}</p>
-            </span>
-            <ResponsiveContainer width="100%" height={350}>
-                <BarChart data={graphData}>
-                    <XAxis
-                        dataKey='name'
-                        stroke='#888888'
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        />
-                    <YAxis
-                        stroke='#888888'
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `$${value}`}
-                        />
-                    <Bar dataKey='total' fill='#3498db' radius={[4, 4, 0, 0]} />    
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
-        {orders && 
-            <table className='w-full max-md:w-2/4 max-md:text-xs bg-slate-300 rounded-md text-center'>
-                <thead>
-                    <tr className='text-slate-600'>
-                        <td>Email</td>
-                        <td>Items</td>
-                        <td>delivered</td>
-                        <td>total amount</td>
-                        <td>At</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map((order: orders) => (
-                        <tr className='text-center max-md:text-xs' key={order._id}>
-                            <td>{order.email}</td>
-                            <td className='flex flex-col gap-1 items-center'>
-                                {order.items.map((item, i) => (
-                                    <p key={i}>{item.title} <span className='text-gray-700 font-bold text-sm max-md:font-normal max-md:text-xs'>x{item.quantity}</span></p>
-                                ))}
-                            </td>
-                            <td>
-                            {isLoading 
-                            ?
-                            <SkewLoader color="#ffffff" />
-                            :
-                            <p>
-                                {order.delivered ? 'Yes' : 'No'}
-                                {!order.delivered && <FontAwesomeIcon icon={faCheck} onClick={() => handleUpdateOrder(order._id)} className='duration-200 hover:text-green-400 cursor-pointer' />}
-                            </p>
-                            }
-                            </td>
-                            <td>${order.totalAmount.toFixed(2)}</td>
-                            <td>{order.createdAt.substring(0, order.createdAt.indexOf('T'))}</td>
+    <div className='min-h-screen flex items-start gap-14'>
+        <SideBar />
+        <div className='w-full min-h-screen flex flex-col items-center gap-10'>
+            <div className='mt-12 flex items-start gap-10 max-md:w-full'>
+                <span className='p-5 rounded-md bg-slate-300 flex flex-col gap-2'>
+                    <h2 className='text-2xl max-md:text-sm'>Total revenue</h2>
+                    <p className='font-bold text-yellow-500'>${totalRevenue?.toFixed(2)}</p>
+                </span>
+                <ResponsiveContainer width="100%" height={350}>
+                    <BarChart data={graphData}>
+                        <XAxis
+                            dataKey='name'
+                            stroke='#888888'
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                            />
+                        <YAxis
+                            stroke='#888888'
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                            tickFormatter={(value) => `$${value}`}
+                            />
+                        <Bar dataKey='total' fill='#3498db' radius={[4, 4, 0, 0]} />    
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+            {orders && 
+                <table className='w-full shadow-lg max-md:w-2/4 max-md:text-xs bg-slate-300 rounded-md text-center'>
+                    <thead>
+                        <tr className='text-slate-600'>
+                            <td>Email</td>
+                            <td>Items</td>
+                            <td>delivered</td>
+                            <td>total amount</td>
+                            <td>At</td>
                         </tr>
-                    ))}
-                </tbody>
-            </table>    
-        }
+                    </thead>
+                    <tbody>
+                        {orders.map((order: orders) => (
+                            <tr className='text-center max-md:text-xs' key={order._id}>
+                                <td>{order.email}</td>
+                                <td className='flex flex-col gap-1 items-center mb-10'>
+                                    {order.items.map((item, i) => (
+                                        <p key={i}>{item.title} <span className='text-gray-700 font-bold text-sm max-md:font-normal max-md:text-xs'>x{item.quantity}</span></p>
+                                    ))}
+                                </td>
+                                <td>
+                                {isLoading 
+                                ?
+                                <SkewLoader color="#ffffff" />
+                                :
+                                <p>
+                                    {order.delivered ? 'Yes' : 'No'}
+                                    {!order.delivered && <FontAwesomeIcon icon={faCheck} onClick={() => handleUpdateOrder(order._id)} className='duration-200 hover:text-green-400 cursor-pointer' />}
+                                </p>
+                                }
+                                </td>
+                                <td>${order.totalAmount.toFixed(2)}</td>
+                                <td>{order.createdAt.substring(0, order.createdAt.indexOf('T'))}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>    
+            }
+        </div>
     </div>
   )
 }

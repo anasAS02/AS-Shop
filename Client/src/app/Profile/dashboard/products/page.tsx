@@ -6,11 +6,13 @@ import { ADD_PRODUCT, DELETE_PRODUCT, GET_PRODUCTS, SHOW_IMG, UPDATE_PRODUCT } f
 import axios from "axios";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
 import confirmation from "@/Utils/Status/confirmation";
 import { handleMsg } from "@/Utils/Status/handleStatusMsg";
+import SideBar from "../Side bar/SideBar";
+import Link from "next/link";
 
 const Products = () => {
     const {isLoading, setIsLoading, successMsg, setSuccessMsg, err, setErr} = useStatusContext();
@@ -151,108 +153,74 @@ const Products = () => {
         confirmation({ url: DELETE_PRODUCT + id, config, successMsg: null, setSuccessMsg: () => setSuccessMsg(null), func: getProducts });
     }
 
-    const showThumbnail = ( thumbnail &&
-        <div className='flex items-start flex-col gap-2'>
-            <span className='flex items-center gap-2'>
-                <Image src={URL.createObjectURL(thumbnail)} width={100} height={100} alt={thumbnail.name} className='rounded-md' />
-                <span className='text-base max-md:text-sm text-yellow-500 flex items-start flex-col'>{thumbnail.name} <p className='text-sm text-black'>{thumbnail.size / 1024 < 900 ? (thumbnail.size / 1024).toFixed(2) + ' kb' : (thumbnail.size / (1024 * 1024)).toFixed(2) + ' mb'}</p></span>
-            </span>
-        </div>
-    )
-
-    const showImgs = images?.map((img: File, i) => (
-        <div key={i} className='flex items-start flex-col gap-2'>
-            <span className='flex items-center gap-2'>
-                <Image src={URL.createObjectURL(img)} width={100} height={100} alt={img.name} className='rounded-md' />
-                <span className='text-base max-md:text-sm text-yellow-500 flex items-start flex-col'>{img.name} <p className='text-sm text-black'>{img.size / 1024 < 900 ? (img.size / 1024).toFixed(2) + ' kb' : (img.size / (1024 * 1024)).toFixed(2) + ' mb'}</p></span>
-            </span>
-        </div>
-    ))
-
   return (
-    <div className='w-full'>
-        <div className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
-            <input type='text' name='title' placeholder='product title' value={productData.title} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='description' placeholder='product description' value={productData.description} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='price' placeholder='product price' value={productData.price} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='discountPercentage' placeholder='product discountPercentage' value={productData.discountPercentage} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            <input type='text' name='brand' placeholder='product brand' value={productData.brand} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
-            {isLoading ?
-            <SkewLoader color="#ffffff" />
-            :
-            <select name='category' value={productData.category} onChange={handleChange} className='w-fit p-3 max-md:p-1 rounded-md border-none outline-none'>
-                {categories?.map((category) => (
-                    <option key={category._id} value={category.title}>{category.title}</option>
-                ))}
-            </select>
-            }
-            <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
-            <button onClick={() => document.getElementById('selectThumbnail')?.click()} className='p-2 max-md:p-1 bg-white max-md:text-xs text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose thumbnail</button>
-            {showThumbnail}
-            <input multiple id='selectImager' accept="image/*" className='hidden' type='file' onChange={(e) => e.target.files && setImages([...e.target.files])} />
-            <button onClick={() => document.getElementById('selectImager')?.click()} className='p-2 max-md:p-1 bg-white max-md:text-xs text-sm text-black hover:text-green-400 duration-200 rounded-md'>Choose images</button>
-            {showImgs}
-            {isLoading ?
-                <SkewLoader color="#ffffff" />
-                :
-                <button onClick={(e) => {updateMode ? handleSubmit(e, UPDATE_PRODUCT + productId) : handleSubmit(e, ADD_PRODUCT)}} className='p-3 bg-white text-black hover:text-green-400 duration-200 rounded-md'>{updateMode ? 'Update' : 'Add'}</button>
-            }
-        </div>
-        <div 
-        className='w-full flex items-center gap-4 flex-wrap mt-10'
-        >
-            {products?.map((product: ProductData) => (
-                <div
-                key={product._id}
-                className='flex items-center gap-4 flex-wrap'
-                >
+    <div className='min-h-screen flex items-start gap-14'>
+        <SideBar />
+        <div>
+            <Link href='products/add' className='ml-auto flex items-center gap-2 p-2 rounded-lg bg-blue-400 hover:bg-blue-300 duration-200 text-white mt-2 w-fit'>
+                <p>Add Product</p>
+                <FontAwesomeIcon icon={faAdd} className='text-xl' />
+            </Link>
+            <div 
+            className='w-full max-h-[600px] overflow-y-scroll p-5 flex items-center gap-4 flex-wrap'
+            >
+                {products?.map((product: ProductData) => (
                     <div
-                    className='flex flex-col justify-center items-center gap-2 border-[1px] border-solid border-green-500 hover:border-green-400 duration-200 rounded-lg p-2'
+                    key={product._id}
+                    className='flex items-center gap-4 flex-wrap'
                     >
-                        <Image 
-                        src={product.thumbnail.startsWith('https://i.imgur.com/') ? product.thumbnail : SHOW_IMG + product.thumbnail} 
-                        alt='product thumbnail' 
-                        width={400}
-                        height={400}
-                        className='w-[200px] h-[200px]'
-                        />
-                        <h2 
-                        className='text-lg'
+                        <div
+                        className='flex flex-col justify-center items-center gap-2 border-[1px] border-solid border-green-500 hover:border-green-400 duration-200 rounded-lg p-2'
                         >
-                            {product.title.slice(0, 15)}
-                        </h2>
-                        <p 
-                        className='text-gray-400'
-                        >
-                            {product.category}
-                        </p>
-                        <p 
-                        className='font-bold'
-                        >
-                            ${product.price}
-                        </p>
-                        <p 
-                        className='font-bold text-red-500'
-                        >
-                            {product.discountPercentage}% off
-                        </p>
-                        <span
-                        className='flex items-center justify-center gap-2'
-                        >
-                            <FontAwesomeIcon 
-                            icon={faTrash}
-                            onClick={() => handleDelete(product._id)}
-                            className='w-[16px] h-[16px] cursor-pointer duration-200 text-red-500 hover:text-red-400'
+                            <Image 
+                            src={product.thumbnail.startsWith('https://i.imgur.com/') ? product.thumbnail : SHOW_IMG + product.thumbnail} 
+                            alt='product thumbnail' 
+                            width={400}
+                            height={400}
+                            className='w-[200px] h-[200px]'
                             />
-                            <FontAwesomeIcon 
-                            icon={faEdit}
-                            onClick={() => handleUpdate(product._id)}
-                            className='w-[16px] h-[16px] cursor-pointer duration-200 text-blue-500 hover:text-blue-400'
-                            />
-                        </span>
+                            <h2 
+                            className='text-lg'
+                            >
+                                {product.title.slice(0, 15)}
+                            </h2>
+                            <p 
+                            className='text-gray-400'
+                            >
+                                {product.category}
+                            </p>
+                            <p 
+                            className='font-bold'
+                            >
+                                ${product.price}
+                            </p>
+                            <p 
+                            className='font-bold text-red-500'
+                            >
+                                {product.discountPercentage}% off
+                            </p>
+                            <span
+                            className='flex items-center justify-center gap-2'
+                            >
+                                <FontAwesomeIcon 
+                                icon={faTrash}
+                                onClick={() => handleDelete(product._id)}
+                                className='w-[16px] h-[16px] cursor-pointer duration-200 text-red-500 hover:text-red-400'
+                                />
+                                <Link
+                                href={`products/update/${product._id}`}
+                                >
+                                <FontAwesomeIcon 
+                                icon={faEdit}
+                                onClick={() => handleUpdate(product._id)}
+                                className='w-[16px] h-[16px] cursor-pointer duration-200 text-blue-500 hover:text-blue-400'
+                                />
+                                </Link>
+                            </span>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     </div>
   )

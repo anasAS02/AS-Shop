@@ -2,16 +2,11 @@
 import { useStatusContext } from "@/Utils/Status/statusContext";
 import { useEffect, useState } from "react";
 import { SkewLoader } from 'react-spinners';
-import { ADD_CATEGORY, DELETE_CATEGORY, SHOW_IMG, UPDATE_CATEGORY } from "@/Utils/Apis";
+import { ADD_CATEGORY, UPDATE_CATEGORY } from "@/Utils/Apis";
 import axios from "axios";
-import Swal from "sweetalert2";
-import Link from "next/link";
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/Utils/Auth/handleAuth";
 import { CategoryData, getCategories } from "@/Utils/Products/getCategories";
-import confirmation from "@/Utils/Status/confirmation";
 import { handleMsg } from "@/Utils/Status/handleStatusMsg";
 import SideBar from "../../Side bar/SideBar";
 
@@ -59,20 +54,16 @@ const AddCategory = () => {
             if (file) {
                 formData.append('thumbnail', file);
             }
-            if(updateMode){
-                await axios.put(url, formData, config).then((data) => setSuccessMsg(data.data.message));
-                setUpdateMode(false);
-                setCategoryId(null);
-            }else{
-                await axios.post(url, formData, config).then((data) => setSuccessMsg(data.data.message));
-            }
+            await axios.post(url, formData, config).then((data) => setSuccessMsg(data.data.message));
             setCategoryData({
                 title: '',
                 href: ''
             });
             setFile(undefined);
             setErr(null);
-            getCategories().then((data) => setCategories(data));
+            setTimeout(() => {
+                window.location.pathname = '/Profile/dashboard/categories'
+            }, 1500)
         }catch(err: any){
             setErr(err.response?.data.message);
             console.log(err);
@@ -80,23 +71,6 @@ const AddCategory = () => {
             setIsLoading(false);
         }
     }
-
-    const handleUpdate = async (id: any) => {
-        setUpdateMode(true)
-        scrollTo(0, 0);
-        const findCategory = categories?.find((category) => category._id === id);
-        if(findCategory){
-            setCategoryData({
-                title: findCategory.title,
-                href: findCategory.href,
-            })
-            setCategoryId(id)
-        }
-    }
-
-    const handleDelete = async (id: any) => {
-        confirmation({ url: DELETE_CATEGORY + id, config, successMsg: null, setSuccessMsg, func: getCategories });
-    };
 
     const showThumbnail = ( file &&
         <div className='flex items-start flex-col gap-2'>
@@ -110,7 +84,7 @@ const AddCategory = () => {
   return (
     <div className='flex items-start gap-14'>
         <SideBar />
-        <form className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
+        <div className='w-full mt-5 h-fit bg-slate-300 rounded-md flex flex-col items-center gap-5 p-14'>
             <input type='text' name='title' placeholder='category title' value={categoryData.title} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input type='text' name='href' placeholder='category href' value={categoryData.href} onChange={handleChange} className='w-fit max-md:w-40 p-3 max-md:p-1 rounded-md border-none outline-none' />
             <input id='selectThumbnail' accept="image/*" className='hidden' type='file' onChange={handleFileChange} />
@@ -121,7 +95,7 @@ const AddCategory = () => {
                 :
                 <button onClick={(e) => {updateMode ? handleSubmit(e, UPDATE_CATEGORY + categoryId) : handleSubmit(e, ADD_CATEGORY)}} className='p-3 max-md:p-1 max-md:text-xs bg-white text-black hover:text-green-400 duration-200 rounded-md'>{updateMode ? 'Update' : 'Add'}</button>
             }
-        </form>
+        </div>
     </div>
   )
 }

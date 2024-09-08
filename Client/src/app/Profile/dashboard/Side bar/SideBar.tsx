@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 const SideBar = () => {
     const pathname = usePathname();
   return (
-    <aside className='h-screen flex flex-col max-md:justify-center gap-3 bg-slate-200 p-5 w-[400px] rounded-md max-md:text-xs max-md:w-full'>
+    <aside className='h-screen flex flex-col items-start gap-3 bg-slate-200 p-5 w-[400px] max-md:text-xs max-md:w-full'>
         <Link href='/Profile/dashboard' className={`${pathname === '/Profile/dashboard' ? 'bg-blue-400 text-white': ''} flex items-center max-md:justify-center p-2 rounded-md duration-300`}>
         <FontAwesomeIcon className={`mr-3 ${pathname === '/Profile/dashboard' ? 'text-white' : 'text-black' } text-xl`} icon={faUser} />    
         Users</Link>

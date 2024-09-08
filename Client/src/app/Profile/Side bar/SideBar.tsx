@@ -1,8 +1,7 @@
 'use client'
-import { faCircleInfo, faGear, faRightFromBracket, faShop, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faGear, faRightFromBracket, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookie from 'js-cookie';
-import { useState } from 'react';
 import {userRoles} from '../../../../../server/src/utils/userRoles';
 import { ROLE } from '@/Utils/Cookies';
 import { useStatusContext } from '@/Utils/Status/statusContext';
@@ -11,18 +10,7 @@ import { usePathname } from 'next/navigation';
 
 const SideBar = () => {
 
-    const [mode, setMode] = useState<string>('Info');
-    const [controlMode, setControlMode] = useState<string>('users');
     const {isLoggedIn} = useStatusContext();
-    const handleMode = (e: React.MouseEvent, mode: string) => {
-        e.preventDefault();
-        setMode(mode);
-    }
-
-    const handleControlMode = (e: any) => {
-        const id = e.target.id;
-        setControlMode(id);
-    }
 
     const handleLogout = () => {
         Cookie.remove('token');
