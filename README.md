@@ -1,6 +1,6 @@
 # AS-Shop
 
-![AS-Shop Banner](https://via.placeholder.com/1200x400?text=AS-Shop+E-commerce+Platform)
+![AS-Shop Banner]([https://via.placeholder.com/1200x400?text=AS-Shop+E-commerce+Platform](https://i.imgur.com/qyzMMKr.png))
 
 > A seamless e-commerce experience with advanced features and modern design.
 
